@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduMetrics — Dashboard de Escolas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="noise"></div>
+
+<aside class="sidebar">
+    <div class="logo">
+        <span class="logo-icon">◈</span>
+        <span class="logo-text">EduMetrics</span>
+    </div>
+
+    <nav class="nav">
+        <a href="#" class="nav-item active" data-view="overview">
+            <span class="nav-icon">⬡</span> Visão Geral
+        </a>
+        <a href="#" class="nav-item" data-view="charts">
+            <span class="nav-icon">⬡</span> Gráficos
+        </a>
+        <a href="#" class="nav-item" data-view="table">
+            <span class="nav-icon">⬡</span> Tabela
+        </a>
+        <a href="#" class="nav-item" data-view="compare">
+            <span class="nav-icon">⬡</span> Comparativo
+            <span class="nav-badge">novo</span>
+        </a>
+    </nav>
+
+    <div class="sidebar-filters">
+        <p class="filter-label">Filtros</p>
+        <select id="cityFilter" class="filter-select">
+            <option value="">Todas as Cidades</option>
+        </select>
+        <select id="typeFilter" class="filter-select">
+            <option value="">Todos os Tipos</option>
+        </select>
+        <select id="networkFilter" class="filter-select">
+            <option value="">Todas as Redes</option>
+        </select>
+        <button id="clearFilters" class="clear-btn">Limpar filtros</button>
+    </div>
+
+    <div class="sidebar-footer">
+        <span id="schoolCount">0 escolas</span>
+    </div>
+</aside>
+
+<main class="main">
+    <header class="topbar">
+        <div class="topbar-left">
+            <button class="menu-toggle" id="menuToggle">☰</button>
+            <div>
+                <h1 class="page-title">Dashboard de Escolas</h1>
+                <p class="page-sub">Dados educacionais • Brasil</p>
+            </div>
+        </div>
+        <div class="search-wrap">
+            <span class="search-icon">⌕</span>
+            <input type="text" id="searchInput" placeholder="Buscar escola..." class="search-input">
+        </div>
+    </header>
+
+    <!-- KPIs -->
+    <section class="kpi-grid" id="view-overview">
+        <div class="kpi-card" style="--accent:#6ee7b7">
+            <div class="kpi-icon">◎</div>
+            <div class="kpi-body">
+                <span class="kpi-label">Média IDEB</span>
+                <span class="kpi-value" id="idebAverage">—</span>
+            </div>
+            <div class="kpi-trend" id="idebTrend"></div>
+        </div>
+        <div class="kpi-card" style="--accent:#93c5fd">
+            <div class="kpi-icon">◈</div>
+            <div class="kpi-body">
+                <span class="kpi-label">Média SAEB</span>
+                <span class="kpi-value" id="saebAverage">—</span>
+            </div>
+        </div>
+        <div class="kpi-card" style="--accent:#fcd34d">
+            <div class="kpi-icon">◉</div>
+            <div class="kpi-body">
+                <span class="kpi-label">Taxa de Aprovação</span>
+                <span class="kpi-value" id="approvalAverage">—</span>
+            </div>
+        </div>
+        <div class="kpi-card" style="--accent:#f9a8d4">
+            <div class="kpi-icon">◍</div>
+            <div class="kpi-body">
+                <span class="kpi-label">Total de Alunos</span>
+                <span class="kpi-value" id="totalStudents">—</span>
+            </div>
+        </div>
+        <div class="kpi-card" style="--accent:#a78bfa">
+            <div class="kpi-icon">◐</div>
+            <div class="kpi-body">
+                <span class="kpi-label">Professores</span>
+                <span class="kpi-value" id="totalTeachers">—</span>
+            </div>
+        </div>
+        <div class="kpi-card" style="--accent:#fb923c">
+            <div class="kpi-icon">◑</div>
+            <div class="kpi-body">
+                <span class="kpi-label">Alunos/Turma</span>
+                <span class="kpi-value" id="avgClassSize">—</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Infra summary -->
+    <section class="infra-summary" id="infra-section">
+        <h2 class="section-title">Infraestrutura <span class="section-count" id="infra-count"></span></h2>
+        <div class="infra-bars" id="infraBars"></div>
+    </section>
+
+    <!-- Charts -->
+    <section class="charts-grid" id="view-charts">
+
+        <!-- Legenda de cores fixa -->
+        <div class="chart-card span-2 legend-card">
+            <div class="legend-strip">
+                <span class="legend-dot" style="background:#6ee7b7"></span> TOP 10 Brasil
+                <span class="legend-dot" style="background:#93c5fd;margin-left:20px"></span> Sorocaba
+                <span class="legend-dot" style="background:#fcd34d;margin-left:20px"></span> Votorantim
+            </div>
+        </div>
+
+        <!-- 1. IDEB por grupo — barras agrupadas com média -->
+        <div class="chart-card span-2">
+            <div class="chart-header">
+                <h3>IDEB — Comparativo por Grupo</h3>
+                <span class="chart-badge">top10 · sorocaba · votorantim</span>
+            </div>
+            <div class="chart-wrap tall">
+                <canvas id="idebBarChart"></canvas>
+            </div>
+        </div>
+
+        <!-- 2. Médias IDEB lado a lado -->
+        <div class="chart-card">
+            <div class="chart-header">
+                <h3>Média IDEB por Grupo</h3>
+                <span class="chart-badge">comparação direta</span>
+            </div>
+            <div class="chart-wrap">
+                <canvas id="idebGroupChart"></canvas>
+            </div>
+        </div>
+
+        <!-- 3. SAEB LP e Mat — média por grupo -->
+        <div class="chart-card">
+            <div class="chart-header">
+                <h3>Média SAEB por Grupo</h3>
+                <span class="chart-badge">lp · matemática</span>
+            </div>
+            <div class="chart-wrap">
+                <canvas id="saebGroupChart"></canvas>
+            </div>
+        </div>
+
+        <!-- 4. Taxa de aprovação — média por grupo -->
+        <div class="chart-card">
+            <div class="chart-header">
+                <h3>Taxa de Aprovação por Grupo</h3>
+                <span class="chart-badge">média %</span>
+            </div>
+            <div class="chart-wrap">
+                <canvas id="approvalGroupChart"></canvas>
+            </div>
+        </div>
+
+        <!-- 5. Dispersão IDEB — cada ponto colorido por grupo -->
+        <div class="chart-card">
+            <div class="chart-header">
+                <h3>IDEB × Aprovação</h3>
+                <span class="chart-badge">correlação por grupo</span>
+            </div>
+            <div class="chart-wrap">
+                <canvas id="scatterChart"></canvas>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Table -->
+    <section class="table-section" id="view-table">
+        <div class="table-header">
+            <h2 class="section-title">Lista de Escolas</h2>
+            <div class="table-controls">
+                <span id="resultCount" class="result-count"></span>
+                <select id="sortSelect" class="sort-select">
+                    <option value="ranking">Ordenar: Ranking</option>
+                    <option value="ideb">Ordenar: IDEB</option>
+                    <option value="alunos_total">Ordenar: Alunos</option>
+                    <option value="taxa_aprovacao">Ordenar: Aprovação</option>
+                    <option value="saeb_lp">Ordenar: SAEB LP</option>
+                    <option value="saeb_mat">Ordenar: SAEB Mat</option>
+                </select>
+            </div>
+        </div>
+        <div class="table-scroll">
+            <table id="schoolsTable">
+                <thead>
+                    <tr>
+                        <th class="sortable" data-col="ranking">#</th>
+                        <th class="sortable" data-col="escola">Escola</th>
+                        <th class="sortable" data-col="cidade">Cidade</th>
+                        <th>Tipo</th>
+                        <th>Rede</th>
+                        <th class="sortable" data-col="ideb">IDEB</th>
+                        <th class="sortable" data-col="saeb_lp">SAEB LP</th>
+                        <th class="sortable" data-col="saeb_mat">SAEB Mat</th>
+                        <th class="sortable" data-col="taxa_aprovacao">Aprovação</th>
+                        <th class="sortable" data-col="alunos_total">Alunos</th>
+                        <th>Infraestrutura</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+    </section>
+    <!-- ═══════════════ COMPARATIVO DE CIDADES ═══════════════ -->
+    <section id="view-compare" style="display:none">
+
+        <!-- Seletor de cidades -->
+        <div class="compare-header">
+            <div class="compare-title-block">
+                <h2 class="section-title">Comparativo de Cidades</h2>
+                <p class="compare-subtitle">Selecione duas ou mais cidades para comparar os indicadores educacionais lado a lado.</p>
+            </div>
+            <div class="compare-selectors" id="compareSelectors">
+                <div class="city-selector-wrap">
+                    <label class="city-selector-label" style="--c:#6ee7b7">Cidade A</label>
+                    <select id="compareCity1" class="compare-select" style="--c:#6ee7b7">
+                        <option value="">Escolha uma cidade…</option>
+                    </select>
+                </div>
+                <div class="compare-vs">VS</div>
+                <div class="city-selector-wrap">
+                    <label class="city-selector-label" style="--c:#93c5fd">Cidade B</label>
+                    <select id="compareCity2" class="compare-select" style="--c:#93c5fd">
+                        <option value="">Escolha uma cidade…</option>
+                    </select>
+                </div>
+                <div class="city-selector-wrap">
+                    <label class="city-selector-label" style="--c:#fcd34d">Cidade C <span class="optional">(opcional)</span></label>
+                    <select id="compareCity3" class="compare-select" style="--c:#fcd34d">
+                        <option value="">— Adicionar —</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Estado vazio -->
+        <div class="compare-empty" id="compareEmpty">
+            <div class="compare-empty-icon">⍿</div>
+            <p>Selecione pelo menos duas cidades para iniciar o comparativo.</p>
+        </div>
+
+        <!-- Conteúdo do comparativo -->
+        <div class="compare-body" id="compareBody" style="display:none">
+
+            <!-- Cards Versus -->
+            <div class="versus-grid" id="versusGrid"></div>
+
+            <!-- Gráfico Radar + Tabela Infra lado a lado -->
+            <div class="compare-bottom">
+                <div class="chart-card compare-radar-card">
+                    <div class="chart-header">
+                        <h3>Radar de Competências</h3>
+                        <span class="chart-badge">visão integrada</span>
+                    </div>
+                    <div class="chart-wrap" style="height:320px">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card compare-infra-card">
+                    <div class="chart-header">
+                        <h3>Infraestrutura por Cidade</h3>
+                        <span class="chart-badge">% de escolas com o recurso</span>
+                    </div>
+                    <div class="infra-compare-table-wrap">
+                        <table class="infra-compare-table" id="infraCompareTable">
+                            <thead id="infraCompareHead"></thead>
+                            <tbody id="infraCompareBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script src="script.js"></script>
+</body>
+</html>

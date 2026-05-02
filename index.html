@@ -1,13 +1,640 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR" class="theme-dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projeto Economia - Analise de Ensino Basico</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduMetrics Enterprise — Dashboard Educacional</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    
+<body class="theme-dark">
+
+<div class="noise"></div>
+
+<!-- ═══════════════ SIDEBAR ═══════════════ -->
+<aside class="sidebar" id="sidebar">
+
+  <div class="logo">
+    <span class="logo-icon">◈</span>
+    <span class="logo-text">EduMetrics</span>
+    <span class="logo-version">v2.0</span>
+  </div>
+
+  <nav class="nav">
+    <span class="nav-section-label">Painel</span>
+    <a href="#" class="nav-item active" data-view="overview">
+      <span class="nav-icon">⬡</span> Visão Geral
+    </a>
+    <a href="#" class="nav-item" data-view="charts">
+      <span class="nav-icon">⬡</span> Gráficos
+    </a>
+    <a href="#" class="nav-item" data-view="table">
+      <span class="nav-icon">⬡</span> Tabela
+    </a>
+
+    <span class="nav-section-label">Análise</span>
+    <a href="#" class="nav-item" data-view="compare">
+      <span class="nav-icon">⬡</span> Comparativo
+    </a>
+    <a href="#" class="nav-item" data-view="investment">
+      <span class="nav-icon">⬡</span> Investimento
+    </a>
+    <a href="#" class="nav-item" data-view="pandemic">
+      <span class="nav-icon">⬡</span> Pós-Pandemia
+      <span class="nav-badge">análise</span>
+    </a>
+
+    <span class="nav-section-label">Extras</span>
+    <a href="#" class="nav-item" data-view="ai">
+      <span class="nav-icon">⬡</span> Módulo IA
+      <span class="nav-badge">beta</span>
+    </a>
+    <a href="#" class="nav-item" data-view="transparency">
+      <span class="nav-icon">⬡</span> Transparência
+    </a>
+    <a href="#" class="nav-item" data-view="team">
+      <span class="nav-icon">⬡</span> Equipe
+    </a>
+  </nav>
+
+  <!-- FILTROS -->
+  <div class="sidebar-filters">
+    <span class="filter-group-label">Filtros</span>
+
+    <select id="cityFilter" class="filter-select">
+      <option value="">Todas as Cidades</option>
+    </select>
+
+    <select id="depFilter" class="filter-select">
+      <option value="">Todas as Dep. Admin.</option>
+      <option value="Municipal">Municipal</option>
+      <option value="Estadual">Estadual</option>
+      <option value="Federal">Federal</option>
+    </select>
+
+    <select id="idebFilter" class="filter-select">
+      <option value="">Qualquer IDEB</option>
+      <option value="high">IDEB ≥ 7 (Alto)</option>
+      <option value="mid">IDEB 5–7 (Médio)</option>
+      <option value="low">IDEB &lt; 5 (Baixo)</option>
+      <option value="nodata">Sem dados</option>
+    </select>
+
+    <div class="switch-wrap">
+      <span class="switch-label">Somente com IDEB</span>
+      <label class="switch">
+        <input type="checkbox" id="hasIdebToggle">
+        <span class="switch-slider"></span>
+      </label>
+    </div>
+
+    <button id="clearFilters" class="clear-btn">↺ Limpar filtros</button>
+  </div>
+
+  <div class="sidebar-footer">
+    <span id="schoolCount">0 escolas</span>
+    <span id="lastUpdated" style="color:var(--text-dim)">2023</span>
+  </div>
+</aside>
+
+<!-- ═══════════════ MAIN ═══════════════ -->
+<main class="main">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="menu-toggle" id="menuToggle">☰</button>
+      <div>
+        <h1 class="page-title">Dashboard de Escolas</h1>
+        <p class="page-sub">Dados IDEB 2023 · INEP · Brasil</p>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="search-wrap">
+        <span class="search-icon">⌕</span>
+        <input type="text" id="searchInput" placeholder="Buscar escola..." class="search-input">
+      </div>
+      <button class="theme-toggle" id="themeToggle" title="Alternar tema">🌙</button>
+    </div>
+  </header>
+
+  <!-- ════ VISÃO GERAL ════ -->
+  <div id="view-overview">
+
+    <!-- KPIs -->
+    <section class="kpi-grid">
+      <div class="kpi-card" style="--accent:var(--g1-border)">
+        <div class="kpi-icon">◎</div>
+        <div class="kpi-body">
+          <span class="kpi-label">Média IDEB</span>
+          <span class="kpi-value" id="idebAverage">—</span>
+          <span class="kpi-sub" id="idebSub">escolas com dados</span>
+        </div>
+      </div>
+      <div class="kpi-card" style="--accent:#818cf8">
+        <div class="kpi-icon">◈</div>
+        <div class="kpi-body">
+          <span class="kpi-label">Média Nota LP</span>
+          <span class="kpi-value" id="lpAverage">—</span>
+          <span class="kpi-sub">SAEB Língua Port.</span>
+        </div>
+      </div>
+      <div class="kpi-card" style="--accent:#fbbf24">
+        <div class="kpi-icon">◉</div>
+        <div class="kpi-body">
+          <span class="kpi-label">Média Nota MT</span>
+          <span class="kpi-value" id="mtAverage">—</span>
+          <span class="kpi-sub">SAEB Matemática</span>
+        </div>
+      </div>
+      <div class="kpi-card" style="--accent:#f9a8d4">
+        <div class="kpi-icon">◍</div>
+        <div class="kpi-body">
+          <span class="kpi-label">Escolas</span>
+          <span class="kpi-value" id="totalSchools">—</span>
+          <span class="kpi-sub" id="schoolsSub">total no filtro</span>
+        </div>
+      </div>
+      <div class="kpi-card" style="--accent:#a78bfa">
+        <div class="kpi-icon">◐</div>
+        <div class="kpi-body">
+          <span class="kpi-label">Fluxo Médio</span>
+          <span class="kpi-value" id="fluxoAverage">—</span>
+          <span class="kpi-sub">taxa de aprovação</span>
+        </div>
+      </div>
+      <div class="kpi-card" style="--accent:#fb923c">
+        <div class="kpi-icon">◑</div>
+        <div class="kpi-body">
+          <span class="kpi-label">Melhor IDEB</span>
+          <span class="kpi-value" id="maxIdeb">—</span>
+          <span class="kpi-sub" id="maxIdebSchool">—</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Metric Info Cards (Transparência inline) -->
+    <div class="metric-info-strip" style="padding-top:4px">
+      <div class="metric-info-card">
+        <div class="mic-tag">📐 Fórmula</div>
+        <div class="mic-title">O que é o IDEB?</div>
+        <div class="mic-formula">IDEB = Fluxo × Aprendizado (SAEB)</div>
+        <div class="mic-desc">Combina a taxa de aprovação (fluxo) com a nota média do SAEB, gerando um índice de 0 a 10.</div>
+        <button class="mic-btn" data-modal="ideb">📖 Como é calculado?</button>
+      </div>
+      <div class="metric-info-card">
+        <div class="mic-tag">📊 Componente</div>
+        <div class="mic-title">O que é o Fluxo?</div>
+        <div class="mic-formula">Fluxo = Taxa de Aprovação Escolar</div>
+        <div class="mic-desc">Mede quantos alunos avançam sem reprovação ou abandono. Varia de 0 a 1 (100%).</div>
+        <button class="mic-btn" data-modal="fluxo">📖 Como é calculado?</button>
+      </div>
+      <div class="metric-info-card">
+        <div class="mic-tag">📝 Avaliação</div>
+        <div class="mic-title">O que é o SAEB?</div>
+        <div class="mic-formula">SAEB = Média(LP + Matemática)</div>
+        <div class="mic-desc">Sistema de Avaliação da Educação Básica. As notas LP e MT medem proficiência em escala própria.</div>
+        <button class="mic-btn" data-modal="saeb">📖 Como é calculado?</button>
+      </div>
+    </div>
+
+    <!-- Distribuição por Dep. Adm. -->
+    <section class="dist-section">
+      <h2 class="section-title">Distribuição por Dependência Administrativa <span class="section-count" id="dist-count"></span></h2>
+      <div class="dist-grid" id="distBars"></div>
+    </section>
+
+  </div>
+
+  <!-- ════ GRÁFICOS ════ -->
+  <section id="view-charts" style="display:none">
+
+    <div class="charts-grid">
+
+      <!-- Legenda de cores -->
+      <div class="chart-card span-2 legend-card">
+        <div class="legend-strip" id="legendStrip">
+          <span style="color:var(--text-dim);font-size:.78rem">Carregando dados…</span>
+        </div>
+      </div>
+
+      <!-- IDEB por escola – barras + linha de média -->
+      <div class="chart-card span-2">
+        <div class="chart-header">
+          <h3>IDEB por Escola (ordenado)</h3>
+          <span class="chart-badge">com linha de média geral</span>
+        </div>
+        <div class="chart-wrap xl"><canvas id="idebBarChart"></canvas></div>
+      </div>
+
+      <!-- Média IDEB por cidade -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3>Média IDEB por Cidade</h3>
+          <span class="chart-badge">top cidades</span>
+        </div>
+        <div class="chart-wrap tall"><canvas id="idebCityChart"></canvas></div>
+      </div>
+
+      <!-- SAEB LP e MT por cidade -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3>Notas SAEB por Cidade</h3>
+          <span class="chart-badge">lp · matemática</span>
+        </div>
+        <div class="chart-wrap tall"><canvas id="saebCityChart"></canvas></div>
+      </div>
+
+      <!-- IDEB por dependência administrativa -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3>IDEB por Dep. Administrativa</h3>
+          <span class="chart-badge">municipal · estadual · federal</span>
+        </div>
+        <div class="chart-wrap"><canvas id="idebDepChart"></canvas></div>
+      </div>
+
+      <!-- Scatter IDEB × Fluxo -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3>IDEB × Fluxo (Aprovação)</h3>
+          <span class="chart-badge">correlação</span>
+        </div>
+        <div class="chart-wrap"><canvas id="scatterChart"></canvas></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════ TABELA ════ -->
+  <section class="table-section" id="view-table" style="display:none">
+    <div class="table-header">
+      <h2 class="section-title">Lista de Escolas</h2>
+      <div class="table-controls">
+        <span id="resultCount" class="result-count"></span>
+        <select id="sortSelect" class="sort-select">
+          <option value="ideb_desc">Ordenar: IDEB (maior)</option>
+          <option value="ideb_asc">Ordenar: IDEB (menor)</option>
+          <option value="nome_asc">Ordenar: Nome A→Z</option>
+          <option value="cidade_asc">Ordenar: Cidade A→Z</option>
+          <option value="fluxo_desc">Ordenar: Fluxo (maior)</option>
+          <option value="lp_desc">Ordenar: Nota LP (maior)</option>
+          <option value="mt_desc">Ordenar: Nota MT (maior)</option>
+        </select>
+      </div>
+    </div>
+    <div class="table-scroll">
+      <table id="schoolsTable">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th class="sortable" data-col="nome_escola">Escola</th>
+            <th class="sortable" data-col="no_municipio">Cidade</th>
+            <th>UF</th>
+            <th>Dep. Adm.</th>
+            <th class="sortable" data-col="ideb">IDEB</th>
+            <th class="sortable" data-col="nota_lp">LP</th>
+            <th class="sortable" data-col="nota_mt">MT</th>
+            <th class="sortable" data-col="fluxo">Fluxo</th>
+            <th class="sortable" data-col="aprendizado">Aprend.</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+    <!-- Paginação -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding-top:14px;flex-wrap:wrap;gap:10px">
+      <span id="paginationInfo" style="font-size:.72rem;color:var(--text-dim);font-family:var(--font-mono)"></span>
+      <div style="display:flex;gap:8px">
+        <button id="prevPage" class="clear-btn" style="width:auto;padding:6px 12px">← Ant.</button>
+        <button id="nextPage" class="clear-btn" style="width:auto;padding:6px 12px">Próx. →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ COMPARATIVO ════ -->
+  <section id="view-compare" style="display:none">
+    <div class="compare-header">
+      <div>
+        <h2 class="section-title">Comparativo de Cidades</h2>
+        <p class="compare-subtitle">Selecione duas ou mais cidades para comparar os indicadores educacionais lado a lado.</p>
+      </div>
+      <div class="compare-selectors" id="compareSelectors">
+        <div class="city-selector-wrap">
+          <label class="city-selector-label" style="--c:#6ee7b7">Cidade A</label>
+          <select id="compareCity1" class="compare-select" style="--c:#6ee7b7">
+            <option value="">Escolha uma cidade…</option>
+          </select>
+        </div>
+        <div class="compare-vs">VS</div>
+        <div class="city-selector-wrap">
+          <label class="city-selector-label" style="--c:#818cf8">Cidade B</label>
+          <select id="compareCity2" class="compare-select" style="--c:#818cf8">
+            <option value="">Escolha uma cidade…</option>
+          </select>
+        </div>
+        <div class="city-selector-wrap">
+          <label class="city-selector-label" style="--c:#fbbf24">Cidade C <span class="optional">(opcional)</span></label>
+          <select id="compareCity3" class="compare-select" style="--c:#fbbf24">
+            <option value="">— Adicionar —</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="compare-empty" id="compareEmpty">
+      <div class="compare-empty-icon">⍿</div>
+      <p>Selecione pelo menos duas cidades para iniciar o comparativo.</p>
+    </div>
+
+    <div class="compare-body" id="compareBody" style="display:none">
+      <div class="versus-grid" id="versusGrid"></div>
+      <div class="compare-bottom">
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>Radar de Competências</h3>
+            <span class="chart-badge">visão integrada</span>
+          </div>
+          <div class="chart-wrap" style="height:300px">
+            <canvas id="radarChart"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>Distribuição por Dep. Adm.</h3>
+            <span class="chart-badge">% de escolas</span>
+          </div>
+          <div class="infra-compare-table-wrap">
+            <table class="infra-compare-table" id="infraCompareTable">
+              <thead id="infraCompareHead"></thead>
+              <tbody id="infraCompareBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ INVESTIMENTO ════ -->
+  <div id="view-investment" style="display:none">
+    <div style="padding-top:24px;display:flex;flex-direction:column;gap:20px">
+      <div>
+        <h2 class="section-title">Investimento × Desempenho</h2>
+        <p style="font-size:.82rem;color:var(--text-dim);margin-top:6px">
+          Relação entre investimento por aluno (estimado) e indicadores educacionais por município.
+          <span style="background:color-mix(in srgb,var(--accent3) 12%,transparent);color:var(--accent3);font-size:.68rem;padding:2px 8px;border-radius:99px;font-weight:700;font-family:var(--font-mono);margin-left:8px">DADOS ESTIMADOS</span>
+        </p>
+      </div>
+
+      <!-- KPIs investimento -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px">
+        <div class="kpi-card" style="--accent:var(--accent3)">
+          <div class="kpi-icon">💰</div>
+          <div class="kpi-body">
+            <span class="kpi-label">Maior Invest./Aluno</span>
+            <span class="kpi-value" id="maxInvest">—</span>
+            <span class="kpi-sub" id="maxInvestCity">—</span>
+          </div>
+        </div>
+        <div class="kpi-card" style="--accent:#6ee7b7">
+          <div class="kpi-icon">🏆</div>
+          <div class="kpi-body">
+            <span class="kpi-label">Maior Eficiência</span>
+            <span class="kpi-value" id="bestEff">—</span>
+            <span class="kpi-sub" id="bestEffCity">IDEB / R$ mil</span>
+          </div>
+        </div>
+        <div class="kpi-card" style="--accent:#818cf8">
+          <div class="kpi-icon">📈</div>
+          <div class="kpi-body">
+            <span class="kpi-label">Correlação</span>
+            <span class="kpi-value" id="investCorr">—</span>
+            <span class="kpi-sub">invest. × IDEB</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="charts-grid">
+        <div class="chart-card span-2">
+          <div class="chart-header">
+            <h3>IDEB × Investimento por Aluno</h3>
+            <span class="chart-badge">scatter · correlação</span>
+          </div>
+          <div class="chart-wrap xl"><canvas id="investScatterChart"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>Investimento por Município</h3>
+            <span class="chart-badge">R$/aluno/ano · 2023</span>
+          </div>
+          <div class="chart-wrap tall"><canvas id="investBarChart"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>Eficiência: IDEB por R$ mil investido</h3>
+            <span class="chart-badge">indicador relativo</span>
+          </div>
+          <div class="chart-wrap tall"><canvas id="efficiencyChart"></canvas></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ PÓS-PANDEMIA ════ -->
+  <div id="view-pandemic" style="display:none">
+    <div class="pandemic-header">
+      <h2 class="section-title">Análise Pós-Pandemia</h2>
+      <p class="pandemic-subtitle">
+        Comparação dos indicadores de 2019 (pré-COVID) versus 2023, evidenciando o impacto da pandemia
+        e o processo de recuperação nas escolas brasileiras.
+        <span style="background:color-mix(in srgb,var(--accent3) 12%,transparent);color:var(--accent3);font-size:.68rem;padding:2px 8px;border-radius:99px;font-weight:700;font-family:var(--font-mono);margin-left:8px">2019 ESTIMADO</span>
+      </p>
+    </div>
+
+    <div class="pandemic-insight">
+      <div class="insight-icon">🦠</div>
+      <div class="insight-content">
+        <h4>Impacto da COVID-19 na Educação Básica</h4>
+        <p>A pandemia interrompeu o ciclo de crescimento do IDEB brasileiro. Em 2021, o INEP suspendeu a coleta.
+           Estimativas indicam queda média de 0.3–0.5 pontos no IDEB nacional entre 2019 e 2021,
+           com recuperação parcial em 2023. Municípios com rede digital prévia resistiram melhor.</p>
+      </div>
+    </div>
+
+    <div class="pandemic-insight">
+      <div class="insight-icon">📉</div>
+      <div class="insight-content">
+        <h4>Queda e Recuperação por Dependência Administrativa</h4>
+        <p>Escolas federais mantiveram infraestrutura digital superior, com menor queda.
+           Redes municipais, com maior diversidade socioeconômica, apresentaram variação mais heterogênea.
+           Cidades como Sobral (CE) e Pato Branco (PR) demonstraram resiliência acima da média.</p>
+      </div>
+    </div>
+
+    <div class="pandemic-charts">
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3>IDEB Médio: 2019 vs 2023 por Cidade</h3>
+          <span class="chart-badge">barras agrupadas</span>
+        </div>
+        <div class="chart-wrap tall"><canvas id="pandemicBarChart"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3>Evolução IDEB por Dep. Adm.</h3>
+          <span class="chart-badge">linha temporal</span>
+        </div>
+        <div class="chart-wrap tall"><canvas id="pandemicLineChart"></canvas></div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>Variação IDEB 2019→2023 por Cidade</h3>
+        <span class="chart-badge">delta (positivo = recuperação)</span>
+      </div>
+      <div class="chart-wrap tall"><canvas id="pandemicDeltaChart"></canvas></div>
+    </div>
+  </div>
+
+  <!-- ════ MÓDULO IA ════ -->
+  <div id="view-ai" style="display:none">
+    <div class="ai-header">
+      <h2 class="section-title">Módulo IA — Insights por Município</h2>
+      <p class="ai-subtitle">Análise contextual simulada combinando dados educacionais com informações socioeconômicas do município.</p>
+    </div>
+
+    <div class="ai-selector-row">
+      <select id="aiCitySelect" class="ai-city-select">
+        <option value="">Selecione um município…</option>
+      </select>
+      <button id="aiFetchBtn" class="ai-fetch-btn">
+        <div class="ai-spinner"></div>
+        <span class="ai-btn-text">⚡ Gerar Insights</span>
+      </button>
+    </div>
+
+    <div id="aiEmpty" class="ai-empty">
+      <div class="ai-empty-icon">🤖</div>
+      <p>Selecione um município e clique em "Gerar Insights" para obter a análise contextual.</p>
+    </div>
+
+    <div id="aiContent" style="display:none;flex-direction:column;gap:16px">
+      <div class="ai-cards-grid" id="aiCards"></div>
+      <div class="ai-narrative" id="aiNarrative">
+        <h4>🤖 Análise Contextual <span class="ai-badge">IA Simulada</span></h4>
+        <div id="aiNarrativeText"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ TRANSPARÊNCIA ════ -->
+  <div id="view-transparency" style="display:none">
+
+    <div>
+      <h2 class="section-title">Transparência Metodológica</h2>
+      <p style="font-size:.82rem;color:var(--text-dim);margin-top:6px">
+        Entenda como cada indicador é calculado e o que ele representa no contexto educacional.
+      </p>
+    </div>
+
+    <!-- Metodologia IDEB -->
+    <div class="method-card">
+      <h3>📐 Como o IDEB é calculado?</h3>
+      <div class="method-steps">
+        <div class="method-step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4>Aplicação do SAEB</h4>
+            <p>O SAEB (Sistema de Avaliação da Educação Básica) avalia proficiência em Língua Portuguesa e Matemática. As notas são geradas em escala própria (tipicamente 150–350).</p>
+          </div>
+        </div>
+        <div class="method-step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4>Conversão para Nota Padronizada</h4>
+            <p>As notas SAEB são convertidas para a escala do IDEB (0–10) utilizando uma tabela de equivalência definida pelo INEP, gerando o componente de "Aprendizado".</p>
+          </div>
+        </div>
+        <div class="method-step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h4>Cálculo do Fluxo</h4>
+            <p>O Fluxo representa a taxa de aprovação escolar média entre as séries. Um valor de 1.0 indica aprovação universal; valores menores indicam reprovação ou abandono.</p>
+          </div>
+        </div>
+        <div class="method-step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h4>IDEB Final</h4>
+            <p style="font-family:var(--font-mono);background:var(--surface2);padding:6px 10px;border-radius:6px;margin-bottom:6px">IDEB = Nota_SAEB × Fluxo</p>
+            <p>O produto combina qualidade do aprendizado com a eficiência do fluxo escolar. Escolas com alto aprendizado mas alta reprovação têm IDEB penalizado.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dicionário de Dados -->
+    <div>
+      <h2 class="section-title" style="margin-bottom:14px">📚 Dicionário de Dados</h2>
+      <div class="dict-grid" id="dictGrid"></div>
+    </div>
+
+    <!-- Fonte dos dados -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>🗂 Fonte dos Dados</h3>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;gap:12px;align-items:flex-start">
+          <span style="font-size:1.2rem">🏫</span>
+          <div>
+            <p style="font-size:.86rem;font-weight:600;color:var(--text)">INEP — Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira</p>
+            <p style="font-size:.76rem;color:var(--text-muted);margin-top:2px">Dados do IDEB 2023, coletados via Prova Brasil e Censo Escolar.</p>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start">
+          <span style="font-size:1.2rem">📅</span>
+          <div>
+            <p style="font-size:.86rem;font-weight:600;color:var(--text)">Ano de Referência: 2023</p>
+            <p style="font-size:.76rem;color:var(--text-muted);margin-top:2px">O IDEB é calculado a cada dois anos (anos ímpares). A edição 2023 é a mais recente disponível.</p>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start">
+          <span style="font-size:1.2rem">⚠️</span>
+          <div>
+            <p style="font-size:.86rem;font-weight:600;color:var(--text)">Escolas sem IDEB</p>
+            <p style="font-size:.76rem;color:var(--text-muted);margin-top:2px">Escolas com menos de 10 alunos na série avaliada, ou que não aplicaram a Prova Brasil, não possuem IDEB.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ EQUIPE ════ -->
+  <div id="view-team" style="display:none">
+    <div style="padding-top:24px;display:flex;flex-direction:column;gap:20px">
+      <div>
+        <h2 class="section-title">Nossa Equipe</h2>
+        <p style="font-size:.82rem;color:var(--text-dim);margin-top:6px">Pesquisadores e desenvolvedores por trás do EduMetrics.</p>
+      </div>
+      <div class="team-grid" id="teamGrid"></div>
+    </div>
+  </div>
+
+</main>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- Modals (metric info) -->
+<div id="modalOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;align-items:center;justify-content:center;padding:20px">
+  <div id="modalBox" style="background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:28px;max-width:480px;width:100%;position:relative">
+    <button id="modalClose" style="position:absolute;top:14px;right:16px;background:none;border:none;color:var(--text-muted);font-size:1.3rem;cursor:pointer;transition:color .2s" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-muted)'">✕</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
-    <body> aaaaaaaaaaaaaaaaaaaaaaa</body>
-    <body> bbbbbbbbbbbbbbb</body>

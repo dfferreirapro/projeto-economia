@@ -1,0 +1,54 @@
+﻿# Observatorio Educacional - Instrucoes do Projeto
+
+## Contexto
+Projeto academico de Ciencia de Dados para Negócios. Dashboard educacional que analisa dados do Ensino Fundamental I (1 ao 5 ano) das redes municipais de Sorocaba e Votorantim (SP), usando dados do INEP 2023.
+
+## Arquitetura
+- index.html - Landing page de secao unica com scroll vertical
+- style.css - Design system dark/light com CSS custom properties
+- script.js - Vanilla JS + Chart.js, IIFE architecture
+- base_escolas_tratada.json - Base de dados escolar (JSON estatico)
+
+## Imutaveis
+- base_escolas_tratada.json - NUNCA ALTERAR. Dados reais do INEP.
+
+## Estilo de Codigo
+- Sem comentarios desnecessarios
+- CSS: usar variaveis custom properties, manter design tokens
+- JS: IIFE, use strict, funcoes nomeadas, const por padrao
+- HTML: sem inline styles (exceto display:none dinamico)
+
+## Estrutura Atual (v3.0 - Landing Page)
+Navbar fixo -> Hero -> KPIs -> Explicacoes -> Distribuicao -> Graficos -> Tabela -> Panorama -> Comparativo -> Metodologia -> Equipe -> Footer
+
+## Componentes
+- Navbar: links com ancoras + smooth scroll + active state on scroll
+- Filter bar: colapsavel, sticky abaixo do navbar
+- Graficos: renderizacao lazy via IntersectionObserver
+- Modais: para explicacao de metricas (IDEB, Fluxo, SAEB)
+- Toast: notificacoes
+- Dev badges: secoes em desenvolvimento com class=dev-badge
+
+## Dados
+- Dataset escolar: base_escolas_tratada.json
+- Dataset investimento: INVESTIMENTOS const em script.js
+- Dataset historico 2019: HISTORICO_2019 const em script.js
+- AI mock data: AI_CITY_DATA const em script.js
+
+## Removido (nao implementar)
+- view-pandemic / view-ai - secoes removidas
+- Sidebar navigation - substituida por navbar + scroll
+- renderPandemicCharts() - codigo orfao removido
+- initAiView() / fetchCityInsights() - codigo orfao removido
+
+## Historico de Sessoes
+
+### Sessao 1 - 2026-05-02
+Mudanca: Reorganizacao completa da interface (v2.0 -> v3.0)
+- Sidebar + tabs -> Landing page com scroll vertical
+- Filtros movidos para barra colapsavel
+- Navbar fixo com links de ancora
+- IntersectionObserver para lazy rendering
+- ~1200 linhas CSS -> ~650 (limpeza de codigo orfao)
+- Removido ALL_VIEWS, VIEW_MAP, sidebar logic
+- Mantidos todos os graficos, filtros, tabela, comparador, modal, toast

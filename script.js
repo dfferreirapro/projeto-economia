@@ -1,5 +1,6 @@
 /* ============================================================
-   EduMetrics Enterprise — script.js v2.0
+   EduMetrics Enterprise — script.js v3.0
+   Landing page architecture
    ============================================================ */
 'use strict';
 
@@ -102,33 +103,26 @@
      ══════════════════════════════════════════════════════════ */
   const TEAM = [
     {
-      name: 'Ana Beatriz Silva',
-      role: 'Cientista de Dados',
+      name: 'Douglas Ferreira',
+      role: 'Estudante de Cientista de Dados',
       bio: 'Especialista em análise de dados educacionais e políticas públicas. Mestre em Ciência da Computação pela USP.',
-      linkedin: 'https://linkedin.com/in/anabeatriz',
+      linkedin: 'https://linkedin.com/in/-----',
       initials: 'AB',
     },
     {
-      name: 'Carlos Eduardo Lima',
-      role: 'Desenvolvedor Frontend',
+      name: 'Gabriel Ferreira',
+      role: 'Estudante de Ciencia de dados',
       bio: 'Engenheiro de software com foco em visualização de dados e dashboards interativos. 5 anos de experiência.',
-      linkedin: 'https://linkedin.com/in/carlosedlima',
+      linkedin: 'https://linkedin.com/in/-----',
       initials: 'CE',
     },
     {
-      name: 'Priya Menon',
-      role: 'UX Designer',
+      name: 'Mateus Mariano',
+      role: 'Estudante de Ciencia de dados',
       bio: 'Designer de produto especializada em interfaces de análise de dados e acessibilidade digital.',
-      linkedin: 'https://linkedin.com/in/priyamenon',
+      linkedin: 'https://linkedin.com/in/----',
       initials: 'PM',
-    },
-    {
-      name: 'Rafael Torres',
-      role: 'Especialista em Educação',
-      bio: 'Doutor em Educação, com pesquisa focada em avaliação de aprendizagem e indicadores educacionais no Brasil.',
-      linkedin: 'https://linkedin.com/in/rafaeltorres',
-      initials: 'RT',
-    },
+    }
   ];
 
   /* ══════════════════════════════════════════════════════════
@@ -202,9 +196,11 @@
   const sortSelect    = $('sortSelect');
   const tableBody     = $('tableBody');
   const toast         = $('toast');
-  const menuToggle    = $('menuToggle');
-  const sidebar       = $('sidebar');
   const themeToggle   = $('themeToggle');
+  const filterToggle  = $('filterToggle');
+  const filterContent = $('filterContent');
+  const mobileMenuToggle = $('mobileMenuToggle');
+  const navbarLinks   = $('navbarLinks');
 
   /* ══════════════════════════════════════════════════════════
      THEME SYSTEM
@@ -223,11 +219,9 @@
     }
     localStorage.setItem('edu-theme', dark ? 'dark' : 'light');
     applyChartDefaults();
-    // Rebuild all charts to apply new theme
-    setTimeout(() => { renderCharts(); renderInvestmentCharts(); renderPandemicCharts(); }, 50);
+    setTimeout(() => { renderCharts(); renderInvestmentCharts(); }, 50);
   }
 
-  // Init theme from storage
   const savedTheme = localStorage.getItem('edu-theme');
   setTheme(savedTheme !== 'light');
 
@@ -236,63 +230,106 @@
   });
 
   /* ══════════════════════════════════════════════════════════
-     SIDEBAR MOBILE
+     FILTER BAR TOGGLE
      ══════════════════════════════════════════════════════════ */
-  menuToggle.addEventListener('click', () => sidebar.classList.toggle('open'));
+  filterToggle.addEventListener('click', () => {
+    filterToggle.classList.toggle('open');
+    filterContent.classList.toggle('open');
+  });
+
+  /* ══════════════════════════════════════════════════════════
+     MOBILE MENU TOGGLE
+     ══════════════════════════════════════════════════════════ */
+  mobileMenuToggle.addEventListener('click', () => {
+    navbarLinks.classList.toggle('open');
+  });
 
   document.addEventListener('click', e => {
-    if (sidebar.classList.contains('open') &&
-        !sidebar.contains(e.target) && e.target !== menuToggle) {
-      sidebar.classList.remove('open');
+    if (navbarLinks.classList.contains('open') &&
+        !navbarLinks.contains(e.target) && e.target !== mobileMenuToggle) {
+      navbarLinks.classList.remove('open');
     }
   });
 
   /* ══════════════════════════════════════════════════════════
-     NAV TABS
+     SMOOTH SCROLL NAV LINKS + ACTIVE STATE
      ══════════════════════════════════════════════════════════ */
-  const ALL_VIEWS = [
-    'view-overview', 'view-charts', 'view-table',
-    'view-compare', 'view-investment', 'view-pandemic',
-    'view-ai', 'view-transparency', 'view-team'
-  ];
-
-  const VIEW_MAP = {
-    overview:     ['view-overview'],
-    charts:       ['view-charts'],
-    table:        ['view-table'],
-    compare:      ['view-compare'],
-    investment:   ['view-investment'],
-    pandemic:     ['view-pandemic'],
-    ai:           ['view-ai'],
-    transparency: ['view-transparency'],
-    team:         ['view-team'],
-  };
-
-  document.querySelectorAll('.nav-item').forEach(link => {
+  document.querySelectorAll('.nav-link').forEach(link => {
     link.addEventListener('click', e => {
-      e.preventDefault();
-      document.querySelectorAll('.nav-item').forEach(l => l.classList.remove('active'));
-      link.classList.add('active');
-      const view = link.dataset.view;
-
-      ALL_VIEWS.forEach(id => {
-        const el = $(id);
-        if (el) el.style.display = 'none';
-      });
-
-      (VIEW_MAP[view] || ALL_VIEWS).forEach(id => {
-        const el = $(id);
-        if (el) el.style.display = '';
-      });
-
-      if (view === 'compare')      renderCompare();
-      if (view === 'investment')   renderInvestmentCharts();
-      if (view === 'pandemic')     renderPandemicCharts();
-      if (view === 'transparency') renderDictionary();
-      if (view === 'team')         renderTeam();
-      if (view === 'ai')           initAiView();
+      navbarLinks.classList.remove('open');
     });
   });
+
+  // Active nav link on scroll
+  const sections = document.querySelectorAll('.content-section, .hero-section');
+  const navLinksAll = document.querySelectorAll('.nav-link');
+
+  function updateActiveNav() {
+    let current = '';
+    sections.forEach(section => {
+      const top = section.offsetTop - 140;
+      if (window.scrollY >= top) {
+        current = section.getAttribute('id');
+      }
+    });
+
+    navLinksAll.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === `#${current}`) {
+        link.classList.add('active');
+      }
+    });
+  }
+
+  window.addEventListener('scroll', debounce(updateActiveNav, 100), { passive: true });
+
+  /* ══════════════════════════════════════════════════════════
+     RENDER INVESTMENT ON SCROLL (IntersectionObserver)
+     ══════════════════════════════════════════════════════════ */
+  let investmentRendered = false;
+  const panoramaSection = $('panorama');
+
+  if (panoramaSection && 'IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !investmentRendered) {
+          investmentRendered = true;
+          renderInvestmentCharts();
+        }
+      });
+    }, { threshold: 0.1 });
+    observer.observe(panoramaSection);
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     RENDER TEAM & DICTIONARY ON SCROLL
+     ══════════════════════════════════════════════════════════ */
+  let teamRendered = false;
+  let dictRendered = false;
+
+  if ('IntersectionObserver' in window) {
+    const teamObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !teamRendered) {
+          teamRendered = true;
+          renderTeam();
+        }
+      });
+    }, { threshold: 0.1 });
+    const teamEl = $('equipe');
+    if (teamEl) teamObserver.observe(teamEl);
+
+    const dictObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !dictRendered) {
+          dictRendered = true;
+          renderDictionary();
+        }
+      });
+    }, { threshold: 0.1 });
+    const metodEl = $('metodologia');
+    if (metodEl) dictObserver.observe(metodEl);
+  }
 
   /* ══════════════════════════════════════════════════════════
      BOOTSTRAP — LOAD DATA
@@ -300,7 +337,6 @@
   fetch('base_escolas_tratada.json')
     .then(r => { if (!r.ok) throw new Error('Erro ao buscar dados'); return r.json(); })
     .then(raw => {
-      // Normalize field names + deduplicate city names (uppercase variants)
       allData = raw.map(d => ({
         inep_id:      d.inep_id,
         nome_escola:  d.nome_escola,
@@ -322,10 +358,9 @@
     })
     .catch(err => {
       console.error(err);
-      showToast('Erro ao carregar dados. Verifique se dados_excel.json está na mesma pasta.', true);
+      showToast('Em desenvolvimento.', true);
     });
 
-  // Normalize city names (fix inconsistent casing)
   function normCity(name) {
     if (!name) return '';
     const m = {
@@ -353,17 +388,12 @@
       cities.forEach(c => sel.appendChild(opt(c, c)));
     });
 
-    // Defaults
     $('compareCity1').value = 'Sorocaba';
     $('compareCity2').value = 'Votorantim';
 
     ['compareCity1', 'compareCity2', 'compareCity3'].forEach(id => {
       $(id)?.addEventListener('change', renderCompare);
     });
-
-    // AI city select
-    const aiSel = $('aiCitySelect');
-    cities.forEach(c => aiSel.appendChild(opt(c, c)));
   }
 
   function opt(val, label) {
@@ -409,7 +439,6 @@
     });
   }
 
-  // Clear filters
   $('clearFilters').addEventListener('click', () => {
     cityFilter.value = depFilter.value = idebFilter.value = '';
     hasIdebToggle.checked = false;
@@ -417,18 +446,17 @@
     applyFilters();
   });
 
-  // Events
   [cityFilter, depFilter, idebFilter].forEach(el => el.addEventListener('change', applyFilters));
   hasIdebToggle.addEventListener('change', applyFilters);
   searchInput.addEventListener('input', debounce(applyFilters, 250));
 
   sortSelect.addEventListener('change', () => {
-    const [k, d] = sortSelect.value.split('_');
-    sortKey = k; sortDir = d;
+    const parts = sortSelect.value.split('_');
+    const keyParts = parts.slice(0, -1).join('_');
+    sortKey = keyParts; sortDir = parts[parts.length - 1];
     sortFiltered(); renderTable();
   });
 
-  // Column header sort
   document.querySelectorAll('th.sortable').forEach(th => {
     th.addEventListener('click', () => {
       const col = th.dataset.col;
@@ -440,7 +468,6 @@
     });
   });
 
-  // Pagination
   $('prevPage').addEventListener('click', () => { if (currentPage > 1) { currentPage--; renderTable(); } });
   $('nextPage').addEventListener('click', () => {
     const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
@@ -1004,7 +1031,6 @@
       }).join('');
       body.insertAdjacentHTML('beforeend', `<tr><td><span class="dep-pill dep-${dep}">${dep}</span></td>${cells}</tr>`);
     });
-    // Total row
     const totals = groups.map(g => `<td style="font-family:var(--font-mono);color:${g.color.hex};font-weight:600">${g.n} escolas</td>`).join('');
     body.insertAdjacentHTML('beforeend', `<tr style="border-top:1px solid var(--border2)"><td style="font-weight:600;color:var(--text)">Total</td>${totals}</tr>`);
   }
@@ -1013,7 +1039,6 @@
      INVESTMENT CHARTS
      ══════════════════════════════════════════════════════════ */
   function renderInvestmentCharts() {
-    // Build merged dataset
     const cityIdeb = {};
     allData.filter(s => s.ideb != null).forEach(s => {
       if (!cityIdeb[s.no_municipio]) cityIdeb[s.no_municipio] = [];
@@ -1027,7 +1052,6 @@
       return { ...inv, city: key, avgIdeb };
     }).filter(m => m.avgIdeb != null);
 
-    // KPIs
     const maxInv = merged.reduce((a,b) => b.invest > a.invest ? b : a, merged[0]);
     if (maxInv) {
       $('maxInvest').textContent = `R$ ${maxInv.invest.toLocaleString('pt-BR')}`;
@@ -1041,7 +1065,6 @@
       $('bestEffCity').textContent = bestEff.city;
     }
 
-    // Pearson correlation
     const n = merged.length;
     if (n >= 3) {
       const xi = merged.map(m => m.invest);
@@ -1053,7 +1076,7 @@
       $('investCorr').textContent = r;
     }
 
-    // Scatter: IDEB × Invest
+    // Scatter
     destroyChart('investScatter');
     const c1 = ctx('investScatterChart'); if (c1) {
       charts.investScatter = new Chart(c1, {
@@ -1079,7 +1102,7 @@
       });
     }
 
-    // Bar: invest por cidade
+    // Bar
     const sorted = [...merged].sort((a,b) => b.invest - a.invest);
     destroyChart('investBar');
     const c2 = ctx('investBarChart'); if (c2) {
@@ -1106,7 +1129,7 @@
       });
     }
 
-    // Efficiency chart
+    // Efficiency
     const eSorted = [...effData].sort((a,b) => b.eff - a.eff);
     destroyChart('efficiency');
     const c3 = ctx('efficiencyChart'); if (c3) {
@@ -1133,216 +1156,6 @@
         }
       });
     }
-  }
-
-  /* ══════════════════════════════════════════════════════════
-     PÓS-PANDEMIA CHARTS
-     ══════════════════════════════════════════════════════════ */
-  function renderPandemicCharts() {
-    // Build 2023 city averages
-    const cityMap2023 = {};
-    allData.filter(s => s.ideb != null).forEach(s => {
-      if (!cityMap2023[s.no_municipio]) cityMap2023[s.no_municipio] = [];
-      cityMap2023[s.no_municipio].push(s.ideb);
-    });
-
-    // Cities with both 2019 estimate and 2023 data
-    const cities = Object.keys(HISTORICO_2019).filter(c => cityMap2023[normCity(c)]);
-    const cityData = [...new Set(cities.map(c => normCity(c)))].map(city => {
-      const vals2023 = cityMap2023[city] || [];
-      const avg2023  = vals2023.length ? vals2023.reduce((a,b)=>a+b,0)/vals2023.length : null;
-      const avg2019  = HISTORICO_2019[city] || null;
-      return { city, avg2019, avg2023: avg2023 ? +avg2023.toFixed(2) : null };
-    }).filter(d => d.avg2019 && d.avg2023).sort((a,b) => b.avg2023 - a.avg2023);
-
-    // Bar chart: 2019 vs 2023
-    destroyChart('panBar');
-    const c1 = ctx('pandemicBarChart'); if (c1) {
-      charts.panBar = new Chart(c1, {
-        type: 'bar',
-        data: {
-          labels: cityData.map(d => d.city),
-          datasets: [
-            {
-              label: '2019 (estimado)',
-              data: cityData.map(d => d.avg2019),
-              backgroundColor: 'rgba(129,140,248,.55)',
-              borderColor: '#818cf8', borderWidth: 1, borderRadius: 4,
-            },
-            {
-              label: '2023 (real)',
-              data: cityData.map(d => d.avg2023),
-              backgroundColor: 'rgba(110,231,183,.55)',
-              borderColor: '#6ee7b7', borderWidth: 1, borderRadius: 4,
-            }
-          ]
-        },
-        options: {
-          responsive: true, maintainAspectRatio: false,
-          plugins: { legend: { position: 'top', labels: { boxWidth: 12 } } },
-          scales: {
-            y: { min: 0, max: 10, grid: { color: getGridColor() }, ticks: { color: getTickColor() } },
-            x: { grid: { display: false }, ticks: { color: getTickColor(), maxRotation: 40, font: { size: 10 } } }
-          }
-        }
-      });
-    }
-
-    // Line chart: by dependencia
-    const depYears = ['Municipal', 'Estadual', 'Federal'].map(dep => {
-      // 2019: rough weighted avg from HISTORICO_2019
-      const dep2019 = cityData.map(d => {
-        const school = allData.find(s => s.no_municipio === d.city && s.dependencia === dep && s.ideb != null);
-        return school ? d.avg2019 : null;
-      }).filter(Boolean);
-      const dep2023 = allData.filter(s => s.dependencia === dep && s.ideb != null).map(s => s.ideb);
-      return {
-        dep,
-        v2019: dep2019.length ? +(dep2019.reduce((a,b)=>a+b,0)/dep2019.length).toFixed(2) : null,
-        v2021: dep2019.length ? +(dep2019.reduce((a,b)=>a+b,0)/dep2019.length * 0.92).toFixed(2) : null,
-        v2023: dep2023.length ? +(dep2023.reduce((a,b)=>a+b,0)/dep2023.length).toFixed(2) : null,
-      };
-    });
-
-    destroyChart('panLine');
-    const c2 = ctx('pandemicLineChart'); if (c2) {
-      charts.panLine = new Chart(c2, {
-        type: 'line',
-        data: {
-          labels: ['2019', '2021', '2023'],
-          datasets: depYears.map((d, i) => ({
-            label: d.dep,
-            data: [d.v2019, d.v2021, d.v2023],
-            backgroundColor: Object.values(DEP_COLOR)[i].bg.replace('.7)', '.15)'),
-            borderColor: Object.values(DEP_COLOR)[i].border,
-            borderWidth: 2.5, pointRadius: 5, pointHoverRadius: 8,
-            tension: 0.35, fill: false,
-          }))
-        },
-        options: {
-          responsive: true, maintainAspectRatio: false,
-          plugins: { legend: { position: 'bottom', labels: { boxWidth: 12 } } },
-          scales: {
-            y: { min: 4, max: 8, grid: { color: getGridColor() }, ticks: { color: getTickColor() } },
-            x: { grid: { color: getGridColor() }, ticks: { color: getTickColor() } }
-          }
-        }
-      });
-    }
-
-    // Delta chart
-    const delta = cityData.map(d => ({ city: d.city, delta: +(d.avg2023 - d.avg2019).toFixed(2) }))
-                          .sort((a,b) => b.delta - a.delta);
-    destroyChart('panDelta');
-    const c3 = ctx('pandemicDeltaChart'); if (c3) {
-      charts.panDelta = new Chart(c3, {
-        type: 'bar',
-        data: {
-          labels: delta.map(d => d.city),
-          datasets: [{
-            label: 'Variação IDEB',
-            data: delta.map(d => d.delta),
-            backgroundColor: delta.map(d => d.delta >= 0 ? 'rgba(110,231,183,.65)' : 'rgba(248,113,113,.65)'),
-            borderColor: delta.map(d => d.delta >= 0 ? '#6ee7b7' : '#f87171'),
-            borderWidth: 1, borderRadius: 4,
-          }]
-        },
-        options: {
-          responsive: true, maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false },
-            tooltip: { callbacks: { label: item => `Variação: ${item.raw > 0 ? '+' : ''}${item.raw} pts IDEB` } }
-          },
-          scales: {
-            y: { grid: { color: getGridColor() }, ticks: { color: getTickColor(), callback: v => (v > 0 ? '+' : '') + v } },
-            x: { grid: { display: false }, ticks: { color: getTickColor(), maxRotation: 40, font: { size: 10 } } }
-          }
-        }
-      });
-    }
-  }
-
-  /* ══════════════════════════════════════════════════════════
-     AI INSIGHTS
-     ══════════════════════════════════════════════════════════ */
-  function initAiView() {
-    const sel = $('aiCitySelect');
-    const btn = $('aiFetchBtn');
-
-    btn.addEventListener('click', () => {
-      const city = sel.value;
-      if (!city) { showToast('Selecione um município primeiro.'); return; }
-      fetchCityInsights(city);
-    }, { once: true }); // avoid duplicate listeners on re-open
-  }
-
-  async function fetchCityInsights(city) {
-    const btn = $('aiFetchBtn');
-    btn.classList.add('loading');
-    $('aiFetchBtn').querySelector('.ai-btn-text').textContent = 'Analisando…';
-
-    // Simulated async delay
-    await new Promise(r => setTimeout(r, 1200));
-
-    const cityNorm = normCity(city);
-    const citySchools = allData.filter(s => s.no_municipio === cityNorm);
-    const withIdeb = citySchools.filter(s => s.ideb != null);
-    const avgIdeb = withIdeb.length ? withIdeb.reduce((a,b)=>a+b.ideb,0)/withIdeb.length : null;
-    const avgLp   = citySchools.filter(s=>s.nota_lp!=null);
-    const avgMt   = citySchools.filter(s=>s.nota_mt!=null);
-
-    const mockData = AI_CITY_DATA[cityNorm] || AI_CITY_DATA[city] || {
-      pop: Math.floor(Math.random() * 500000) + 50000,
-      idh: (Math.random() * 0.2 + 0.68).toFixed(3),
-      regiao: 'Brasil',
-      pib_per_capita: Math.floor(Math.random() * 30000) + 15000,
-      ranking_ideb: Math.floor(Math.random() * 50) + 5,
-      destaque: 'Município com dados educacionais disponíveis no IDEB 2023.',
-    };
-
-    btn.classList.remove('loading');
-    $('aiFetchBtn').querySelector('.ai-btn-text').textContent = '⚡ Gerar Insights';
-
-    $('aiEmpty').style.display = 'none';
-    const content = $('aiContent');
-    content.style.display = 'flex';
-
-    const cards = $('aiCards');
-    cards.innerHTML = '';
-
-    const cardDefs = [
-      { icon: '🏙️', label: 'Município', value: cityNorm, sub: mockData.regiao },
-      { icon: '👥', label: 'População Est.', value: mockData.pop.toLocaleString('pt-BR'), sub: 'habitantes' },
-      { icon: '📊', label: 'IDH Municipal', value: mockData.idh, sub: 'PNUD' },
-      { icon: '💰', label: 'PIB per Capita', value: `R$ ${mockData.pib_per_capita.toLocaleString('pt-BR')}`, sub: 'estimado' },
-      { icon: '🏫', label: 'Escolas no Dataset', value: citySchools.length, sub: `${withIdeb.length} com IDEB` },
-      { icon: '📈', label: 'IDEB Médio Local', value: avgIdeb != null ? avgIdeb.toFixed(2) : '—', sub: 'média municipal' },
-      { icon: '📝', label: 'SAEB LP Médio', value: avgLp.length ? (avgLp.reduce((a,b)=>a+b.nota_lp,0)/avgLp.length).toFixed(1) : '—', sub: 'proficiência' },
-      { icon: '🔢', label: 'SAEB MT Médio', value: avgMt.length ? (avgMt.reduce((a,b)=>a+b.nota_mt,0)/avgMt.length).toFixed(1) : '—', sub: 'proficiência' },
-    ];
-
-    cardDefs.forEach(({ icon, label, value, sub }) => {
-      cards.insertAdjacentHTML('beforeend', `
-        <div class="ai-card">
-          <div class="ai-card-icon">${icon}</div>
-          <div class="ai-card-label">${label}</div>
-          <div class="ai-card-value">${value}</div>
-          <div class="ai-card-sub">${sub}</div>
-        </div>`);
-    });
-
-    // Narrative
-    const idebScore = avgIdeb != null ? avgIdeb.toFixed(2) : 'dados insuficientes';
-    const depDist = {};
-    citySchools.forEach(s => depDist[s.dependencia] = (depDist[s.dependencia] || 0) + 1);
-    const depStr = Object.entries(depDist).map(([k,v]) => `${v} ${k}${v !== 1 ? 's' : ''}`).join(', ');
-
-    $('aiNarrativeText').innerHTML = `
-      <p><strong style="color:var(--text)">${cityNorm}</strong> possui <strong>${citySchools.length}</strong> escola${citySchools.length !== 1 ? 's' : ''} no dataset (${depStr}), com IDEB médio de <strong style="color:var(--accent)">${idebScore}</strong> em 2023.</p>
-      <p>${mockData.destaque}</p>
-      <p>Com IDH de <strong>${mockData.idh}</strong> e PIB per capita estimado de R$ ${mockData.pib_per_capita.toLocaleString('pt-BR')}, o município apresenta contexto socioeconômico que ${avgIdeb > 6.5 ? 'favorece' : 'desafia'} o desempenho educacional. A análise sugere ${avgIdeb > 7 ? 'boas práticas de gestão a serem replicadas' : 'oportunidades de melhoria na alocação de recursos'}.</p>
-      <p><em style="color:var(--text-dim);font-size:.75rem">⚠️ Dados populacionais e IDH são estimativas para fins demonstrativos. IDEB é dado real do INEP 2023.</em></p>
-    `;
   }
 
   /* ══════════════════════════════════════════════════════════

@@ -1,2 +1,38 @@
+# Dependências
+node_modules/
+observatorio/node_modules/
+
+# Next.js
+observatorio/.next/
+observatorio/out/
+
+# Variáveis de ambiente
 .env
+.env.local
+.env*.local
+observatorio/.env.local
+observatorio/.env*.local
+
+# Build
+observatorio/build/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Editores
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# MongoDB local (volumes gerenciados pelo Docker)
+data/
+
+# Misc
 prompt.txt

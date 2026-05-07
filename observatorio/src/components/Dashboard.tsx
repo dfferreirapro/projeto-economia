@@ -283,7 +283,15 @@ export default function Dashboard({ initialData }: { initialData: Escola[] }) {
       <header className="navbar">
         <div className="navbar-inner">
           <div className="navbar-brand">
-            <span className="navbar-logo-icon">📊</span>
+            <span className="navbar-logo-icon">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+                <rect width="28" height="28" rx="7" fill="currentColor" fillOpacity="0.1"/>
+                <rect x="5" y="18" width="5" height="5" rx="1.5" fill="currentColor" fillOpacity="0.35"/>
+                <rect x="11.5" y="13" width="5" height="10" rx="1.5" fill="currentColor" fillOpacity="0.65"/>
+                <rect x="18" y="8" width="5" height="15" rx="1.5" fill="currentColor"/>
+                <path d="M7.5 17L14 12L20.5 7" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.4"/>
+              </svg>
+            </span>
             <span className="navbar-logo-text">Observatório</span>
             <span className="logo-version">v3.0</span>
           </div>
@@ -293,8 +301,23 @@ export default function Dashboard({ initialData }: { initialData: Escola[] }) {
             ))}
           </nav>
           <div className="navbar-actions">
-            <button className="theme-toggle" onClick={toggleTheme} title="Alternar tema">{theme === 'dark' ? '🌙' : '☀️'}</button>
-            <button className="mobile-menu-toggle" onClick={() => setMobileMenu(o => !o)}>☰</button>
+            <button className="theme-toggle" onClick={toggleTheme} title="Alternar tema" aria-label="Alternar tema">
+              {theme === 'dark' ? (
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                </svg>
+              ) : (
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="4"/>
+                  <path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M17.66 4.93l-1.41 1.41M4.93 17.66l1.41-1.41"/>
+                </svg>
+              )}
+            </button>
+            <button className="mobile-menu-toggle" onClick={() => setMobileMenu(o => !o)} aria-label="Menu">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
+                <path d="M3 6h18M3 12h18M3 18h18"/>
+              </svg>
+            </button>
           </div>
         </div>
       </header>
@@ -304,13 +327,20 @@ export default function Dashboard({ initialData }: { initialData: Escola[] }) {
         <div className="filter-bar-inner">
           <div className="filter-bar-left">
             <button className={`filter-toggle-btn${filterOpen ? ' open' : ''}`} onClick={() => setFilterOpen(o => !o)}>
-              <span className="filter-toggle-icon">🔽</span>
+              <svg className="filter-toggle-icon" width="12" height="12" viewBox="0 0 12 8" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M1 1l5 5 5-5"/>
+              </svg>
               <span>Filtros</span>
             </button>
           </div>
           <div className="topbar-right">
             <div className="search-wrap">
-              <span className="search-icon">🔍</span>
+              <span className="search-icon">
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
+                  <circle cx="9" cy="9" r="5.5"/>
+                  <path d="M13.5 13.5L18 18"/>
+                </svg>
+              </span>
               <input className="search-input" type="text" placeholder="Buscar escola..." value={filters.search} onChange={e => setFilter('search', e.target.value)} />
             </div>
           </div>
@@ -365,20 +395,26 @@ export default function Dashboard({ initialData }: { initialData: Escola[] }) {
 
         {/* HERO */}
         <section id="hero" className="hero-section">
-          <div>
-            <h1 className="hero-title">Observatório Educacional</h1>
-            <p className="hero-subtitle">Ensino Fundamental I (1º ao 5º ano) — INEP 2023</p>
-            <p className="hero-desc" style={{ marginTop: 8 }}>Análise dos dados educacionais das redes municipais de <strong>Sorocaba</strong> e <strong>Votorantim</strong> (SP). Cruzamos indicadores de desempenho (IDEB, SAEB) com contexto socioeconômico e infraestrutura para entender os <em>porquês</em> por trás dos números e embasar políticas públicas educacionais.</p>
+          <div className="hero-content">
+            <div className="hero-eyebrow">
+              <span className="hero-eyebrow-dot" />
+              INEP 2023 · Ensino Fundamental I (1º ao 5º ano)
+            </div>
+            <h1 className="hero-title">
+              Observatório
+              <span className="hero-title-accent">Educacional</span>
+            </h1>
+            <p className="hero-desc">Análise dos dados educacionais das redes municipais de <strong>Sorocaba</strong> e <strong>Votorantim</strong> (SP). Cruzamos indicadores de desempenho (IDEB, SAEB) com contexto socioeconômico e infraestrutura para entender os <em>porquês</em> por trás dos números e embasar políticas públicas educacionais.</p>
           </div>
           <div className="hero-strip">
             <div className="hero-city-card" style={{ '--c': '#6ee7b7' } as React.CSSProperties}>
-              <span className="hero-city-tag" style={{ '--c': '#6ee7b7' } as React.CSSProperties}>🏙 Sorocaba</span>
+              <span className="hero-city-tag" style={{ '--c': '#6ee7b7' } as React.CSSProperties}>Sorocaba</span>
               <div className="hero-city-title">~723 mil habitantes · IDH 0,798</div>
               <div className="hero-city-desc">Centro industrial com rede municipal consolidada. Investimento est. <strong>R$ 8.100/aluno/ano</strong>.</div>
             </div>
             <span className="hero-vs">VS</span>
             <div className="hero-city-card" style={{ '--c': '#818cf8' } as React.CSSProperties}>
-              <span className="hero-city-tag" style={{ '--c': '#818cf8' } as React.CSSProperties}>🏘 Votorantim</span>
+              <span className="hero-city-tag" style={{ '--c': '#818cf8' } as React.CSSProperties}>Votorantim</span>
               <div className="hero-city-title">~120 mil habitantes · IDH 0,769</div>
               <div className="hero-city-desc">Forte parceria público-privada na educação. Investimento est. <strong>R$ 7.700/aluno/ano</strong>.</div>
             </div>
@@ -390,14 +426,32 @@ export default function Dashboard({ initialData }: { initialData: Escola[] }) {
           <div className="section-inner">
             <h2 className="section-title">Indicadores Principais</h2>
             <div className="kpi-grid">
-              {[
-                { icon: '📊', label: 'IDEB Médio',      val: kpis?.idebAvg != null ? kpis.idebAvg.toFixed(2) : '—', sub: kpis ? `${kpis.withIdeb} escolas com dados` : '—' },
-                { icon: '📝', label: 'SAEB LP Médio',   val: kpis?.lpAvg   != null ? kpis.lpAvg.toFixed(1)   : '—', sub: 'proficiência' },
-                { icon: '🔢', label: 'SAEB MT Médio',   val: kpis?.mtAvg   != null ? kpis.mtAvg.toFixed(1)   : '—', sub: 'proficiência' },
-                { icon: '🏫', label: 'Total de Escolas', val: kpis ? kpis.total.toLocaleString('pt-BR') : '—', sub: kpis ? `${kpis.withIdeb} com IDEB` : '—' },
-                { icon: '🔄', label: 'Fluxo (Aprovação)',val: kpis?.fluxoAvg != null ? kpis.fluxoAvg.toFixed(1) + '%' : '—', sub: 'taxa média' },
-                { icon: '🏆', label: 'Melhor IDEB',     val: kpis?.bestIdeb != null ? kpis.bestIdeb.toFixed(1) : '—', sub: kpis?.bestIdebSchool ? (kpis.bestIdebSchool.length > 28 ? kpis.bestIdebSchool.substring(0, 28) + '…' : kpis.bestIdebSchool) : '—' },
-              ].map(({ icon, label, val, sub }) => (
+              {([
+                {
+                  icon: <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="1" y="12" width="4" height="7" rx="1" fill="currentColor" fillOpacity="0.35"/><rect x="8" y="8" width="4" height="11" rx="1" fill="currentColor" fillOpacity="0.65"/><rect x="15" y="4" width="4" height="15" rx="1" fill="currentColor"/></svg>,
+                  label: 'IDEB Médio', val: kpis?.idebAvg != null ? kpis.idebAvg.toFixed(2) : '—', sub: kpis ? `${kpis.withIdeb} escolas com dados` : '—',
+                },
+                {
+                  icon: <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" aria-hidden="true"><path d="M3 5h14M3 9h9M3 13h12M3 17h6"/></svg>,
+                  label: 'SAEB LP Médio', val: kpis?.lpAvg != null ? kpis.lpAvg.toFixed(1) : '—', sub: 'proficiência',
+                },
+                {
+                  icon: <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M7 10h6M10 7v6"/></svg>,
+                  label: 'SAEB MT Médio', val: kpis?.mtAvg != null ? kpis.mtAvg.toFixed(1) : '—', sub: 'proficiência',
+                },
+                {
+                  icon: <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M2 17h16M5 17V9l5-4 5 4v8"/><rect x="8" y="12" width="4" height="5" rx="0.5"/></svg>,
+                  label: 'Total de Escolas', val: kpis ? kpis.total.toLocaleString('pt-BR') : '—', sub: kpis ? `${kpis.withIdeb} com IDEB` : '—',
+                },
+                {
+                  icon: <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M7 10.5l2.5 2.5 4-4"/></svg>,
+                  label: 'Fluxo (Aprovação)', val: kpis?.fluxoAvg != null ? kpis.fluxoAvg.toFixed(1) + '%' : '—', sub: 'taxa média',
+                },
+                {
+                  icon: <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M10 2l2.2 5.3 5.8.5-4.3 3.9 1.3 5.6L10 14.5l-5 2.8 1.3-5.6L2 7.8l5.8-.5L10 2z"/></svg>,
+                  label: 'Melhor IDEB', val: kpis?.bestIdeb != null ? kpis.bestIdeb.toFixed(1) : '—', sub: kpis?.bestIdebSchool ? (kpis.bestIdebSchool.length > 28 ? kpis.bestIdebSchool.substring(0, 28) + '…' : kpis.bestIdebSchool) : '—',
+                },
+              ] as { icon: React.ReactNode; label: string; val: string; sub: string }[]).map(({ icon, label, val, sub }) => (
                 <div key={label} className="kpi-card">
                   <span className="kpi-icon">{icon}</span>
                   <div className="kpi-body">
@@ -546,7 +600,7 @@ export default function Dashboard({ initialData }: { initialData: Escola[] }) {
             <h2 className="section-title">Panorama Regional — O Brasil</h2>
             <p className="panorama-desc">O Brasil é um país continental com desigualdades profundas refletidas na educação. Analisamos o desempenho do Ensino Fundamental I nas 5 regiões e a correlação entre investimento e desempenho.</p>
             <div className="method-card">
-              <h3>📖 Por que as regiões têm desempenhos tão diferentes?</h3>
+              <h3>Por que as regiões têm desempenhos tão diferentes?</h3>
               <div className="method-steps">
                 {[
                   [1,'Sudeste — Maior desenvolvimento econômico','Concentra o maior PIB do país e maior investimento por aluno. Municípios como São Caetano do Sul e Sorocaba se beneficiam de infraestrutura consolidada.'],
@@ -565,11 +619,20 @@ export default function Dashboard({ initialData }: { initialData: Escola[] }) {
 
             <h2 className="section-title" style={{ marginTop: 4 }}>Investimento × Desempenho por Município</h2>
             <div className="kpi-grid" style={{ paddingTop: 0 }}>
-              {[
-                { icon: '💰', label: 'Maior Investimento', val: investKpis ? `R$ ${investKpis.maxInv.invest.toLocaleString('pt-BR')}` : '—', sub: investKpis?.maxInv.municipio ?? '—' },
-                { icon: '⚡', label: 'Melhor Eficiência',  val: investKpis ? String(investKpis.bestEff.eff) : '—', sub: investKpis?.bestEff.municipio ?? 'IDEB/R$ mil' },
-                { icon: '📐', label: 'Correlação (Pearson)', val: investKpis?.corr ?? '—', sub: 'invest × IDEB' },
-              ].map(({ icon, label, val, sub }) => (
+              {([
+                {
+                  icon: <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M10 6v8M7.5 8.5c0-1.4 1.1-2.5 2.5-2.5s2.5 1.1 2.5 2.5c0 1.7-2.5 3-2.5 3"/></svg>,
+                  label: 'Maior Investimento', val: investKpis ? `R$ ${investKpis.maxInv.invest.toLocaleString('pt-BR')}` : '—', sub: investKpis?.maxInv.municipio ?? '—',
+                },
+                {
+                  icon: <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M10 3v14M3 10h14M6 6l8 8M14 6l-8 8" strokeOpacity="0.5"/><circle cx="10" cy="10" r="7"/></svg>,
+                  label: 'Melhor Eficiência', val: investKpis ? String(investKpis.bestEff.eff) : '—', sub: investKpis?.bestEff.municipio ?? 'IDEB/R$ mil',
+                },
+                {
+                  icon: <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" aria-hidden="true"><path d="M3 17L17 3M3 9V3h6M11 17h6v-6"/></svg>,
+                  label: 'Correlação (Pearson)', val: investKpis?.corr ?? '—', sub: 'invest × IDEB',
+                },
+              ] as { icon: React.ReactNode; label: string; val: string; sub: string }[]).map(({ icon, label, val, sub }) => (
                 <div key={label} className="kpi-card">
                   <span className="kpi-icon">{icon}</span>
                   <div className="kpi-body">
@@ -674,7 +737,7 @@ export default function Dashboard({ initialData }: { initialData: Escola[] }) {
           <div className="section-inner">
             <h2 className="section-title">Metodologia e Fontes de Dados</h2>
             <div className="method-card">
-              <h3>📋 Metodologia</h3>
+              <h3>Metodologia</h3>
               <div className="method-steps">
                 {[
                   [1,'Coleta de Dados','Dados obtidos diretamente do INEP (Censo Escolar 2023), incluindo IDEB, proficiências SAEB e taxas de fluxo.'],
@@ -691,7 +754,7 @@ export default function Dashboard({ initialData }: { initialData: Escola[] }) {
               </div>
             </div>
             <div className="method-card">
-              <h3>🗂️ Dicionário de Dados</h3>
+              <h3>Dicionário de Dados</h3>
               <div className="dict-grid">
                 {DATA_DICT.map(e => (
                   <div key={e.field} className="dict-card">
@@ -704,7 +767,7 @@ export default function Dashboard({ initialData }: { initialData: Escola[] }) {
               </div>
             </div>
             <div className="method-card">
-              <h3>📌 Fontes</h3>
+              <h3>Fontes</h3>
               <div className="sources-list">
                 {[['INEP','Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira'],['Censo Escolar 2023','Dados de infraestrutura, dependência administrativa e matrícula'],['IDEB 2023','Índice de Desenvolvimento da Educação Básica'],['SAEB','Sistema de Avaliação da Educação Básica (proficiências LP e MT)'],['IBGE','Estimativas populacionais e dados socioeconômicos municipais']].map(([k, v]) => (
                   <p key={k}><strong>{k}</strong> — {v}</p>

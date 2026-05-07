@@ -1,8 +1,5 @@
 {
   "name": "projeto-economia-scripts",
   "type": "module",
-  "private": true,
-  "dependencies": {
-    "mongodb": "^6.5.0"
-  }
+  "private": true
 }

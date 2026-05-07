@@ -7,7 +7,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```bash
 # Ambiente completo (ordem obrigatória)
 docker compose up -d              # sobe MongoDB 7 (27017) + Mongo Express (8081)
-npm install                        # dependência do seed (raiz)
 node scripts/seed.mjs             # popula coleção 'escolas' com 1.357 registros
 
 # App Next.js
@@ -53,10 +52,11 @@ collection: escolas
 
 A API REST em `src/app/api/escolas/route.ts` está disponível mas não é usada pelo front — existe para consumo externo futuro.
 
-Conexão configurada em `observatorio/.env.local`:
+Conexão configurada em `observatorio/.env.local` (não vai pro git — copiar de `.env.local.example`):
 ```
 MONGODB_URI=mongodb://localhost:27017/observatorio
 ```
+Se a variável não estiver definida, `mongodb.ts` lança um erro com instrução clara antes de chegar ao driver.
 
 ## Convenções TypeScript
 
@@ -67,4 +67,4 @@ MONGODB_URI=mongodb://localhost:27017/observatorio
 
 ## Seed script
 
-O `scripts/seed.mjs` usa o `mongodb` instalado na **raiz** do projeto (`package.json` raiz), não dentro de `observatorio/`. Rodar sempre da raiz do repositório.
+O `scripts/seed.mjs` resolve o `mongodb` via `createRequire` apontando para `observatorio/package.json`, usando o driver já instalado em `observatorio/node_modules`. Não precisa de `npm install` na raiz — basta ter rodado `npm install` dentro de `observatorio/`.

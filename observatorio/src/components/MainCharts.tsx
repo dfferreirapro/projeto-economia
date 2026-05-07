@@ -2,13 +2,19 @@
 
 import {
   Chart as ChartJS, CategoryScale, LinearScale, BarElement,
-  PointElement, LineElement, Title, Tooltip, Legend,
+  PointElement, LineElement, LineController, BarController,
+  Title, Tooltip, Legend,
   type ChartDataset,
 } from 'chart.js';
 import { Bar, Scatter } from 'react-chartjs-2';
 import type { Escola } from '@/lib/types';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale, LinearScale,
+  BarElement, BarController,
+  PointElement, LineElement, LineController,
+  Title, Tooltip, Legend,
+);
 
 const PALETTE = [
   'rgba(110,231,183,.75)', 'rgba(129,140,248,.75)', 'rgba(251,191,36,.75)',

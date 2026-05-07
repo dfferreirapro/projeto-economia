@@ -28,7 +28,6 @@ docker compose up -d
 
 **2. Popular o banco**
 ```bash
-npm install         # instala o driver mongodb para o seed
 node scripts/seed.mjs
 ```
 
@@ -41,6 +40,7 @@ Saída esperada:
 **3. Rodar o app Next.js**
 ```bash
 cd observatorio
+cp .env.local.example .env.local   # Windows: copy .env.local.example .env.local
 npm install
 npm run dev
 ```

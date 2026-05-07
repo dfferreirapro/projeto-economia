@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
-import clientPromise from '@/lib/mongodb';
+import { getClient } from '@/lib/mongodb';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
-    const client = await clientPromise;
+    const client = await getClient();
     const data = await client
       .db('observatorio')
       .collection('escolas')

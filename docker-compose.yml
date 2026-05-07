@@ -1,4 +1,6 @@
 services:
+
+  # ── Banco de dados ──────────────────────────────────────────
   mongo:
     image: mongo:7
     container_name: observatorio-mongo
@@ -8,7 +10,14 @@ services:
       MONGO_INITDB_DATABASE: observatorio
     volumes:
       - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
 
+  # ── Admin visual do MongoDB ──────────────────────────────────
   mongo-express:
     image: mongo-express:1
     container_name: observatorio-mongo-express
@@ -21,7 +30,39 @@ services:
       ME_CONFIG_BASICAUTH_USERNAME: admin
       ME_CONFIG_BASICAUTH_PASSWORD: admin123
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
+
+  # ── Seed / migração dos dados ────────────────────────────────
+  seed:
+    build:
+      context: .
+      dockerfile: Dockerfile.seed
+    container_name: observatorio-seed
+    environment:
+      MONGODB_URI: mongodb://mongo:27017/observatorio
+    depends_on:
+      mongo:
+        condition: service_healthy
+    # Roda uma vez e sai (one-shot); reinicia só se falhar
+    restart: on-failure
+
+  # ── Frontend Next.js ─────────────────────────────────────────
+  frontend:
+    build:
+      context: ./observatorio
+    container_name: observatorio-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      MONGODB_URI: mongodb://mongo:27017/observatorio
+      NODE_ENV: production
+    depends_on:
+      mongo:
+        condition: service_healthy
+      seed:
+        condition: service_completed_successfully
+    restart: unless-stopped
 
 volumes:
   mongo_data:

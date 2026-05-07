@@ -1,23 +1,24 @@
 import { MongoClient } from 'mongodb';
 
-const uri = process.env.MONGODB_URI;
-
-if (!uri) {
-  throw new Error(
-    'MONGODB_URI não definida. Copie observatorio/.env.local.example para observatorio/.env.local e preencha a variável.'
-  );
+declare global {
+  // eslint-disable-next-line no-var
+  var _mongoClientPromise: Promise<MongoClient> | undefined;
 }
 
-let clientPromise: Promise<MongoClient>;
-
-if (process.env.NODE_ENV === 'development') {
-  const g = global as typeof globalThis & { _mongoClientPromise?: Promise<MongoClient> };
-  if (!g._mongoClientPromise) {
-    g._mongoClientPromise = new MongoClient(uri).connect();
+export function getClient(): Promise<MongoClient> {
+  const uri = process.env.MONGODB_URI;
+  if (!uri) {
+    throw new Error(
+      'MONGODB_URI não definida. Copie observatorio/.env.local.example para observatorio/.env.local e preencha a variável.'
+    );
   }
-  clientPromise = g._mongoClientPromise;
-} else {
-  clientPromise = new MongoClient(uri).connect();
-}
 
-export default clientPromise;
+  if (process.env.NODE_ENV === 'development') {
+    if (!global._mongoClientPromise) {
+      global._mongoClientPromise = new MongoClient(uri).connect();
+    }
+    return global._mongoClientPromise;
+  }
+
+  return new MongoClient(uri).connect();
+}

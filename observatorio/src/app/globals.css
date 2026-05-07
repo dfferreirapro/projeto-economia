@@ -113,8 +113,11 @@ select { font: inherit; }
 
 .cities-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .city-card { border-radius: 22px; padding: 22px; color: #fff; position: relative; overflow: hidden; min-height: 200px; display: flex; flex-direction: column; gap: 10px; }
-.city-card.purple { background: linear-gradient(135deg, #C77BFF 0%, #9B4DFF 60%, #FF6B9E 100%); box-shadow: 0 14px 40px rgba(177,76,255,.18); }
-.city-card.orange { background: linear-gradient(135deg, #FFB47A 0%, #FF8A4C 50%, #FF6B2C 100%); box-shadow: 0 14px 40px rgba(255,107,44,.22); }
+.city-card.purple { background: linear-gradient(135deg, #6D28D9 0%, #4C1D95 55%, #7C3AED 100%); box-shadow: 0 16px 48px rgba(109,40,217,.45); }
+.city-card.orange { background: linear-gradient(135deg, #C2410C 0%, #9A3412 50%, #EA580C 100%); box-shadow: 0 16px 48px rgba(194,65,12,.45); }
+.city-card .cc-name,
+.city-card .cc-meta,
+.city-card .cc-stat-val { text-shadow: 0 1px 4px rgba(0,0,0,.35); }
 .city-card::after { content: ""; position: absolute; right: -40px; bottom: -60px; width: 180px; height: 180px; border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,.18) 0%, transparent 70%); pointer-events: none; }
 .cc-head { display: flex; justify-content: space-between; align-items: center; }
 .cc-tag { font-size: .7rem; font-weight: 600; background: rgba(255,255,255,.18); padding: 4px 10px; border-radius: 999px; backdrop-filter: blur(4px); }
@@ -164,7 +167,8 @@ select { font: inherit; }
 .fp-stat-label { font-size: .66rem; color: #9AA0AB; font-weight: 500; }
 .fp-stat-val { font-size: .82rem; font-weight: 700; color: #fff; }
 .fp-title { font-size: .92rem; font-weight: 700; color: #fff; margin-bottom: 2px; }
-.fp-arrow { width: 32px; height: 32px; border-radius: 10px; background: #fff; color: var(--ink); display: grid; place-items: center; margin-left: auto; flex-shrink: 0; }
+.fp-arrow { width: 32px; height: 32px; border-radius: 10px; background: #fff; color: var(--ink); display: grid; place-items: center; margin-left: auto; flex-shrink: 0; cursor: pointer; transition: background .15s, transform .15s; border: none; }
+.fp-arrow:hover { background: var(--accent-soft); transform: scale(1.08); }
 
 /* â”€â”€ SIDE PANEL â”€â”€ */
 .side-panel { display: flex; flex-direction: column; gap: 16px; }

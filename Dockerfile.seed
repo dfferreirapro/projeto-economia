@@ -1,0 +1,12 @@
+FROM node:20-alpine
+WORKDIR /app
+
+# Instala apenas o driver mongodb usando o package.json do observatorio
+COPY observatorio/package.json ./observatorio/package.json
+RUN cd observatorio && npm install --omit=dev --ignore-scripts
+
+COPY scripts/seed.mjs      ./scripts/
+COPY base_escolas_tratada.json ./
+COPY base_i.json           ./
+
+CMD ["node", "scripts/seed.mjs"]

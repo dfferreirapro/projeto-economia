@@ -121,7 +121,8 @@ export default function Dashboard({ initialData }: { initialData: Escola[] }) {
   const [page, setPage]       = useState(1);
   const [compareCity1, setCompareCity1] = useState('Sorocaba');
   const [compareCity2, setCompareCity2] = useState('Votorantim');
-  const [toastMsg, setToastMsg] = useState<string | null>(null);
+  const [toastMsg, setToastMsg]     = useState<string | null>(null);
+  const [explainModal, setExplainModal] = useState<'ideb' | 'infra' | null>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   /* toast */
@@ -313,15 +314,8 @@ export default function Dashboard({ initialData }: { initialData: Escola[] }) {
               <h1 className="page-title">Observatório Educacional</h1>
               <div className="page-sub">Sorocaba × Votorantim · Ensino Fundamental I</div>
             </div>
-            <button className="pill-action">Filtros <span className="plus">+</span></button>
           </div>
-          <div className="topbar-right">
-            <div className="search">
-              <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="#9AA0AB" strokeWidth="2"><circle cx="9" cy="9" r="6"/><path d="M14 14l4 4"/></svg>
-              <input type="text" placeholder="Buscar escola..." value={filters.search} onChange={e => setFilter('search', e.target.value)} />
-            </div>
-            <div className="badge-tag">INEP 2023 <span className="arrow">↗</span></div>
-          </div>
+          <div className="badge-tag">INEP 2023 <span className="arrow">↗</span></div>
         </div>
 
         {/* MAIN GRID */}
@@ -479,7 +473,7 @@ export default function Dashboard({ initialData }: { initialData: Escola[] }) {
                       <div><div className="fp-stat-label">Votorantim</div><div className="fp-stat-val">{votorantim?.avgIdeb?.toFixed(2) ?? '—'}</div></div>
                     </div>
                   </div>
-                  <div className="fp-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M9 6l6 6-6 6"/></svg></div>
+                  <button className="fp-arrow" onClick={() => setExplainModal('ideb')} title="O que é o IDEB?"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M9 6l6 6-6 6"/></svg></button>
                 </div>
               </div>
 
@@ -511,7 +505,7 @@ export default function Dashboard({ initialData }: { initialData: Escola[] }) {
                       <div><div className="fp-stat-label">Votorantim</div><div className="fp-stat-val">{votorantim?.avgInfra?.toFixed(0) ?? '—'}%</div></div>
                     </div>
                   </div>
-                  <div className="fp-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M9 6l6 6-6 6"/></svg></div>
+                  <button className="fp-arrow" onClick={() => setExplainModal('infra')} title="O que é o Infra Score?"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M9 6l6 6-6 6"/></svg></button>
                 </div>
               </div>
             </div>
@@ -903,6 +897,67 @@ export default function Dashboard({ initialData }: { initialData: Escola[] }) {
       </main>
 
       <div className={`toast${toastMsg ? ' show' : ''}`}>{toastMsg}</div>
+
+      {/* EXPLAIN MODAL */}
+      {explainModal && (
+        <div
+          style={{ position: 'fixed', inset: 0, background: 'rgba(14,17,22,.55)', backdropFilter: 'blur(6px)', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}
+          onClick={e => { if (e.target === e.currentTarget) setExplainModal(null); }}
+        >
+          <div style={{ background: '#fff', borderRadius: 20, padding: '32px 36px', maxWidth: 480, width: '100%', position: 'relative', boxShadow: '0 24px 64px rgba(14,17,22,.18)' }}>
+            <button onClick={() => setExplainModal(null)} style={{ position: 'absolute', top: 14, right: 18, background: 'none', border: 'none', fontSize: '1.4rem', color: 'var(--text-dim)', cursor: 'pointer', lineHeight: 1 }}>×</button>
+
+            {explainModal === 'ideb' ? (
+              <>
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'var(--accent-soft)', color: 'var(--accent)', borderRadius: 999, padding: '4px 12px', fontSize: '.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 16 }}>
+                  IDEB — Índice de Desenvolvimento da Educação Básica
+                </div>
+                <h3 style={{ fontSize: '1.3rem', fontWeight: 800, letterSpacing: '-.02em', marginBottom: 12 }}>Como o IDEB é calculado?</h3>
+                <div style={{ background: 'var(--surface-2)', border: '1px solid var(--border)', borderRadius: 12, padding: '12px 16px', fontFamily: 'var(--font-mono, monospace)', fontSize: '.92rem', fontWeight: 700, color: 'var(--accent)', marginBottom: 16, textAlign: 'center', letterSpacing: '.02em' }}>
+                  IDEB = N × P
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                  {[
+                    ['N — Nota padronizada', 'Derivada das proficiências do SAEB em Língua Portuguesa e Matemática, convertida para escala 0–10.'],
+                    ['P — Fluxo (Aprovação)', 'Taxa média de aprovação nas séries avaliadas. Valor 1.0 significa que todos os alunos avançaram sem reprovação ou abandono.'],
+                    ['Escala', 'O IDEB varia de 0 a 10. A meta nacional para anos iniciais (1º–5º ano) em 2023 é 6,0. Nosso resultado atual é ' + (ourStats.avgIdeb?.toFixed(2) ?? '—') + '.'],
+                    ['Frequência', 'Publicado a cada dois anos pelo INEP. O dado mais recente é de 2023.'],
+                  ].map(([titulo, desc]) => (
+                    <div key={titulo} style={{ padding: '10px 14px', background: 'var(--surface-2)', borderRadius: 12, borderLeft: '3px solid var(--accent)' }}>
+                      <div style={{ fontWeight: 700, fontSize: '.84rem', marginBottom: 4 }}>{titulo}</div>
+                      <div style={{ fontSize: '.8rem', color: 'var(--text-muted)', lineHeight: 1.6 }}>{desc}</div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <>
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'var(--accent-2-soft)', color: 'var(--accent-2)', borderRadius: 999, padding: '4px 12px', fontSize: '.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 16 }}>
+                  Infra Score — Score de Infraestrutura
+                </div>
+                <h3 style={{ fontSize: '1.3rem', fontWeight: 800, letterSpacing: '-.02em', marginBottom: 12 }}>Como o Infra Score é calculado?</h3>
+                <div style={{ background: 'var(--surface-2)', border: '1px solid var(--border)', borderRadius: 12, padding: '12px 16px', fontFamily: 'var(--font-mono, monospace)', fontSize: '.88rem', fontWeight: 700, color: 'var(--accent-2)', marginBottom: 16, textAlign: 'center' }}>
+                  Infra Score = itens presentes ÷ 12 × 100%
+                </div>
+                <p style={{ fontSize: '.84rem', color: 'var(--text-muted)', marginBottom: 14, lineHeight: 1.6 }}>
+                  Calculado a partir do Censo Escolar 2023. Cada escola recebe um percentual com base em <strong>12 itens-chave</strong> de infraestrutura:
+                </p>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
+                  {['Biblioteca','Lab. Informática','Quadra Esportiva','Internet','Internet para Alunos','Banda Larga','Computador','Água Potável','Energia Rede Pública','Esgoto Rede Pública','Lab. Ciências','Acessibilidade (Rampas)'].map(item => (
+                    <div key={item} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: '.78rem', color: 'var(--text-muted)', padding: '6px 10px', background: 'var(--surface-2)', borderRadius: 8 }}>
+                      <span style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--accent-2)', flexShrink: 0 }} />
+                      {item}
+                    </div>
+                  ))}
+                </div>
+                <div style={{ marginTop: 14, padding: '10px 14px', background: 'var(--accent-2-soft)', borderRadius: 12, fontSize: '.8rem', color: 'var(--accent-2)', fontWeight: 600 }}>
+                  Score atual da região: {ourStats.avgInfra?.toFixed(0) ?? '—'}% — média de Sorocaba ({sorocaba?.avgInfra?.toFixed(0) ?? '—'}%) e Votorantim ({votorantim?.avgInfra?.toFixed(0) ?? '—'}%)
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

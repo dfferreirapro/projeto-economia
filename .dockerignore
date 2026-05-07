@@ -1,0 +1,6 @@
+.git
+node_modules
+observatorio/.next
+observatorio/node_modules
+mocks
+*.md

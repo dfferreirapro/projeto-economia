@@ -32,10 +32,10 @@ export default function RankingChart({ data, theme }: Props) {
   const labels = sorted.map(c => c.city);
   const values = sorted.map(c => c.avgIdeb!);
   const colors = sorted.map(c =>
-    OUR_CITIES.includes(c.city) ? 'rgba(255,107,44,.85)' : 'rgba(236,238,243,.9)'
+    OUR_CITIES.includes(c.city) ? 'rgba(255,107,44,.9)' : 'rgba(148,163,184,.55)'
   );
   const borders = sorted.map(c =>
-    OUR_CITIES.includes(c.city) ? '#FF6B2C' : '#E7E9EE'
+    OUR_CITIES.includes(c.city) ? '#FF6B2C' : 'rgba(100,116,139,.4)'
   );
 
   return (

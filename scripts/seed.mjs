@@ -92,7 +92,8 @@ const data = base.map(d => {
 const semInfra = data.filter(d => d.infra_score === null).length;
 
 /* ── Inserir no MongoDB ── */
-const client = new MongoClient('mongodb://localhost:27017');
+const MONGODB_URI = process.env.MONGODB_URI ?? 'mongodb://localhost:27017';
+const client = new MongoClient(MONGODB_URI);
 
 try {
   await client.connect();

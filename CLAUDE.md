@@ -67,4 +67,10 @@ Se a variável não estiver definida, `mongodb.ts` lança um erro com instruçã
 
 ## Seed script
 
-O `scripts/seed.mjs` resolve o `mongodb` via `createRequire` apontando para `observatorio/package.json`, usando o driver já instalado em `observatorio/node_modules`. Não precisa de `npm install` na raiz — basta ter rodado `npm install` dentro de `observatorio/`.
+O `scripts/seed.mjs` faz merge de duas bases antes de inserir:
+- `base_escolas_tratada.json` — fonte principal normalizada (IDEB, SAEB, fluxo)
+- `base_i.json` — infraestrutura por escola (IN_*, QT_*), join por `inep_id`
+
+Calcula `infra_score` (0–100): % de 12 itens-chave de infraestrutura presentes. 2 escolas sem par em `base_i.json` ficam com `infra_score = null`.
+
+Resolve o `mongodb` via `createRequire` apontando para `observatorio/package.json`. Não precisa de `npm install` na raiz — basta ter rodado `npm install` dentro de `observatorio/`.

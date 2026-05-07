@@ -1,0 +1,1644 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Observatório Educacional</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ECEEF3;
+    --surface: #FFFFFF;
+    --surface-2: #F6F7FA;
+    --surface-3: #F0F1F5;
+    --ink: #0E1116;
+    --ink-2: #1A1D24;
+    --text: #14161B;
+    --text-muted: #6B7280;
+    --text-dim: #9AA0AB;
+    --border: #E7E9EE;
+    --accent: #FF6B2C;          /* laranja */
+    --accent-soft: #FFE4D5;
+    --accent-2: #B14CFF;        /* roxo */
+    --accent-2-soft: #EDDCFF;
+    --accent-grad: linear-gradient(135deg, #FF8A4C 0%, #FF6B2C 100%);
+    --purple-grad: linear-gradient(135deg, #C77BFF 0%, #9B4DFF 100%);
+    --good: #16A34A;
+    --warn: #F59E0B;
+    --bad: #EF4444;
+    --shadow-md: 0 4px 16px rgba(15,17,22,.06), 0 1px 3px rgba(15,17,22,.04);
+    --shadow-lg: 0 18px 50px rgba(15,17,22,.10), 0 4px 12px rgba(15,17,22,.04);
+    --radius-sm: 12px;
+    --radius: 18px;
+    --radius-lg: 24px;
+    --font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.45;
+  }
+  button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+  a { color: inherit; text-decoration: none; }
+  select { font: inherit; }
+
+  /* ───── LAYOUT ───── */
+  .app {
+    display: grid;
+    grid-template-columns: 84px 1fr;
+    min-height: 100vh;
+    padding: 16px;
+    gap: 16px;
+  }
+
+  /* ───── SIDEBAR ───── */
+  .sidebar {
+    background: var(--ink);
+    border-radius: var(--radius-lg);
+    padding: 24px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    position: sticky;
+    top: 16px;
+    height: calc(100vh - 32px);
+    color: #fff;
+  }
+  .sb-logo {
+    width: 40px; height: 40px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #2A2D34 0%, #1A1D24 100%);
+    display: grid; place-items: center;
+    margin-bottom: 16px;
+  }
+  .sb-item {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: grid; place-items: center;
+    color: #6B7280;
+    transition: all .2s ease;
+    position: relative;
+  }
+  .sb-item:hover { color: #fff; background: rgba(255,255,255,.06); }
+  .sb-item.active {
+    color: #fff;
+    background: rgba(255,107,44,.12);
+  }
+  .sb-item.active::before {
+    content: "";
+    position: absolute;
+    left: -16px; top: 10px; bottom: 10px;
+    width: 3px;
+    background: var(--accent);
+    border-radius: 0 3px 3px 0;
+  }
+  .sb-spacer { flex: 1; }
+
+  /* ───── MAIN ───── */
+  .main {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 28px 32px 40px;
+    overflow: hidden;
+    min-width: 0;
+  }
+
+  /* ───── TOPBAR ───── */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .page-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .page-sub {
+    font-size: .78rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+  .pill-action {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: .82rem;
+    font-weight: 600;
+    color: var(--text);
+    transition: all .2s;
+  }
+  .pill-action:hover { background: var(--surface-3); }
+  .pill-action .plus {
+    width: 18px; height: 18px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 50%;
+    display: grid; place-items: center;
+    font-size: 12px;
+  }
+  .topbar-right { display: flex; align-items: center; gap: 14px; }
+  .search {
+    display: flex; align-items: center; gap: 8px;
+    padding: 9px 14px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    width: 240px;
+  }
+  .search input {
+    border: none; outline: none; background: transparent;
+    font: inherit; font-size: .82rem;
+    flex: 1; color: var(--text);
+  }
+  .search input::placeholder { color: var(--text-dim); }
+  .icon-btn {
+    width: 38px; height: 38px;
+    border-radius: 999px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    display: grid; place-items: center;
+    color: var(--text);
+    transition: all .2s;
+  }
+  .icon-btn:hover { background: var(--surface-3); }
+  .badge-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: .74rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    padding: 6px 10px;
+    background: var(--surface-2);
+    border-radius: 999px;
+    border: 1px solid var(--border);
+  }
+  .badge-tag .arrow { color: var(--accent); font-size: .7rem; }
+
+  /* ───── GRID ───── */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 20px;
+  }
+  @media (max-width: 1100px) { .grid { grid-template-columns: 1fr; } }
+
+  /* ───── HERO: cidades comparadas ───── */
+  .hero-card {
+    background: var(--surface-2);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    border: 1px solid var(--border);
+  }
+  .hero-head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 18px;
+    flex-wrap: wrap; gap: 12px;
+  }
+  .hero-head h2 { font-size: 1.05rem; font-weight: 700; letter-spacing: -.01em; }
+  .meta-bar {
+    flex: 1; max-width: 360px; min-width: 220px;
+  }
+  .meta-bar-label {
+    display: flex; justify-content: space-between;
+    font-size: .72rem; color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  .meta-bar-track {
+    height: 6px;
+    background: var(--surface-3);
+    border-radius: 999px;
+    position: relative;
+    overflow: hidden;
+  }
+  .meta-bar-fill {
+    height: 100%;
+    width: 62%;
+    background: var(--ink);
+    border-radius: 999px;
+    position: relative;
+  }
+  .meta-bar-fill::after {
+    content: "";
+    position: absolute;
+    right: -7px; top: 50%;
+    transform: translateY(-50%);
+    width: 14px; height: 14px;
+    background: #fff;
+    border: 2px solid var(--ink);
+    border-radius: 50%;
+  }
+
+  /* CITY STACK — agora com dados educacionais sobre os "cards" */
+  .cities-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 720px) { .cities-row { grid-template-columns: 1fr; } }
+  .city-card {
+    border-radius: 22px;
+    padding: 22px;
+    color: #fff;
+    box-shadow: 0 14px 40px rgba(177,76,255,.18);
+    position: relative;
+    overflow: hidden;
+    min-height: 200px;
+    display: flex; flex-direction: column;
+    gap: 10px;
+  }
+  .city-card.purple {
+    background: linear-gradient(135deg, #C77BFF 0%, #9B4DFF 60%, #FF6B9E 100%);
+  }
+  .city-card.orange {
+    background: linear-gradient(135deg, #FFB47A 0%, #FF8A4C 50%, #FF6B2C 100%);
+    box-shadow: 0 14px 40px rgba(255,107,44,.22);
+  }
+  .city-card::after {
+    content: "";
+    position: absolute;
+    right: -40px; bottom: -60px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cc-head { display: flex; justify-content: space-between; align-items: center; }
+  .cc-tag {
+    font-size: .7rem; font-weight: 600;
+    background: rgba(255,255,255,.18);
+    padding: 4px 10px; border-radius: 999px;
+    backdrop-filter: blur(4px);
+  }
+  .cc-name {
+    font-size: 1.4rem; font-weight: 800;
+    letter-spacing: -.02em;
+  }
+  .cc-meta {
+    font-size: .78rem; opacity: .85; font-weight: 500;
+  }
+  .cc-stats {
+    margin-top: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,.18);
+  }
+  .cc-stat-label { font-size: .65rem; opacity: .8; font-weight: 500; }
+  .cc-stat-val { font-size: 1.1rem; font-weight: 800; letter-spacing: -.02em; }
+
+  /* INDICATOR INFO BLOCKS */
+  .info-blocks {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 16px;
+  }
+  @media (max-width: 720px) { .info-blocks { grid-template-columns: 1fr 1fr; } }
+  .info-block {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px;
+    display: flex; flex-direction: column;
+    gap: 4px;
+    min-height: 110px;
+  }
+  .ib-val {
+    font-size: 1.2rem; font-weight: 800;
+    color: var(--text);
+    letter-spacing: -.02em;
+  }
+  .ib-val sub {
+    font-size: .65rem; font-weight: 600; color: var(--text-muted);
+    margin-left: 2px;
+    vertical-align: super;
+  }
+  .ib-sub { font-size: .68rem; color: var(--text-muted); font-weight: 500; }
+  .ib-icon {
+    margin-top: auto;
+    width: 30px; height: 30px;
+    border-radius: 8px;
+    background: var(--surface-2);
+    display: grid; place-items: center;
+    color: var(--text);
+  }
+  .ib-label {
+    font-size: .76rem; font-weight: 700; color: var(--text);
+  }
+
+  /* ───── KPI ROW ───── */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-top: 20px;
+  }
+  @media (max-width: 980px) { .kpi-row { grid-template-columns: repeat(2, 1fr); } }
+  .kpi {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .kpi-label { font-size: .72rem; color: var(--text-muted); font-weight: 600; }
+  .kpi-val {
+    font-size: 1.7rem; font-weight: 800; letter-spacing: -.03em;
+    margin-top: 6px;
+    line-height: 1;
+  }
+  .kpi-sub {
+    font-size: .7rem; color: var(--text-muted);
+    margin-top: 6px;
+  }
+  .kpi.feature {
+    background: var(--ink);
+    color: #fff;
+    border-color: var(--ink);
+  }
+  .kpi.feature .kpi-label { color: #9AA0AB; }
+  .kpi.feature .kpi-sub { color: #C7CAD1; }
+  .kpi.feature .ring {
+    position: absolute;
+    right: 14px; top: 14px;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: conic-gradient(var(--accent) 0% 62%, rgba(255,255,255,.12) 62% 100%);
+    display: grid; place-items: center;
+  }
+  .kpi.feature .ring::before {
+    content: ""; width: 32px; height: 32px;
+    background: var(--ink); border-radius: 50%;
+  }
+  .kpi.feature .ring span {
+    position: absolute;
+    font-size: .58rem; font-weight: 800; color: #fff;
+  }
+
+  /* ───── CHART ROW ───── */
+  .chart-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 20px;
+  }
+  @media (max-width: 980px) { .chart-row { grid-template-columns: 1fr; } }
+  .chart-card {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 22px;
+    display: flex; flex-direction: column;
+  }
+  .chart-card-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .chart-card h3 {
+    font-size: 1rem; font-weight: 700; letter-spacing: -.01em;
+  }
+  .chart-card-sub { font-size: .72rem; color: var(--text-muted); }
+  .chart-area { height: 180px; margin: 14px 0 8px; position: relative; }
+  .chart-tooltip {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: var(--ink);
+    color: #fff;
+    font-size: .72rem; font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 8px;
+    position: absolute;
+    transform: translateX(-50%);
+  }
+  .chart-tooltip::after {
+    content: "";
+    position: absolute;
+    bottom: -4px; left: 50%; transform: translateX(-50%);
+    border: 4px solid transparent;
+    border-top-color: var(--ink);
+  }
+  .x-labels {
+    display: flex; justify-content: space-between;
+    font-size: .68rem; color: var(--text-muted);
+    font-family: var(--font-mono);
+    padding: 0 4px;
+  }
+  .x-labels span.active { color: var(--text); font-weight: 700; }
+
+  /* feature-pill (cartão preto com donut na base do chart) */
+  .feature-pill {
+    margin-top: 14px;
+    background: var(--ink);
+    color: #fff;
+    border-radius: 16px;
+    padding: 12px 14px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .donut {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: conic-gradient(var(--accent) 0% var(--p, 75%), #2A2D34 var(--p, 75%) 100%);
+    display: grid; place-items: center;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .donut::before {
+    content: ""; width: 32px; height: 32px;
+    background: var(--ink); border-radius: 50%;
+    position: absolute;
+  }
+  .donut span { position: relative; font-size: .65rem; font-weight: 800; }
+  .donut.purple { background: conic-gradient(#C77BFF 0% var(--p, 50%), #2A2D34 var(--p, 50%) 100%); }
+  .fp-stats { display: flex; gap: 18px; flex: 1; }
+  .fp-stat-label { font-size: .66rem; color: #9AA0AB; font-weight: 500; }
+  .fp-stat-val { font-size: .82rem; font-weight: 700; color: #fff; }
+  .fp-title { font-size: .92rem; font-weight: 700; color: #fff; margin-bottom: 2px; }
+  .fp-arrow {
+    width: 32px; height: 32px;
+    border-radius: 10px;
+    background: #fff;
+    color: var(--ink);
+    display: grid; place-items: center;
+    margin-left: auto;
+  }
+
+  /* ───── SIDE PANEL ───── */
+  .side-panel { display: flex; flex-direction: column; gap: 16px; }
+  .summary-card {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px 20px;
+    text-align: center;
+  }
+  .summary-ring {
+    width: 130px; height: 130px;
+    border-radius: 50%;
+    margin: 0 auto;
+    background: conic-gradient(from 220deg, var(--accent) 0deg, var(--accent-2) 80deg, transparent 130deg, transparent 230deg, var(--accent-2) 280deg, var(--accent) 360deg);
+    padding: 4px;
+    display: grid; place-items: center;
+  }
+  .summary-inner {
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #FFE4D5 0%, #EDDCFF 100%);
+    display: grid; place-items: center;
+    border: 4px solid var(--surface-2);
+    flex-direction: column;
+    color: var(--ink);
+  }
+  .summary-inner-num {
+    font-size: 2rem; font-weight: 800; letter-spacing: -.04em;
+    line-height: 1;
+  }
+  .summary-inner-lbl {
+    font-size: .6rem; font-weight: 700;
+    color: var(--text-muted);
+    margin-top: 2px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+  }
+  .summary-name {
+    margin-top: 14px;
+    font-weight: 700; font-size: 1rem;
+  }
+  .summary-balance-label { font-size: .7rem; color: var(--text-muted); margin-top: 14px; }
+  .summary-balance {
+    font-size: 2.4rem; font-weight: 800;
+    letter-spacing: -.04em; line-height: 1;
+    margin-top: 4px;
+  }
+  .summary-balance sub {
+    font-size: 1rem; vertical-align: super;
+    color: var(--text-muted);
+    font-weight: 700;
+  }
+  .summary-balance-sub { font-size: .72rem; color: var(--text-muted); margin-top: 4px; }
+
+  .rank-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-md);
+  }
+  .rank-head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .rank-head h3 { font-size: 1rem; font-weight: 700; }
+  .view-all {
+    background: var(--ink); color: #fff;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: .74rem; font-weight: 600;
+  }
+  .rank-date { font-size: .72rem; color: var(--text-muted); margin-bottom: 10px; }
+  .rank-list { display: flex; flex-direction: column; gap: 4px; }
+  .rank-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px;
+    border-radius: 14px;
+    transition: background .2s;
+  }
+  .rank-row:hover { background: var(--surface-2); }
+  .rank-row.highlight {
+    background: var(--surface);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border);
+  }
+  .rank-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: grid; place-items: center;
+    font-weight: 800; font-size: .82rem;
+    flex-shrink: 0;
+    background: var(--surface-2);
+    color: var(--text);
+    font-family: var(--font-mono);
+  }
+  .rank-icon.gold { background: linear-gradient(135deg, #FFE4D5, #FFB47A); color: #C2410C; }
+  .rank-icon.silver { background: var(--accent-2-soft); color: #7C3AED; }
+  .rank-icon.bronze { background: #FEF3C7; color: #B45309; }
+  .rank-info { flex: 1; min-width: 0; }
+  .rank-name {
+    font-size: .85rem; font-weight: 700;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .rank-cat { font-size: .7rem; color: var(--text-muted); }
+  .rank-score {
+    font-size: .9rem; font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    font-family: var(--font-mono);
+    color: var(--good);
+  }
+  .rank-score.mid { color: var(--warn); }
+
+  /* ───── SECTIONS ───── */
+  .section { margin-top: 32px; }
+  .section-head {
+    display: flex; align-items: end; justify-content: space-between;
+    margin-bottom: 16px;
+    flex-wrap: wrap; gap: 12px;
+  }
+  .section-title {
+    font-size: 1.15rem; font-weight: 800; letter-spacing: -.02em;
+  }
+  .section-sub { font-size: .8rem; color: var(--text-muted); margin-top: 4px; }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .chip {
+    padding: 6px 12px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: .74rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    transition: all .2s;
+  }
+  .chip:hover { background: var(--surface-3); }
+  .chip.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+  /* DEPENDENCIA */
+  .dep-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  @media (max-width: 800px) { .dep-grid { grid-template-columns: 1fr; } }
+  .dep-card {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+  }
+  .dep-card-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .dep-name { font-weight: 700; font-size: .92rem; }
+  .dep-pct { font-weight: 800; font-size: 1.4rem; letter-spacing: -.03em; }
+  .dep-pct.muni { color: var(--accent); }
+  .dep-pct.est { color: var(--accent-2); }
+  .dep-pct.fed { color: var(--ink); }
+  .dep-bar {
+    height: 6px;
+    background: var(--surface-3);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+  .dep-bar-fill { height: 100%; border-radius: 999px; }
+  .dep-bar-fill.muni { background: var(--accent-grad); }
+  .dep-bar-fill.est { background: var(--purple-grad); }
+  .dep-bar-fill.fed { background: var(--ink); }
+  .dep-meta { font-size: .74rem; color: var(--text-muted); }
+
+  /* TABLE */
+  .table-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .table-scroll { overflow-x: auto; }
+  table {
+    width: 100%; border-collapse: collapse;
+    font-size: .82rem;
+  }
+  thead th {
+    text-align: left;
+    padding: 12px 16px;
+    font-size: .7rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  tbody td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: var(--surface-2); }
+  .rank-badge {
+    display: inline-grid; place-items: center;
+    width: 26px; height: 26px;
+    border-radius: 8px;
+    background: var(--surface-2);
+    font-family: var(--font-mono);
+    font-size: .72rem; font-weight: 700;
+    color: var(--text-muted);
+  }
+  .rank-badge.top { background: var(--accent-soft); color: var(--accent); }
+  .school-name { font-weight: 700; color: var(--text); }
+  .pill {
+    display: inline-flex; align-items: center;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: .7rem;
+    font-weight: 700;
+  }
+  .pill.muni { background: var(--accent-soft); color: #C2410C; }
+  .pill.est { background: var(--accent-2-soft); color: #7C3AED; }
+  .pill.fed { background: #E5E7EB; color: var(--ink); }
+  .ideb {
+    display: inline-flex;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-family: var(--font-mono);
+    font-size: .82rem;
+    font-weight: 700;
+  }
+  .ideb.high { background: #DCFCE7; color: #15803D; }
+  .ideb.mid { background: #FEF3C7; color: #B45309; }
+  .ideb.low { background: #FEE2E2; color: #B91C1C; }
+  .ideb.na { background: var(--surface-2); color: var(--text-dim); }
+  .mini-bar {
+    display: inline-flex; align-items: center; gap: 8px;
+    width: 100%;
+  }
+  .mini-bar-track {
+    flex: 1; height: 5px;
+    background: var(--surface-3);
+    border-radius: 999px;
+    overflow: hidden;
+    min-width: 60px;
+  }
+  .mini-bar-fill { height: 100%; background: var(--accent-grad); border-radius: 999px; }
+  .mini-bar-val { font-family: var(--font-mono); font-size: .74rem; font-weight: 600; }
+  .table-foot {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 20px;
+    border-top: 1px solid var(--border);
+    font-size: .74rem; color: var(--text-muted);
+  }
+  .pager { display: flex; gap: 6px; }
+  .pager button {
+    padding: 5px 11px;
+    border-radius: 8px;
+    background: var(--surface-2);
+    font-size: .74rem; font-weight: 600;
+    color: var(--text);
+  }
+  .pager button:disabled { color: var(--text-dim); cursor: default; }
+  .pager button.active { background: var(--ink); color: #fff; }
+
+  /* COMPARATIVO */
+  .vs-card {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+  }
+  .vs-selectors {
+    display: flex; align-items: end; gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .vs-selector {
+    display: flex; flex-direction: column; gap: 4px;
+    flex: 1; min-width: 150px;
+  }
+  .vs-selector label {
+    font-size: .7rem; color: var(--text-muted); font-weight: 600;
+  }
+  .vs-selector select {
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-size: .85rem; font-weight: 600;
+    background: #fff;
+    color: var(--text);
+    outline: none;
+    cursor: pointer;
+  }
+  .vs-selector.a select { border-color: var(--accent); color: var(--accent); }
+  .vs-selector.b select { border-color: var(--accent-2); color: var(--accent-2); }
+  .vs-sep {
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--text-muted);
+    padding: 10px 4px;
+  }
+  .vs-metrics {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  @media (max-width: 700px) { .vs-metrics { grid-template-columns: 1fr; } }
+  .vs-metric {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+  }
+  .vs-metric-title {
+    font-size: .76rem; font-weight: 700; color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+  .vs-row {
+    display: grid;
+    grid-template-columns: 110px 1fr 70px;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .vs-row:last-child { margin-bottom: 0; }
+  .vs-name { font-size: .8rem; font-weight: 700; }
+  .vs-name.a { color: var(--accent); }
+  .vs-name.b { color: var(--accent-2); }
+  .vs-bar-track { height: 8px; background: var(--surface-3); border-radius: 999px; overflow: hidden; }
+  .vs-bar-fill { height: 100%; border-radius: 999px; }
+  .vs-bar-fill.a { background: var(--accent-grad); }
+  .vs-bar-fill.b { background: var(--purple-grad); }
+  .vs-val { font-family: var(--font-mono); font-size: .82rem; font-weight: 700; text-align: right; }
+  .leader { color: var(--accent); margin-left: 4px; }
+
+  /* INVESTIMENTO */
+  .invest-card {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 22px;
+  }
+  .invest-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+  @media (max-width: 800px) { .invest-grid { grid-template-columns: 1fr; } }
+  .invest-list { display: flex; flex-direction: column; gap: 8px; }
+  .invest-row {
+    display: grid;
+    grid-template-columns: 160px 1fr 90px 60px;
+    align-items: center; gap: 12px;
+    padding: 10px 12px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+  .invest-row .city { font-weight: 700; font-size: .85rem; }
+  .invest-row .invest-val { font-family: var(--font-mono); font-size: .8rem; color: var(--text-muted); text-align: right; }
+  .invest-bar { height: 8px; background: var(--surface-3); border-radius: 999px; overflow: hidden; position: relative; }
+  .invest-bar-fill { height: 100%; background: var(--accent-grad); border-radius: 999px; }
+  .invest-row .ideb-val {
+    font-family: var(--font-mono); font-size: .82rem; font-weight: 700;
+    text-align: right;
+  }
+  @media (max-width: 700px) {
+    .invest-row { grid-template-columns: 1fr; gap: 6px; }
+    .invest-row .invest-val, .invest-row .ideb-val { text-align: left; }
+  }
+
+  /* DICTIONARY (metodologia) */
+  .dict-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+  }
+  .dict-card {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px;
+  }
+  .dict-field {
+    font-family: var(--font-mono);
+    font-size: .72rem;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .dict-name { font-weight: 700; font-size: .88rem; margin-top: 4px; }
+  .dict-desc { font-size: .76rem; color: var(--text-muted); margin-top: 6px; line-height: 1.5; }
+  .dict-range {
+    font-size: .7rem; color: var(--text-dim); margin-top: 8px;
+    font-family: var(--font-mono);
+  }
+
+  /* TEAM */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  @media (max-width: 800px) { .team-grid { grid-template-columns: 1fr; } }
+  .team-card {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px;
+    text-align: center;
+  }
+  .team-avatar {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: var(--accent-grad);
+    color: #fff;
+    display: grid; place-items: center;
+    font-size: 1.2rem; font-weight: 800;
+    margin: 0 auto 12px;
+  }
+  .team-card:nth-child(2) .team-avatar { background: var(--purple-grad); }
+  .team-card:nth-child(3) .team-avatar { background: var(--ink); }
+  .team-name { font-weight: 700; font-size: .92rem; }
+  .team-role { font-size: .74rem; color: var(--text-muted); margin-top: 4px; }
+  .team-link {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: .72rem; font-weight: 600;
+    color: var(--accent);
+  }
+
+  .footer {
+    margin-top: 36px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-size: .74rem;
+    color: var(--text-muted);
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-logo">
+      <svg width="20" height="20" viewBox="0 0 28 28" fill="none">
+        <rect x="5" y="18" width="5" height="5" rx="1.5" fill="#fff" fill-opacity="0.4"/>
+        <rect x="11.5" y="13" width="5" height="10" rx="1.5" fill="#fff" fill-opacity="0.7"/>
+        <rect x="18" y="8" width="5" height="15" rx="1.5" fill="#FF6B2C"/>
+      </svg>
+    </div>
+    <button class="sb-item" title="Início"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9M5 10v10h14V10"/></svg></button>
+    <button class="sb-item active" title="Dashboard"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6 5" stroke="#FF6B2C" stroke-width="2.5"/></svg></button>
+    <button class="sb-item" title="Gráficos"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="14" width="4" height="7"/><rect x="10" y="9" width="4" height="12"/><rect x="17" y="4" width="4" height="17"/></svg></button>
+    <button class="sb-item" title="Tabela"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg></button>
+    <button class="sb-item" title="Equipe"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></button>
+    <div class="sb-spacer"></div>
+    <button class="sb-item" title="Configurações"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div class="topbar-left">
+        <div>
+          <h1 class="page-title">Observatório Educacional</h1>
+          <div class="page-sub">Sorocaba × Votorantim · Ensino Fundamental I</div>
+        </div>
+        <button class="pill-action">Novo filtro <span class="plus">+</span></button>
+      </div>
+      <div class="topbar-right">
+        <div class="search">
+          <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="#9AA0AB" stroke-width="2"><circle cx="9" cy="9" r="6"/><path d="M14 14l4 4"/></svg>
+          <input type="text" placeholder="Buscar escola..." />
+        </div>
+        <div class="badge-tag">INEP 2023 <span class="arrow">↗</span></div>
+        <button class="icon-btn" title="Notificações"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg></button>
+      </div>
+    </div>
+
+    <!-- GRID PRINCIPAL -->
+    <div class="grid">
+      <div class="left-col">
+
+        <!-- HERO: cidades -->
+        <div class="hero-card">
+          <div class="hero-head">
+            <h2>Cidades em análise</h2>
+            <div class="meta-bar">
+              <div class="meta-bar-label">
+                <span>Meta IDEB 2023:</span>
+                <span><strong style="color:var(--text)">6.24</strong> / 7.00</span>
+              </div>
+              <div class="meta-bar-track"><div class="meta-bar-fill"></div></div>
+            </div>
+          </div>
+
+          <div class="cities-row">
+            <div class="city-card purple">
+              <div class="cc-head">
+                <span class="cc-tag">SP · Município A</span>
+                <span style="font-family:var(--font-mono);font-size:.72rem;opacity:.85">IDH 0.798</span>
+              </div>
+              <div>
+                <div class="cc-name">Sorocaba</div>
+                <div class="cc-meta">~723 mil habitantes · Centro industrial</div>
+              </div>
+              <div class="cc-stats">
+                <div>
+                  <div class="cc-stat-label">IDEB médio</div>
+                  <div class="cc-stat-val">6.40</div>
+                </div>
+                <div>
+                  <div class="cc-stat-label">R$/aluno/ano</div>
+                  <div class="cc-stat-val">8.1k</div>
+                </div>
+              </div>
+            </div>
+            <div class="city-card orange">
+              <div class="cc-head">
+                <span class="cc-tag">SP · Município B</span>
+                <span style="font-family:var(--font-mono);font-size:.72rem;opacity:.85">IDH 0.769</span>
+              </div>
+              <div>
+                <div class="cc-name">Votorantim</div>
+                <div class="cc-meta">~120 mil habitantes · Parceria PPP educação</div>
+              </div>
+              <div class="cc-stats">
+                <div>
+                  <div class="cc-stat-label">IDEB médio</div>
+                  <div class="cc-stat-val">6.00</div>
+                </div>
+                <div>
+                  <div class="cc-stat-label">R$/aluno/ano</div>
+                  <div class="cc-stat-val">7.7k</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-blocks">
+            <div class="info-block">
+              <div class="ib-val">142<sub>esc</sub></div>
+              <div class="ib-sub">total das duas cidades</div>
+              <div class="ib-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 17h20M5 17V9l5-4 5 4v8M9 17v-4h4v4"/></svg></div>
+              <div class="ib-label">Escolas</div>
+            </div>
+            <div class="info-block">
+              <div class="ib-val">218.4</div>
+              <div class="ib-sub">SAEB Língua Port.</div>
+              <div class="ib-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5h14M3 9h9M3 13h12M3 17h6"/></svg></div>
+              <div class="ib-label">Leitura</div>
+            </div>
+            <div class="info-block">
+              <div class="ib-val">96.8<sub>%</sub></div>
+              <div class="ib-sub">aprovação média</div>
+              <div class="ib-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/></svg></div>
+              <div class="ib-label">Fluxo</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- KPIs principais -->
+        <div class="kpi-row">
+          <div class="kpi feature">
+            <div class="ring"><span>62%</span></div>
+            <div class="kpi-label">IDEB Médio</div>
+            <div class="kpi-val">6.24</div>
+            <div class="kpi-sub">128 escolas com dados</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-label">SAEB LP</div>
+            <div class="kpi-val">218.4</div>
+            <div class="kpi-sub">proficiência média</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-label">SAEB MT</div>
+            <div class="kpi-val">224.7</div>
+            <div class="kpi-sub">proficiência média</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-label">Melhor IDEB</div>
+            <div class="kpi-val">8.4</div>
+            <div class="kpi-sub">EM Achilles de Almeida</div>
+          </div>
+        </div>
+
+        <!-- CHARTS -->
+        <div class="chart-row">
+          <!-- BARRAS — IDEB por faixa -->
+          <div class="chart-card">
+            <div class="chart-card-head">
+              <h3>Distribuição IDEB</h3>
+              <span class="chart-card-sub">Faixas (escolas)</span>
+            </div>
+            <div class="chart-area">
+              <svg viewBox="0 0 320 160" preserveAspectRatio="none" style="width:100%;height:100%">
+                <defs>
+                  <linearGradient id="barOrange" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#FF8A4C"/><stop offset="100%" stop-color="#FF6B2C"/>
+                  </linearGradient>
+                  <linearGradient id="barFade" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#FFE4D5"/><stop offset="100%" stop-color="#FFD4B8"/>
+                  </linearGradient>
+                </defs>
+                <rect x="20" y="120" width="22" height="20" rx="11" fill="url(#barFade)"/>
+                <rect x="62" y="100" width="22" height="40" rx="11" fill="url(#barFade)"/>
+                <rect x="104" y="70" width="22" height="70" rx="11" fill="url(#barFade)"/>
+                <rect x="146" y="40" width="22" height="100" rx="11" fill="url(#barOrange)"/>
+                <rect x="188" y="60" width="22" height="80" rx="11" fill="url(#barFade)"/>
+                <rect x="230" y="95" width="22" height="45" rx="11" fill="url(#barFade)"/>
+                <rect x="272" y="115" width="22" height="25" rx="11" fill="url(#barFade)"/>
+              </svg>
+              <div class="chart-tooltip" style="left:48%;top:20%">42</div>
+            </div>
+            <div class="x-labels">
+              <span>&lt;3</span><span>3-4</span><span>4-5</span><span class="active">5-6</span><span>6-7</span><span>7-8</span><span>&gt;8</span>
+            </div>
+            <div class="feature-pill">
+              <div class="donut" style="--p:62%"><span>62%</span></div>
+              <div>
+                <div class="fp-title">IDEB Médio</div>
+                <div class="fp-stats">
+                  <div><div class="fp-stat-label">Meta</div><div class="fp-stat-val">7.0</div></div>
+                  <div><div class="fp-stat-label">Atual</div><div class="fp-stat-val">6.24</div></div>
+                </div>
+              </div>
+              <button class="fp-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg></button>
+            </div>
+          </div>
+
+          <!-- LINHA — evolução -->
+          <div class="chart-card">
+            <div class="chart-card-head">
+              <h3>Evolução IDEB</h3>
+              <span class="chart-card-sub">2015 → 2023</span>
+            </div>
+            <div class="chart-area">
+              <svg viewBox="0 0 320 160" preserveAspectRatio="none" style="width:100%;height:100%">
+                <defs>
+                  <linearGradient id="lineGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#B14CFF" stop-opacity=".3"/>
+                    <stop offset="100%" stop-color="#B14CFF" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <path d="M10,120 C50,110 80,95 110,85 C150,72 180,70 230,55 C260,48 290,38 310,30 L310,160 L10,160 Z" fill="url(#lineGrad)"/>
+                <path d="M10,120 C50,110 80,95 110,85 C150,72 180,70 230,55 C260,48 290,38 310,30" stroke="#B14CFF" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <circle cx="230" cy="55" r="6" fill="#B14CFF"/>
+                <circle cx="230" cy="55" r="3" fill="#fff"/>
+              </svg>
+              <div class="chart-tooltip" style="left:72%;top:18%;background:#1A1D24">6.24</div>
+            </div>
+            <div class="x-labels">
+              <span>'15</span><span>'17</span><span>'19</span><span>'21</span><span class="active">'23</span>
+            </div>
+            <div class="feature-pill">
+              <div class="donut purple" style="--p:78%"><span>+18%</span></div>
+              <div>
+                <div class="fp-title">Crescimento</div>
+                <div class="fp-stats">
+                  <div><div class="fp-stat-label">2015</div><div class="fp-stat-val">5.30</div></div>
+                  <div><div class="fp-stat-label">2023</div><div class="fp-stat-val">6.24</div></div>
+                </div>
+              </div>
+              <button class="fp-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg></button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- SIDE PANEL -->
+      <aside class="side-panel">
+        <div class="summary-card">
+          <div class="summary-ring">
+            <div class="summary-inner">
+              <div>
+                <div class="summary-inner-num">6.24</div>
+                <div class="summary-inner-lbl">IDEB</div>
+              </div>
+            </div>
+          </div>
+          <div class="summary-name">Resultado Consolidado</div>
+          <div class="summary-balance-label">Total de escolas avaliadas</div>
+          <div class="summary-balance">142</div>
+          <div class="summary-balance-sub">128 com IDEB · 14 sem dados</div>
+        </div>
+
+        <div class="rank-card">
+          <div class="rank-head">
+            <h3>Top Escolas</h3>
+            <button class="view-all">Ver todas</button>
+          </div>
+          <div class="rank-date">Ranking IDEB 2023</div>
+          <div class="rank-list">
+            <div class="rank-row">
+              <div class="rank-icon gold">1</div>
+              <div class="rank-info">
+                <div class="rank-name">EM Achilles de Almeida</div>
+                <div class="rank-cat">Sorocaba · Municipal</div>
+              </div>
+              <div class="rank-score">8.4</div>
+            </div>
+            <div class="rank-row">
+              <div class="rank-icon silver">2</div>
+              <div class="rank-info">
+                <div class="rank-name">EM Maria Eugênia</div>
+                <div class="rank-cat">Sorocaba · Municipal</div>
+              </div>
+              <div class="rank-score">8.1</div>
+            </div>
+            <div class="rank-row highlight">
+              <div class="rank-icon bronze">3</div>
+              <div class="rank-info">
+                <div class="rank-name">EM Profa. Helena Galvão</div>
+                <div class="rank-cat">Votorantim · Municipal</div>
+              </div>
+              <div class="rank-score">7.9</div>
+            </div>
+            <div class="rank-row">
+              <div class="rank-icon">4</div>
+              <div class="rank-info">
+                <div class="rank-name">EE Dr. Nogueira</div>
+                <div class="rank-cat">Sorocaba · Estadual</div>
+              </div>
+              <div class="rank-score">6.8</div>
+            </div>
+            <div class="rank-row">
+              <div class="rank-icon">5</div>
+              <div class="rank-info">
+                <div class="rank-name">EE Senador Vergueiro</div>
+                <div class="rank-cat">Sorocaba · Estadual</div>
+              </div>
+              <div class="rank-score mid">6.5</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- DEPENDENCIA -->
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Distribuição por Dependência Administrativa</h2>
+          <p class="section-sub">142 escolas analisadas em Sorocaba e Votorantim</p>
+        </div>
+        <div class="chips">
+          <button class="chip active">Todas</button>
+          <button class="chip">Sorocaba</button>
+          <button class="chip">Votorantim</button>
+        </div>
+      </div>
+      <div class="dep-grid">
+        <div class="dep-card">
+          <div class="dep-card-head">
+            <div class="dep-name">Municipal</div>
+            <div class="dep-pct muni">68%</div>
+          </div>
+          <div class="dep-bar"><div class="dep-bar-fill muni" style="width:68%"></div></div>
+          <div class="dep-meta">96 escolas · IDEB médio 6.45</div>
+        </div>
+        <div class="dep-card">
+          <div class="dep-card-head">
+            <div class="dep-name">Estadual</div>
+            <div class="dep-pct est">28%</div>
+          </div>
+          <div class="dep-bar"><div class="dep-bar-fill est" style="width:28%"></div></div>
+          <div class="dep-meta">40 escolas · IDEB médio 5.82</div>
+        </div>
+        <div class="dep-card">
+          <div class="dep-card-head">
+            <div class="dep-name">Federal</div>
+            <div class="dep-pct fed">4%</div>
+          </div>
+          <div class="dep-bar"><div class="dep-bar-fill fed" style="width:4%"></div></div>
+          <div class="dep-meta">6 escolas · IDEB médio 7.12</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TABELA -->
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Ranking de Escolas</h2>
+          <p class="section-sub">Ordenado por IDEB 2023</p>
+        </div>
+        <div class="chips">
+          <button class="chip active">IDEB ↓</button>
+          <button class="chip">SAEB LP</button>
+          <button class="chip">SAEB MT</button>
+          <button class="chip">Fluxo</button>
+        </div>
+      </div>
+      <div class="table-card">
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:50px">#</th>
+                <th>Escola</th>
+                <th>Município</th>
+                <th>Dependência</th>
+                <th>IDEB</th>
+                <th>LP</th>
+                <th>MT</th>
+                <th style="min-width:140px">Fluxo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="rank-badge top">1</span></td>
+                <td><span class="school-name">EM Achilles de Almeida</span></td>
+                <td>Sorocaba</td>
+                <td><span class="pill muni">Municipal</span></td>
+                <td><span class="ideb high">8.4</span></td>
+                <td>235.2</td>
+                <td>241.8</td>
+                <td><div class="mini-bar"><div class="mini-bar-track"><div class="mini-bar-fill" style="width:98%"></div></div><span class="mini-bar-val">98%</span></div></td>
+              </tr>
+              <tr>
+                <td><span class="rank-badge top">2</span></td>
+                <td><span class="school-name">EM Maria Eugênia</span></td>
+                <td>Sorocaba</td>
+                <td><span class="pill muni">Municipal</span></td>
+                <td><span class="ideb high">8.1</span></td>
+                <td>228.4</td>
+                <td>236.5</td>
+                <td><div class="mini-bar"><div class="mini-bar-track"><div class="mini-bar-fill" style="width:97%"></div></div><span class="mini-bar-val">97%</span></div></td>
+              </tr>
+              <tr>
+                <td><span class="rank-badge top">3</span></td>
+                <td><span class="school-name">EM Profa. Helena Galvão</span></td>
+                <td>Votorantim</td>
+                <td><span class="pill muni">Municipal</span></td>
+                <td><span class="ideb high">7.9</span></td>
+                <td>225.1</td>
+                <td>232.0</td>
+                <td><div class="mini-bar"><div class="mini-bar-track"><div class="mini-bar-fill" style="width:96%"></div></div><span class="mini-bar-val">96%</span></div></td>
+              </tr>
+              <tr>
+                <td><span class="rank-badge">4</span></td>
+                <td><span class="school-name">EE Dr. Nogueira Martins</span></td>
+                <td>Sorocaba</td>
+                <td><span class="pill est">Estadual</span></td>
+                <td><span class="ideb mid">6.8</span></td>
+                <td>218.6</td>
+                <td>224.3</td>
+                <td><div class="mini-bar"><div class="mini-bar-track"><div class="mini-bar-fill" style="width:94%"></div></div><span class="mini-bar-val">94%</span></div></td>
+              </tr>
+              <tr>
+                <td><span class="rank-badge">5</span></td>
+                <td><span class="school-name">EE Senador Vergueiro</span></td>
+                <td>Sorocaba</td>
+                <td><span class="pill est">Estadual</span></td>
+                <td><span class="ideb mid">6.5</span></td>
+                <td>215.2</td>
+                <td>220.1</td>
+                <td><div class="mini-bar"><div class="mini-bar-track"><div class="mini-bar-fill" style="width:93%"></div></div><span class="mini-bar-val">93%</span></div></td>
+              </tr>
+              <tr>
+                <td><span class="rank-badge">6</span></td>
+                <td><span class="school-name">EM João Cembranelli</span></td>
+                <td>Votorantim</td>
+                <td><span class="pill muni">Municipal</span></td>
+                <td><span class="ideb mid">6.2</span></td>
+                <td>212.4</td>
+                <td>218.8</td>
+                <td><div class="mini-bar"><div class="mini-bar-track"><div class="mini-bar-fill" style="width:91%"></div></div><span class="mini-bar-val">91%</span></div></td>
+              </tr>
+              <tr>
+                <td><span class="rank-badge">7</span></td>
+                <td><span class="school-name">EE Antônio Carlos</span></td>
+                <td>Sorocaba</td>
+                <td><span class="pill est">Estadual</span></td>
+                <td><span class="ideb mid">5.4</span></td>
+                <td>205.1</td>
+                <td>210.3</td>
+                <td><div class="mini-bar"><div class="mini-bar-track"><div class="mini-bar-fill" style="width:88%"></div></div><span class="mini-bar-val">88%</span></div></td>
+              </tr>
+              <tr>
+                <td><span class="rank-badge">8</span></td>
+                <td><span class="school-name">EM Profa. Aparecida</span></td>
+                <td>Votorantim</td>
+                <td><span class="pill muni">Municipal</span></td>
+                <td><span class="ideb low">4.8</span></td>
+                <td>198.6</td>
+                <td>204.2</td>
+                <td><div class="mini-bar"><div class="mini-bar-track"><div class="mini-bar-fill" style="width:84%"></div></div><span class="mini-bar-val">84%</span></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-foot">
+          <span>Mostrando 1–8 de 142 escolas</span>
+          <div class="pager">
+            <button disabled>← Anterior</button>
+            <button class="active">1</button>
+            <button>2</button>
+            <button>3</button>
+            <button>Próximo →</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPARATIVO -->
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Lupa Local — Sorocaba × Votorantim</h2>
+          <p class="section-sub">Compare municípios em métricas-chave</p>
+        </div>
+      </div>
+      <div class="vs-card">
+        <div class="vs-selectors">
+          <div class="vs-selector a">
+            <label>Município A</label>
+            <select><option>Sorocaba</option><option>São Caetano do Sul</option><option>Jaraguá do Sul</option></select>
+          </div>
+          <div class="vs-sep">VS</div>
+          <div class="vs-selector b">
+            <label>Município B</label>
+            <select><option>Votorantim</option><option>Sobral</option><option>Pato Branco</option></select>
+          </div>
+        </div>
+        <div class="vs-metrics">
+          <div class="vs-metric">
+            <div class="vs-metric-title">IDEB Médio</div>
+            <div class="vs-row">
+              <span class="vs-name a">Sorocaba<span class="leader">★</span></span>
+              <div class="vs-bar-track"><div class="vs-bar-fill a" style="width:64%"></div></div>
+              <span class="vs-val">6.40</span>
+            </div>
+            <div class="vs-row">
+              <span class="vs-name b">Votorantim</span>
+              <div class="vs-bar-track"><div class="vs-bar-fill b" style="width:60%"></div></div>
+              <span class="vs-val">6.00</span>
+            </div>
+          </div>
+          <div class="vs-metric">
+            <div class="vs-metric-title">SAEB Língua Portuguesa</div>
+            <div class="vs-row">
+              <span class="vs-name a">Sorocaba<span class="leader">★</span></span>
+              <div class="vs-bar-track"><div class="vs-bar-fill a" style="width:65%"></div></div>
+              <span class="vs-val">220.5</span>
+            </div>
+            <div class="vs-row">
+              <span class="vs-name b">Votorantim</span>
+              <div class="vs-bar-track"><div class="vs-bar-fill b" style="width:62%"></div></div>
+              <span class="vs-val">216.2</span>
+            </div>
+          </div>
+          <div class="vs-metric">
+            <div class="vs-metric-title">SAEB Matemática</div>
+            <div class="vs-row">
+              <span class="vs-name a">Sorocaba<span class="leader">★</span></span>
+              <div class="vs-bar-track"><div class="vs-bar-fill a" style="width:67%"></div></div>
+              <span class="vs-val">226.1</span>
+            </div>
+            <div class="vs-row">
+              <span class="vs-name b">Votorantim</span>
+              <div class="vs-bar-track"><div class="vs-bar-fill b" style="width:64%"></div></div>
+              <span class="vs-val">222.8</span>
+            </div>
+          </div>
+          <div class="vs-metric">
+            <div class="vs-metric-title">Taxa de Aprovação</div>
+            <div class="vs-row">
+              <span class="vs-name a">Sorocaba<span class="leader">★</span></span>
+              <div class="vs-bar-track"><div class="vs-bar-fill a" style="width:97%"></div></div>
+              <span class="vs-val">97.2%</span>
+            </div>
+            <div class="vs-row">
+              <span class="vs-name b">Votorantim</span>
+              <div class="vs-bar-track"><div class="vs-bar-fill b" style="width:96%"></div></div>
+              <span class="vs-val">96.4%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INVESTIMENTO × DESEMPENHO -->
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Investimento × Desempenho</h2>
+          <p class="section-sub">Estimativas de R$/aluno/ano por município</p>
+        </div>
+        <div class="chips">
+          <button class="chip active">Top 8</button>
+          <button class="chip">Sudeste</button>
+          <button class="chip">Sul</button>
+          <button class="chip">NE</button>
+        </div>
+      </div>
+      <div class="invest-card">
+        <div class="invest-grid">
+          <div class="kpi" style="background:#fff">
+            <div class="kpi-label">Maior Investimento</div>
+            <div class="kpi-val" style="font-size:1.3rem">R$ 14.200</div>
+            <div class="kpi-sub">São Caetano do Sul</div>
+          </div>
+          <div class="kpi" style="background:#fff">
+            <div class="kpi-label">Melhor Eficiência</div>
+            <div class="kpi-val" style="font-size:1.3rem">0.842</div>
+            <div class="kpi-sub">Sobral · IDEB/R$ mil</div>
+          </div>
+          <div class="kpi" style="background:#fff">
+            <div class="kpi-label">Correlação (Pearson)</div>
+            <div class="kpi-val" style="font-size:1.3rem">0.412</div>
+            <div class="kpi-sub">invest × IDEB</div>
+          </div>
+        </div>
+        <div class="invest-list">
+          <div class="invest-row">
+            <span class="city">São Caetano do Sul</span>
+            <div class="invest-bar"><div class="invest-bar-fill" style="width:100%"></div></div>
+            <span class="invest-val">R$ 14.2k</span>
+            <span class="ideb-val" style="color:var(--good)">7.8</span>
+          </div>
+          <div class="invest-row">
+            <span class="city">Jaraguá do Sul</span>
+            <div class="invest-bar"><div class="invest-bar-fill" style="width:76%"></div></div>
+            <span class="invest-val">R$ 10.8k</span>
+            <span class="ideb-val" style="color:var(--good)">7.3</span>
+          </div>
+          <div class="invest-row">
+            <span class="city">Sobral</span>
+            <div class="invest-bar"><div class="invest-bar-fill" style="width:67%"></div></div>
+            <span class="invest-val">R$ 9.5k</span>
+            <span class="ideb-val" style="color:var(--good)">8.0</span>
+          </div>
+          <div class="invest-row">
+            <span class="city">Pato Branco</span>
+            <div class="invest-bar"><div class="invest-bar-fill" style="width:65%"></div></div>
+            <span class="invest-val">R$ 9.2k</span>
+            <span class="ideb-val" style="color:var(--good)">7.1</span>
+          </div>
+          <div class="invest-row">
+            <span class="city">Sorocaba</span>
+            <div class="invest-bar"><div class="invest-bar-fill" style="width:57%"></div></div>
+            <span class="invest-val">R$ 8.1k</span>
+            <span class="ideb-val" style="color:var(--warn)">6.4</span>
+          </div>
+          <div class="invest-row">
+            <span class="city">Votorantim</span>
+            <div class="invest-bar"><div class="invest-bar-fill" style="width:54%"></div></div>
+            <span class="invest-val">R$ 7.7k</span>
+            <span class="ideb-val" style="color:var(--warn)">6.0</span>
+          </div>
+          <div class="invest-row">
+            <span class="city">Recife</span>
+            <div class="invest-bar"><div class="invest-bar-fill" style="width:48%"></div></div>
+            <span class="invest-val">R$ 6.8k</span>
+            <span class="ideb-val" style="color:var(--warn)">5.4</span>
+          </div>
+          <div class="invest-row">
+            <span class="city">Fortaleza</span>
+            <div class="invest-bar"><div class="invest-bar-fill" style="width:46%"></div></div>
+            <span class="invest-val">R$ 6.5k</span>
+            <span class="ideb-val" style="color:var(--good)">7.5</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- METODOLOGIA / DICIONARIO -->
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Dicionário de Dados</h2>
+          <p class="section-sub">Variáveis utilizadas na análise</p>
+        </div>
+      </div>
+      <div class="dict-grid">
+        <div class="dict-card">
+          <div class="dict-field">ideb</div>
+          <div class="dict-name">IDEB</div>
+          <div class="dict-desc">Índice de Desenvolvimento da Educação Básica. Produto do Fluxo pelo Aprendizado.</div>
+          <div class="dict-range">0.0 – 10.0 | null</div>
+        </div>
+        <div class="dict-card">
+          <div class="dict-field">fluxo</div>
+          <div class="dict-name">Fluxo</div>
+          <div class="dict-desc">Taxa de aprovação escolar média entre as séries avaliadas.</div>
+          <div class="dict-range">0.0 – 1.0</div>
+        </div>
+        <div class="dict-card">
+          <div class="dict-field">nota_lp</div>
+          <div class="dict-name">SAEB Língua Port.</div>
+          <div class="dict-desc">Proficiência média em Língua Portuguesa medida pelo SAEB.</div>
+          <div class="dict-range">~150 – 350</div>
+        </div>
+        <div class="dict-card">
+          <div class="dict-field">nota_mt</div>
+          <div class="dict-name">SAEB Matemática</div>
+          <div class="dict-desc">Proficiência média em Matemática medida pelo SAEB.</div>
+          <div class="dict-range">~150 – 350</div>
+        </div>
+        <div class="dict-card">
+          <div class="dict-field">aprendizado</div>
+          <div class="dict-name">Aprendizado</div>
+          <div class="dict-desc">Nota padronizada do SAEB convertida para escala de 0 a 10.</div>
+          <div class="dict-range">0.0 – 10.0</div>
+        </div>
+        <div class="dict-card">
+          <div class="dict-field">dependencia</div>
+          <div class="dict-name">Dep. Administrativa</div>
+          <div class="dict-desc">Órgão responsável pela administração da escola.</div>
+          <div class="dict-range">Municipal | Estadual | Federal</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TEAM -->
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Equipe</h2>
+          <p class="section-sub">Ciência de Dados para Negócios</p>
+        </div>
+      </div>
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="team-avatar">DF</div>
+          <div class="team-name">Douglas Ferreira</div>
+          <div class="team-role">Estudante de Ciência de Dados</div>
+          <a class="team-link" href="#">↗ LinkedIn</a>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">GF</div>
+          <div class="team-name">Gabriel Ferreira</div>
+          <div class="team-role">Estudante de Ciência de Dados</div>
+          <a class="team-link" href="#">↗ LinkedIn</a>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">MM</div>
+          <div class="team-name">Mateus Mariano</div>
+          <div class="team-role">Estudante de Ciência de Dados</div>
+          <a class="team-link" href="#">↗ LinkedIn</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      Observatório Educacional v3.0 — Dados INEP 2023 · Projeto acadêmico
+    </div>
+
+  </main>
+</div>
+
+</body>
+</html>

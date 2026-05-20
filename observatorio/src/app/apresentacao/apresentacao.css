@@ -814,6 +814,15 @@
 }
 
 /* ─── TABELAS NA APRESENTAÇÃO (DARK MODE) ─── */
+.pres-table-wrapper {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  margin-top: 10px;
+}
+
 .pres-slide table {
   width: 100%;
   border-collapse: collapse;
@@ -835,7 +844,161 @@
   transition: background 0.2s;
 }
 
-.pres-slide tbody td {
-  padding: 12px 16px !important;
-  color: rgba(255, 255, 255, 0.85) !important;
+.pres-slide tbody tr:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
 }
+
+.pres-slide tbody td {
+  padding: 14px 16px !important;
+  color: rgba(255, 255, 255, 0.85) !important;
+  font-size: 0.82rem !important;
+}
+
+/* ─── PRESENTER TIMER & CONTROLS ─── */
+.pres-timer-widget {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 6px 14px;
+  border-radius: 99px;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+}
+
+.timer-label {
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.7rem;
+  letter-spacing: 0.5px;
+}
+
+.timer-clock {
+  font-weight: 700;
+  color: var(--accent);
+  min-width: 48px;
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+.timer-control-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.75rem;
+  padding: 0 2px;
+  transition: transform 0.15s ease;
+  display: grid;
+  place-items: center;
+}
+
+.timer-control-btn:hover {
+  transform: scale(1.25);
+}
+
+/* ─── INTERACTIVE PROGRESS DOTS ─── */
+.pres-slide-dots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  margin: 0 16px;
+}
+
+.pres-slide-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid transparent;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 0;
+  cursor: pointer;
+}
+
+.pres-slide-dot:hover {
+  background: rgba(255, 255, 255, 0.45);
+  transform: scale(1.2);
+}
+
+.pres-slide-dot.active {
+  background: var(--accent);
+  width: 22px;
+  border-radius: 99px;
+  box-shadow: 0 0 10px rgba(255, 107, 44, 0.4);
+}
+
+/* ─── DYNAMIC AURORA GLOW THEMES ─── */
+.glow-theme-default .glow-blob-1 { background: #FF6B2C; opacity: 0.12; transition: all 1.5s ease; }
+.glow-theme-default .glow-blob-2 { background: #B14CFF; opacity: 0.12; transition: all 1.5s ease; }
+
+.glow-theme-intro .glow-blob-1 { background: #4F46E5; opacity: 0.15; transition: all 1.5s ease; top: -10%; left: -10%; }
+.glow-theme-intro .glow-blob-2 { background: #B14CFF; opacity: 0.15; transition: all 1.5s ease; bottom: -15%; right: -10%; }
+
+.glow-theme-paradox .glow-blob-1 { background: #FF6B2C; opacity: 0.18; transition: all 1.5s ease; top: -20%; left: 0%; }
+.glow-theme-paradox .glow-blob-2 { background: #B14CFF; opacity: 0.18; transition: all 1.5s ease; bottom: 0%; right: -20%; }
+
+.glow-theme-local .glow-blob-1 { background: #3B82F6; opacity: 0.15; transition: all 1.5s ease; top: -5%; left: -20%; }
+.glow-theme-local .glow-blob-2 { background: #8B5CF6; opacity: 0.15; transition: all 1.5s ease; bottom: -5%; right: -5%; }
+
+.glow-theme-benchmark .glow-blob-1 { background: #10B981; opacity: 0.18; transition: all 1.5s ease; top: 0%; left: -10%; }
+.glow-theme-benchmark .glow-blob-2 { background: #F59E0B; opacity: 0.14; transition: all 1.5s ease; bottom: -10%; right: 0%; }
+
+.glow-theme-conclusion .glow-blob-1 { background: #FF6B2C; opacity: 0.15; transition: all 1.5s ease; top: -15%; left: -15%; }
+.glow-theme-conclusion .glow-blob-2 { background: #10B981; opacity: 0.15; transition: all 1.5s ease; bottom: -20%; right: -15%; }
+
+/* ─── DYNAMIC TRANSITIONS ─── */
+.pres-slide.slide-dir-forward {
+  animation: slideEnterRight 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.pres-slide.slide-dir-backward {
+  animation: slideEnterLeft 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideEnterRight {
+  0% {
+    opacity: 0;
+    transform: translate3d(60px, 0, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes slideEnterLeft {
+  0% {
+    opacity: 0;
+    transform: translate3d(-60px, 0, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* ─── HOVER CARDS ELEVATION ─── */
+.pres-card, .metod-card, .thesis-card {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s, box-shadow 0.3s !important;
+}
+
+.pres-card:hover, .metod-card:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.thesis-step {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s, border-color 0.2s !important;
+}
+
+.thesis-step:hover {
+  transform: translate3d(6px, 0, 0) !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+  border-color: rgba(255, 107, 44, 0.15) !important;
+}
+

@@ -22,24 +22,75 @@ function avg(arr: number[]) {
 export default function Presentation({ initialData }: Props) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [direction, setDirection] = useState<'forward' | 'backward'>('forward');
 
-  // Total de slides (11 slides após reordenação lógica e remoção de redundâncias)
-  const TOTAL_SLIDES = 11;
+  // Timer para apresentadores
+  const [timerSeconds, setTimerSeconds] = useState(0);
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
+
+  // Total de slides segmentados (16 slides)
+  const TOTAL_SLIDES = 16;
+
+  // Controle de tempo do apresentador
+  useEffect(() => {
+    let interval: NodeJS.Timeout | null = null;
+    if (isTimerRunning) {
+      interval = setInterval(() => {
+        setTimerSeconds(prev => prev + 1);
+      }, 1000);
+    }
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [isTimerRunning]);
+
+  const formatTime = (totalSecs: number) => {
+    const mins = Math.floor(totalSecs / 60);
+    const secs = totalSecs % 60;
+    return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+  };
+
+  const goToNextSlide = () => {
+    if (currentSlide < TOTAL_SLIDES - 1) {
+      setDirection('forward');
+      setCurrentSlide(prev => prev + 1);
+    }
+  };
+
+  const goToPrevSlide = () => {
+    if (currentSlide > 0) {
+      setDirection('backward');
+      setCurrentSlide(prev => prev - 1);
+    }
+  };
+
+  const jumpToSlide = (index: number) => {
+    if (index >= 0 && index < TOTAL_SLIDES) {
+      setDirection(index > currentSlide ? 'forward' : 'backward');
+      setCurrentSlide(index);
+    }
+  };
 
   // Teclado para passar slides
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowRight' || e.key === 'Space') {
         e.preventDefault();
-        setCurrentSlide(prev => Math.min(prev + 1, TOTAL_SLIDES - 1));
+        goToNextSlide();
       } else if (e.key === 'ArrowLeft') {
         e.preventDefault();
-        setCurrentSlide(prev => Math.max(prev - 1, 0));
+        goToPrevSlide();
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        jumpToSlide(0);
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        jumpToSlide(TOTAL_SLIDES - 1);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [currentSlide]);
 
   // Monitorar tela cheia
   useEffect(() => {
@@ -61,7 +112,18 @@ export default function Presentation({ initialData }: Props) {
   };
 
   /* ── Aggregation local para slides de dados e insights ── */
-  const { ourStats, cityAgg, bestSchool } = useMemo(() => {
+  const { 
+    ourStats, 
+    cityAgg, 
+    bestSchool,
+    sorocabaStats,
+    votorantimStats,
+    sobralStats,
+    saoCaetanoStats,
+    sorocabaTop3,
+    votorantimTop3,
+    sobralTop3
+  } = useMemo(() => {
     const ours = initialData.filter(s => OUR_CITIES.includes(s.no_municipio));
     const wi = ours.filter(s => s.ideb != null);
     const wif = ours.filter(s => s.infra_score != null);
@@ -74,6 +136,61 @@ export default function Presentation({ initialData }: Props) {
       avgLp: avg(ours.filter(s => s.nota_lp != null).map(s => s.nota_lp!)),
       avgMt: avg(ours.filter(s => s.nota_mt != null).map(s => s.nota_mt!)),
       avgFluxo: avg(ours.filter(s => s.fluxo != null).map(s => s.fluxo!)),
+    };
+
+    // Sorocaba
+    const sSchools = initialData.filter(s => s.no_municipio === 'Sorocaba');
+    const sWi = sSchools.filter(s => s.ideb != null);
+    const sWif = sSchools.filter(s => s.infra_score != null);
+    const sStats = {
+      n: sSchools.length,
+      avgIdeb: avg(sWi.map(s => s.ideb!)),
+      avgInfra: avg(sWif.map(s => s.infra_score!)),
+      avgLp: avg(sSchools.filter(s => s.nota_lp != null).map(s => s.nota_lp!)),
+      avgMt: avg(sSchools.filter(s => s.nota_mt != null).map(s => s.nota_mt!)),
+      avgFluxo: avg(sSchools.filter(s => s.fluxo != null).map(s => s.fluxo!)),
+    };
+    const sTop3 = [...sWi].sort((a, b) => (b.ideb ?? 0) - (a.ideb ?? 0)).slice(0, 3);
+
+    // Votorantim
+    const vSchools = initialData.filter(s => s.no_municipio === 'Votorantim');
+    const vWi = vSchools.filter(s => s.ideb != null);
+    const vWif = vSchools.filter(s => s.infra_score != null);
+    const vStats = {
+      n: vSchools.length,
+      avgIdeb: avg(vWi.map(s => s.ideb!)),
+      avgInfra: avg(vWif.map(s => s.infra_score!)),
+      avgLp: avg(vSchools.filter(s => s.nota_lp != null).map(s => s.nota_lp!)),
+      avgMt: avg(vSchools.filter(s => s.nota_mt != null).map(s => s.nota_mt!)),
+      avgFluxo: avg(vSchools.filter(s => s.fluxo != null).map(s => s.fluxo!)),
+    };
+    const vTop3 = [...vWi].sort((a, b) => (b.ideb ?? 0) - (a.ideb ?? 0)).slice(0, 3);
+
+    // Sobral
+    const sobSchools = initialData.filter(s => s.no_municipio === 'Sobral');
+    const sobWi = sobSchools.filter(s => s.ideb != null);
+    const sobWif = sobSchools.filter(s => s.infra_score != null);
+    const sobStats = {
+      n: sobSchools.length,
+      avgIdeb: avg(sobWi.map(s => s.ideb!)),
+      avgInfra: avg(sobWif.map(s => s.infra_score!)),
+      avgLp: avg(sobSchools.filter(s => s.nota_lp != null).map(s => s.nota_lp!)),
+      avgMt: avg(sobSchools.filter(s => s.nota_mt != null).map(s => s.nota_mt!)),
+      avgFluxo: avg(sobSchools.filter(s => s.fluxo != null).map(s => s.fluxo!)),
+    };
+    const sobTop3 = [...sobWi].sort((a, b) => (b.ideb ?? 0) - (a.ideb ?? 0)).slice(0, 3);
+
+    // São Caetano do Sul
+    const scSchools = initialData.filter(s => s.no_municipio === 'São Caetano do Sul');
+    const scWi = scSchools.filter(s => s.ideb != null);
+    const scWif = scSchools.filter(s => s.infra_score != null);
+    const scStats = {
+      n: scSchools.length,
+      avgIdeb: avg(scWi.map(s => s.ideb!)),
+      avgInfra: avg(scWif.map(s => s.infra_score!)),
+      avgLp: avg(scSchools.filter(s => s.nota_lp != null).map(s => s.nota_lp!)),
+      avgMt: avg(scSchools.filter(s => s.nota_mt != null).map(s => s.nota_mt!)),
+      avgFluxo: avg(scSchools.filter(s => s.fluxo != null).map(s => s.fluxo!)),
     };
 
     const map = new Map<string, { idebVals: number[]; infraVals: number[]; n: number }>();
@@ -96,17 +213,32 @@ export default function Presentation({ initialData }: Props) {
     const rankedOurs = [...wi].sort((a, b) => (b.ideb ?? 0) - (a.ideb ?? 0));
     const best = rankedOurs[0] || null;
 
-    return { ourStats: stats, cityAgg: agg, bestSchool: best };
+    return { 
+      ourStats: stats, 
+      cityAgg: agg, 
+      bestSchool: best,
+      sorocabaStats: sStats,
+      votorantimStats: vStats,
+      sobralStats: sobStats,
+      saoCaetanoStats: scStats,
+      sorocabaTop3: sTop3,
+      votorantimTop3: vTop3,
+      sobralTop3: sobTop3
+    };
   }, [initialData]);
 
-  const { sorocaba, votorantim } = useMemo(() => {
-    const s = cityAgg.find(c => c.city === 'Sorocaba');
-    const v = cityAgg.find(c => c.city === 'Votorantim');
-    return { sorocaba: s, votorantim: v };
-  }, [cityAgg]);
+  // Auroras dinâmicas por bloco de slide
+  const glowThemeClass = useMemo(() => {
+    if (currentSlide === 0) return 'glow-theme-default';
+    if (currentSlide >= 1 && currentSlide <= 3) return 'glow-theme-intro';
+    if (currentSlide >= 4 && currentSlide <= 6) return 'glow-theme-paradox';
+    if (currentSlide >= 7 && currentSlide <= 9) return 'glow-theme-local';
+    if (currentSlide >= 10 && currentSlide <= 12) return 'glow-theme-benchmark';
+    return 'glow-theme-conclusion';
+  }, [currentSlide]);
 
   return (
-    <div className="pres-container">
+    <div className={`pres-container ${glowThemeClass}`}>
       {/* Aurora glow blobs for modern aesthetics */}
       <div className="glow-blob glow-blob-1" />
       <div className="glow-blob glow-blob-2" />
@@ -122,7 +254,27 @@ export default function Presentation({ initialData }: Props) {
             </svg>
           </div>
           <span className="pres-logo-text">Observatório Educacional</span>
-          <span className="pres-logo-tag">Apresentação Principal</span>
+          <span className="pres-logo-tag">Apresentação Avançada</span>
+        </div>
+
+        {/* Presenter Helper (Timer) */}
+        <div className="pres-timer-widget">
+          <span className="timer-label">⏱️ TEMPO:</span>
+          <span className="timer-clock">{formatTime(timerSeconds)}</span>
+          <button 
+            className="timer-control-btn"
+            onClick={() => setIsTimerRunning(!isTimerRunning)}
+            title={isTimerRunning ? 'Pausar Timer' : 'Iniciar Timer'}
+          >
+            {isTimerRunning ? '⏸️' : '▶️'}
+          </button>
+          <button 
+            className="timer-control-btn"
+            onClick={() => { setTimerSeconds(0); setIsTimerRunning(false); }}
+            title="Resetar Timer"
+          >
+            🔄
+          </button>
         </div>
 
         <div className="pres-actions">
@@ -139,7 +291,7 @@ export default function Presentation({ initialData }: Props) {
       <div className="pres-slide-wrap">
         {/* SLIDE 1: CAPA SPLIT */}
         {currentSlide === 0 && (
-          <div className="pres-slide" key="cover">
+          <div className={`pres-slide slide-dir-${direction}`} key="cover">
             <div className="slide-cover-split">
               {/* Coluna Esquerda */}
               <div className="slide-cover-left">
@@ -149,7 +301,7 @@ export default function Presentation({ initialData }: Props) {
                   Desmistificando os limitadores do IDEB: Uma análise comparativa e orientada a dados sobre infraestrutura, fluxo e proficiência pedagógica nas redes municipais de Sorocaba e Votorantim.
                 </p>
                 
-                <button className="slide-cover-btn" onClick={() => setCurrentSlide(1)}>
+                <button className="slide-cover-btn" onClick={goToNextSlide}>
                   Iniciar Diagnóstico de Impacto ➔
                 </button>
 
@@ -197,7 +349,7 @@ export default function Presentation({ initialData }: Props) {
 
         {/* SLIDE 2: JUSTIFICATIVA */}
         {currentSlide === 1 && (
-          <div className="pres-slide" key="justificativa">
+          <div className={`pres-slide slide-dir-${direction}`} key="justificativa">
             <div className="slide-header">
               <span className="slide-num">Slide 02 / {TOTAL_SLIDES}</span>
               <h2 className="slide-title">A Justificativa & O Problema</h2>
@@ -243,54 +395,11 @@ export default function Presentation({ initialData }: Props) {
           </div>
         )}
 
-        {/* SLIDE 3: O PARADOXO */}
+        {/* SLIDE 3: RECORTE ESTRATÉGICO */}
         {currentSlide === 2 && (
-          <div className="pres-slide" key="paradoxo">
+          <div className={`pres-slide slide-dir-${direction}`} key="recorte">
             <div className="slide-header">
               <span className="slide-num">Slide 03 / {TOTAL_SLIDES}</span>
-              <h2 className="slide-title">O Paradoxo: Infraestrutura excelente vs. IDEB mediano</h2>
-            </div>
-            <div className="slide-body">
-              <div className="pres-chart-container">
-                <div className="pres-chart-box">
-                  <ParadoxChart data={cityAgg} theme="dark" />
-                </div>
-
-                <div className="pres-chart-desc">
-                  <div className="desc-bullet">
-                    <span className="desc-bullet-dot orange" />
-                    <div className="desc-bullet-body">
-                      <h5>Nossa Região (Sorocaba e Votorantim)</h5>
-                      <p>Excelente infraestrutura física e digital (Score de 70% a 80%), contudo nossos IDEBs concentram-se no patamar intermediário (5.9 a 6.2). Prova empírica de que cimento e prédios não garantem excelência.</p>
-                    </div>
-                  </div>
-
-                  <div className="desc-bullet">
-                    <span className="desc-bullet-dot purple" />
-                    <div className="desc-bullet-body">
-                      <h5>O Benchmark Sobral (CE) — O Outlier Nacional</h5>
-                      <p><strong>Sobral lidera o ranking do IDEB nacional (média de rede 9.2) com infraestrutura simples (58%).</strong> O foco absoluto de Sobral é na formação docente e na gestão de sala de aula, superando orçamentos bilionários.</p>
-                    </div>
-                  </div>
-
-                  <div className="desc-bullet">
-                    <span className="desc-bullet-dot green" />
-                    <div className="desc-bullet-body">
-                      <h5>São Caetano do Sul (SP)</h5>
-                      <p>IDEB excelente (7.4) suportado por infraestrutura máxima (98%). Modelo de alto custo financeiro e baixíssima replicabilidade para a nossa realidade regional.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* SLIDE 4: RECORTE ESTRATÉGICO */}
-        {currentSlide === 3 && (
-          <div className="pres-slide" key="recorte">
-            <div className="slide-header">
-              <span className="slide-num">Slide 04 / {TOTAL_SLIDES}</span>
               <h2 className="slide-title">Recorte de Foco: Por que o 3º e 4º anos?</h2>
             </div>
             <div className="slide-body">
@@ -342,11 +451,11 @@ export default function Presentation({ initialData }: Props) {
           </div>
         )}
 
-        {/* SLIDE 5: DICIONÁRIO DE MÉTRICAS */}
-        {currentSlide === 4 && (
-          <div className="pres-slide" key="metricas">
+        {/* SLIDE 4: DICIONÁRIO DE MÉTRICAS */}
+        {currentSlide === 3 && (
+          <div className={`pres-slide slide-dir-${direction}`} key="metricas">
             <div className="slide-header">
-              <span className="slide-num">Slide 05 / {TOTAL_SLIDES}</span>
+              <span className="slide-num">Slide 04 / {TOTAL_SLIDES}</span>
               <h2 className="slide-title">Dicionário de Métricas Educacionais</h2>
             </div>
             <div className="slide-body">
@@ -359,7 +468,7 @@ export default function Presentation({ initialData }: Props) {
                   <div className="pres-card pres-card-highlight">
                     <h3 style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <span>📊 IDEB (Índice Geral)</span>
-                      <code style={{ fontSize: '0.9rem', color: 'var(--accent)' }}>IDEB = N × P</code>
+                      <code style={{ fontSize: '0.85rem', color: 'var(--accent)' }}>IDEB = N × P</code>
                     </h3>
                     <p style={{ fontSize: '0.8rem', marginTop: '6px' }}>
                       Métrica unificada nacional. Ele é o produto de duas dimensões: a nota média de aprendizado nos exames padronizados (<strong>N</strong>) e a taxa de fluxo/aprovação escolar (<strong>P</strong>). Varia de 0 a 10.
@@ -367,7 +476,10 @@ export default function Presentation({ initialData }: Props) {
                   </div>
 
                   <div className="pres-card">
-                    <h3>🔄 Fluxo Escolar (Aprovação - P)</h3>
+                    <h3 style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span>🔄 Fluxo Escolar (Aprovação)</span>
+                      <code style={{ fontSize: '0.85rem', color: 'var(--accent)' }}>P</code>
+                    </h3>
                     <p style={{ fontSize: '0.8rem', marginTop: '6px' }}>
                       Mede a retenção e progressão dos alunos. Um fluxo de <strong>1.0 (ou 100%)</strong> significa que todos os alunos avançaram de ano sem repetência ou abandono ao longo do ano avaliado.
                     </p>
@@ -376,14 +488,20 @@ export default function Presentation({ initialData }: Props) {
 
                 <div className="pres-list" style={{ gap: '12px' }}>
                   <div className="pres-card pres-card-highlight-purple">
-                    <h3>📝 SAEB (Exame de Proficiência - N)</h3>
+                    <h3 style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span>📝 SAEB (Proficiência)</span>
+                      <code style={{ fontSize: '0.85rem', color: 'var(--accent-2)' }}>N</code>
+                    </h3>
                     <p style={{ fontSize: '0.8rem', marginTop: '6px' }}>
                       Avaliação nacional aplicada pelo INEP. Testa os alunos do 5º ano em **Língua Portuguesa (leitura/interpretação)** e **Matemática (cálculo/geometria)**, padronizada em uma nota de 0 a 10.
                     </p>
                   </div>
 
                   <div className="pres-card">
-                    <h3>⚡ Score de Infraestrutura (infra_score)</h3>
+                    <h3 style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span>⚡ Score de Infraestrutura</span>
+                      <code style={{ fontSize: '0.85rem', color: 'var(--accent-2)' }}>infra_score</code>
+                    </h3>
                     <p style={{ fontSize: '0.8rem', marginTop: '6px' }}>
                       Métrica customizada desenvolvida nesta pesquisa. Avalia o percentual de presença de <strong>12 itens estruturais e digitais indispensáveis</strong> (laboratórios, computadores, internet rápida, esgoto e água potável).
                     </p>
@@ -398,169 +516,373 @@ export default function Presentation({ initialData }: Props) {
           </div>
         )}
 
-        {/* SLIDE 6: PANORAMA REGIONAL */}
+        {/* SLIDE 5: O PARADOXO GERAL */}
+        {currentSlide === 4 && (
+          <div className={`pres-slide slide-dir-${direction}`} key="paradoxo">
+            <div className="slide-header">
+              <span className="slide-num">Slide 05 / {TOTAL_SLIDES}</span>
+              <h2 className="slide-title">O Paradoxo: Infraestrutura excelente vs. IDEB mediano</h2>
+            </div>
+            <div className="slide-body">
+              <div className="pres-chart-container">
+                <div className="pres-chart-box">
+                  <ParadoxChart data={cityAgg} theme="dark" />
+                </div>
+
+                <div className="pres-chart-desc">
+                  <div className="desc-bullet">
+                    <span className="desc-bullet-dot orange" />
+                    <div className="desc-bullet-body">
+                      <h5>Nossa Região (Sorocaba e Votorantim)</h5>
+                      <p>Excelente infraestrutura física e digital (Score de 70% a 80%), contudo nossos IDEBs concentram-se no patamar intermediário (5.9 a 6.2). Prova empírica de que cimento e prédios não garantem excelência.</p>
+                    </div>
+                  </div>
+
+                  <div className="desc-bullet">
+                    <span className="desc-bullet-dot purple" />
+                    <div className="desc-bullet-body">
+                      <h5>O Benchmark Sobral (CE)</h5>
+                      <p>Líder nacional do IDEB. Nível máximo de proficiência real com investimentos infraestruturais extremamente simples.</p>
+                    </div>
+                  </div>
+
+                  <div className="desc-bullet">
+                    <span className="desc-bullet-dot green" />
+                    <div className="desc-bullet-body">
+                      <h5>O Modelo de Alto Custo (São Caetano do Sul)</h5>
+                      <p>IDEB excelente de 7.4 atrelado a 98% de score de infraestrutura física. Dificílima replicação fiscal em larga escala nacional.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* SLIDE 6: DEEP DIVE SOBRAL */}
         {currentSlide === 5 && (
-          <div className="pres-slide" key="indicadores">
+          <div className={`pres-slide slide-dir-${direction}`} key="sobral-fenomeno">
             <div className="slide-header">
               <span className="slide-num">Slide 06 / {TOTAL_SLIDES}</span>
-              <h2 className="slide-title">Indicadores da Nossa Região (Dados Consolidados)</h2>
+              <h2 className="slide-title">Deep Dive: O Fenômeno de Sobral (CE)</h2>
             </div>
             <div className="slide-body">
-              <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)', marginBottom: '16px' }}>
-                Estatísticas dinâmicas agregadas a partir das escolas das redes municipais de <strong>Sorocaba</strong> e <strong>Votorantim</strong> gravadas em nosso banco:
-              </p>
-
-              <div className="pres-kpi-grid">
-                <div className="pres-kpi-card">
-                  <span className="pres-kpi-icon" style={{ color: '#FF6B2C' }}>🏫</span>
-                  <div className="pres-kpi-body">
-                    <span className="pres-kpi-label">Volume de Escolas</span>
-                    <span className="pres-kpi-val">{ourStats.n}</span>
-                    <span className="pres-kpi-sub">Rede Municipal Estudada</span>
+              <div className="pres-grid-2">
+                <div className="pres-list">
+                  <div className="pres-card pres-card-highlight">
+                    <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px' }}>
+                      <span style={{ fontSize: '3.5rem', fontWeight: 900, color: 'var(--accent)', lineHeight: 1 }}>9.2</span>
+                      <div>
+                        <h4 style={{ color: '#fff', fontSize: '1rem', fontWeight: 800 }}>IDEB Médio da Rede</h4>
+                        <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.6)' }}>Benchmark absoluto do Brasil</p>
+                      </div>
+                    </div>
+                    <p style={{ marginTop: '16px', fontSize: '0.88rem', color: 'rgba(255,255,255,0.75)', lineHeight: 1.5 }}>
+                      Sobral lidera a educação pública brasileira mesmo operando com um <strong>Score de Infraestrutura de apenas 58.3%</strong>. Suas escolas são simples, desprovidas de equipamentos luxuosos, mas operam com um método pedagógico de precisão cirúrgica.
+                    </p>
+                  </div>
+                  <div className="pres-card">
+                    <h3>🛠️ Gestão de Foco Pedagógico</h3>
+                    <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.6)' }}>
+                      Em vez de computadores de última geração, o investimento de Sobral reside integralmente na capacitação sistemática de professores, material didático estruturado e leitura fluente na idade correta.
+                    </p>
                   </div>
                 </div>
 
-                <div className="pres-kpi-card">
-                  <span className="pres-kpi-icon" style={{ color: '#6ee7b7' }}>📊</span>
-                  <div className="pres-kpi-body">
-                    <span className="pres-kpi-label">IDEB Médio Regional</span>
-                    <span className="pres-kpi-val">{ourStats.avgIdeb?.toFixed(2) || 'N/A'}</span>
-                    <span className="pres-kpi-sub">Média Sorocaba + Votorantim</span>
+                <div className="pres-list">
+                  <div className="pres-list-item">
+                    <span className="pres-list-icon">1</span>
+                    <div className="pres-list-body">
+                      <h4>Foco Radical na Alfabetização Plena</h4>
+                      <p>Garantia de que 100% das crianças leem fluentemente até o fim do 2º ano do Ensino Fundamental.</p>
+                    </div>
+                  </div>
+                  <div className="pres-list-item">
+                    <span className="pres-list-icon">2</span>
+                    <div className="pres-list-body">
+                      <h4>Valorização e Meritocracia Docente</h4>
+                      <p>Seleção técnica de diretores sem influência política e premiação financeira por resultados de aprendizado.</p>
+                    </div>
+                  </div>
+                  <div className="pres-list-item">
+                    <span className="pres-list-icon">3</span>
+                    <div className="pres-list-body">
+                      <h4>Avaliação e Monitoramento Mensal</h4>
+                      <p>Exames mensais centralizados na secretaria que identificam exatamente quais alunos precisam de reforço imediato.</p>
+                    </div>
                   </div>
                 </div>
-
-                <div className="pres-kpi-card">
-                  <span className="pres-kpi-icon" style={{ color: '#818cf8' }}>⚡</span>
-                  <div className="pres-kpi-body">
-                    <span className="pres-kpi-label">Score de Infraestrutura</span>
-                    <span className="pres-kpi-val">{ourStats.avgInfra?.toFixed(1) || 'N/A'}%</span>
-                    <span className="pres-kpi-sub">Média de recursos físicos ativos</span>
-                  </div>
-                </div>
-
-                <div className="pres-kpi-card">
-                  <span className="pres-kpi-icon" style={{ color: '#fbbf24' }}>📝</span>
-                  <div className="pres-kpi-body">
-                    <span className="pres-kpi-label">Proficiência Média LP</span>
-                    <span className="pres-kpi-val">{ourStats.avgLp?.toFixed(1) || 'N/A'}</span>
-                    <span className="pres-kpi-sub">Nota SAEB Língua Portuguesa</span>
-                  </div>
-                </div>
-
-                <div className="pres-kpi-card">
-                  <span className="pres-kpi-icon" style={{ color: '#EC4899' }}>🔢</span>
-                  <div className="pres-kpi-body">
-                    <span className="pres-kpi-label">Proficiência Média MT</span>
-                    <span className="pres-kpi-val">{ourStats.avgMt?.toFixed(1) || 'N/A'}</span>
-                    <span className="pres-kpi-sub">Nota SAEB Matemática</span>
-                  </div>
-                </div>
-
-                <div className="pres-kpi-card" style={{ borderLeft: '4px solid var(--accent)' }}>
-                  <span className="pres-kpi-icon" style={{ color: '#10B981' }}>🏆</span>
-                  <div className="pres-kpi-body">
-                    <span className="pres-kpi-label">Líder de IDEB da Região</span>
-                    <span className="pres-kpi-val" style={{ fontSize: '1.05rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '240px' }} title={bestSchool?.nome_escola || 'N/A'}>
-                      {bestSchool ? bestSchool.nome_escola : 'N/A'}
-                    </span>
-                    <span className="pres-kpi-sub" style={{ fontWeight: 800, color: 'var(--accent)' }}>IDEB Recorde: {bestSchool?.ideb || 'N/A'}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div style={{ marginTop: '20px', padding: '12px 16px', background: 'rgba(255, 107, 44, 0.05)', borderRadius: '12px', border: '1px solid rgba(255, 107, 44, 0.15)', fontSize: '0.8rem', color: 'rgba(255,255,255,0.7)', lineHeight: '1.5' }}>
-                💡 <strong>Análise Rápida da Região:</strong> Nossa infraestrutura física é excelente (<strong>{ourStats.avgInfra?.toFixed(1)}%</strong>) e as taxas de fluxo escolar são próximas a perfeitas (<strong>{(ourStats.avgFluxo ? ourStats.avgFluxo * 100 : 0).toFixed(0)}%</strong> de aprovação). No entanto, o IDEB médio de <strong>{ourStats.avgIdeb?.toFixed(2)}</strong> está longe da proficiência perfeita do país. Onde está a quebra?
               </div>
             </div>
           </div>
         )}
 
-        {/* SLIDE 7: O ABISMO DA EXCELÊNCIA */}
+        {/* SLIDE 7: SÃO CAETANO DO SUL CONTRASTE */}
         {currentSlide === 6 && (
-          <div className="pres-slide" key="excelencia">
+          <div className={`pres-slide slide-dir-${direction}`} key="saocaetano-contraste">
             <div className="slide-header">
               <span className="slide-num">Slide 07 / {TOTAL_SLIDES}</span>
-              <h2 className="slide-title">O Abismo da Excelência: Gap Analysis Real</h2>
+              <h2 className="slide-title">O Contraponto: São Caetano do Sul (SP)</h2>
             </div>
             <div className="slide-body">
-              <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)', marginBottom: '16px' }}>
-                Análise de gap absoluto cruzando as melhores escolas de Sorocaba e Votorantim contra os líderes históricos nacionais:
-              </p>
+              <div className="pres-grid-2">
+                <div className="pres-list">
+                  <div className="pres-card pres-card-highlight-purple">
+                    <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px' }}>
+                      <span style={{ fontSize: '3.5rem', fontWeight: 900, color: 'var(--accent-2)', lineHeight: 1 }}>98%</span>
+                      <div>
+                        <h4 style={{ color: '#fff', fontSize: '1rem', fontWeight: 800 }}>Infra Score</h4>
+                        <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.6)' }}>Estrutura física máxima</p>
+                      </div>
+                    </div>
+                    <p style={{ marginTop: '16px', fontSize: '0.88rem', color: 'rgba(255,255,255,0.75)', lineHeight: 1.5 }}>
+                      São Caetano do Sul representa o modelo de <strong>alto custo por aluno</strong>. Prédios escolares impecáveis, laboratórios, acessibilidade total e climatização perfeita ajudam a rede a obter um excelente <strong>IDEB de 7.4</strong>.
+                    </p>
+                  </div>
+                  <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.5)', lineHeight: 1.5 }}>
+                    Embora o resultado de São Caetano seja muito positivo, sua tese depende de um orçamento per capita municipal gigantesco. Este modelo de tijolo, cimento e tecnologia física de alto custo é financeiramente inviável para 95% dos municípios brasileiros da nossa região e de todo o país.
+                  </p>
+                </div>
 
-              <div style={{ overflowX: 'auto', background: 'rgba(255,255,255,0.02)', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.06)' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.85rem' }}>
-                  <thead>
-                    <tr style={{ background: 'rgba(255,255,255,0.04)', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-                      <th style={{ padding: '14px 16px', color: '#fff', fontWeight: 700 }}>Município / Escola</th>
-                      <th style={{ padding: '14px 16px', color: 'var(--accent)', fontWeight: 700, textAlign: 'center' }}>IDEB 2023</th>
-                      <th style={{ padding: '14px 16px', color: '#fff', fontWeight: 700, textAlign: 'center' }}>Fluxo (Aprovação)</th>
-                      <th style={{ padding: '14px 16px', color: '#fff', fontWeight: 700, textAlign: 'center' }}>Aprendizado SAEB</th>
-                      <th style={{ padding: '14px 16px', color: '#fff', fontWeight: 700, textAlign: 'center' }}>Infra Score (%)</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.04)', background: 'rgba(177, 76, 255, 0.05)' }}>
-                      <td style={{ padding: '12px 16px', fontWeight: 700 }}>🏆 Sobral (CE) — E.M. Leonília Gomes Parente</td>
-                      <td style={{ padding: '12px 16px', textAlign: 'center', fontWeight: 800, color: 'var(--accent-2)' }}>10.0</td>
-                      <td style={{ padding: '12px 16px', textAlign: 'center' }}>1.0 (100%)</td>
-                      <td style={{ padding: '12px 16px', textAlign: 'center', fontWeight: 700 }}>10.00</td>
-                      <td style={{ padding: '12px 16px', textAlign: 'center' }}>58.3%</td>
-                    </tr>
-                    <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.04)', background: 'rgba(177, 76, 255, 0.03)' }}>
-                      <td style={{ padding: '12px 16px', fontWeight: 700 }}>🏆 Sobral (CE) — E.M. Raimundo Santana</td>
-                      <td style={{ padding: '12px 16px', textAlign: 'center', fontWeight: 800, color: 'var(--accent-2)' }}>10.0</td>
-                      <td style={{ padding: '12px 16px', textAlign: 'center' }}>1.0 (100%)</td>
-                      <td style={{ padding: '12px 16px', textAlign: 'center', fontWeight: 700 }}>10.00</td>
-                      <td style={{ padding: '12px 16px', textAlign: 'center' }}>66.7%</td>
-                    </tr>
-                    <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-                      <td style={{ padding: '12px 16px' }}>🏙️ Sorocaba (SP) — E.M. Enéas Proença de Arruda</td>
-                      <td style={{ padding: '12px 16px', textAlign: 'center', fontWeight: 700, color: 'var(--accent)' }}>7.3</td>
-                      <td style={{ padding: '12px 16px', textAlign: 'center' }}>1.0 (100%)</td>
-                      <td style={{ padding: '12px 16px', textAlign: 'center', fontWeight: 700 }}>7.28</td>
-                      <td style={{ padding: '12px 16px', textAlign: 'center' }}>75.0%</td>
-                    </tr>
-                    <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-                      <td style={{ padding: '12px 16px' }}>🏙️ Sorocaba (SP) — E.M. Waldemar de Freitas Rosa</td>
-                      <td style={{ padding: '12px 16px', textAlign: 'center', fontWeight: 700, color: 'var(--accent)' }}>7.2</td>
-                      <td style={{ padding: '12px 16px', textAlign: 'center' }}>1.0 (100%)</td>
-                      <td style={{ padding: '12px 16px', textAlign: 'center', fontWeight: 700 }}>7.16</td>
-                      <td style={{ padding: '12px 16px', textAlign: 'center' }}>83.3%</td>
-                    </tr>
-                    <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-                      <td style={{ padding: '12px 16px' }}>🏘️ Votorantim (SP) — EMEIEF Lucinda R. P. Ignácio</td>
-                      <td style={{ padding: '12px 16px', textAlign: 'center', fontWeight: 700, color: '#fbbf24' }}>7.1</td>
-                      <td style={{ padding: '12px 16px', textAlign: 'center' }}>1.0 (100%)</td>
-                      <td style={{ padding: '12px 16px', textAlign: 'center', fontWeight: 700 }}>7.08</td>
-                      <td style={{ padding: '12px 16px', textAlign: 'center' }}>75.0%</td>
-                    </tr>
-                    <tr>
-                      <td style={{ padding: '12px 16px' }}>🏘️ Votorantim (SP) — EMEIEF Betty de Souza Oliveira</td>
-                      <td style={{ padding: '12px 16px', textAlign: 'center', fontWeight: 700, color: '#fbbf24' }}>7.0</td>
-                      <td style={{ padding: '12px 16px', textAlign: 'center' }}>1.0 (100%)</td>
-                      <td style={{ padding: '12px 16px', textAlign: 'center', fontWeight: 700 }}>7.05</td>
-                      <td style={{ padding: '12px 16px', textAlign: 'center' }}>66.7%</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <div className="pres-card pres-card-highlight" style={{ marginTop: '16px', padding: '14px 20px' }}>
-                <h4 style={{ fontSize: '0.9rem', color: '#fff', fontWeight: 700 }}>🔎 A Revelação Analítica do Gap:</h4>
-                <p style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.7)', marginTop: '4px', lineHeight: '1.5' }}>
-                  Ambas as redes locais (Sorocaba e Votorantim) entregam **Fluxo Perfeito de 1.0 (100% de aprovação de alunos)** em suas escolas de ponta. O gap de quase <strong>2.8 pontos no IDEB</strong> em relação ao topo do país é <strong>exclusivamente de proficiência SAEB (leitura e matemática básica)</strong>. A infraestrutura física local supera Sobral em até 20 pontos percentuais, provando que o limitador educacional é pedagógico, não material.
-                </p>
+                <div className="pres-list">
+                  <div className="pres-card" style={{ borderLeft: '4px solid #10B981', background: 'rgba(16, 185, 129, 0.04)' }}>
+                    <h3 style={{ color: '#10B981' }}>📈 Comparação de Eficiência Pedagógica</h3>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '12px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
+                        <span>Rede Municipal:</span>
+                        <span><strong>Sobral (CE)</strong> vs <strong>S. Caetano (SP)</strong></span>
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
+                        <span>IDEB Médio:</span>
+                        <span><strong style={{ color: 'var(--accent)' }}>9.2</strong> vs <strong>7.4</strong></span>
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
+                        <span>Infraestrutura Física:</span>
+                        <span><strong>58.3%</strong> vs <strong style={{ color: 'var(--accent-2)' }}>98.0%</strong></span>
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
+                        <span>Investimento Anual / Aluno:</span>
+                        <span><strong>R$ 3.800</strong> vs <strong style={{ color: 'var(--bad)' }}>R$ 14.500</strong></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style={{ padding: '12px', background: 'rgba(255,255,255,0.02)', borderRadius: '12px', fontSize: '0.78rem', color: 'rgba(255,255,255,0.6)', lineHeight: '1.4' }}>
+                    💡 <strong>Conclusão Fiscal:</strong> Sobral prova que é possível obter o triplo da eficiência educacional por aluno gastando um quarto do capital físico de São Caetano, focando exclusivamente nas práticas de ensino-aprendizagem.
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         )}
 
-        {/* SLIDE 8: ANÁLISE LOCAL */}
+        {/* SLIDE 8: PANORAMA SOROCABA */}
         {currentSlide === 7 && (
-          <div className="pres-slide" key="local">
+          <div className={`pres-slide slide-dir-${direction}`} key="sorocaba-panorama">
             <div className="slide-header">
               <span className="slide-num">Slide 08 / {TOTAL_SLIDES}</span>
-              <h2 className="slide-title">Análise Local: Sorocaba × Votorantim</h2>
+              <h2 className="slide-title">Mergulho na Rede de Sorocaba (SP)</h2>
+            </div>
+            <div className="slide-body">
+              <div className="pres-grid-2">
+                <div>
+                  <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)', marginBottom: '16px' }}>
+                    Estatísticas consolidadas dinamicamente a partir das <strong>{sorocabaStats.n} escolas</strong> da rede municipal de Sorocaba gravadas no banco:
+                  </p>
+
+                  <div className="pres-kpi-grid" style={{ gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                    <div className="pres-kpi-card" style={{ padding: '14px' }}>
+                      <span className="pres-kpi-icon" style={{ fontSize: '1.4rem', width: '38px', height: '38px' }}>🏫</span>
+                      <div className="pres-kpi-body">
+                        <span className="pres-kpi-label" style={{ fontSize: '0.62rem' }}>Total de Escolas</span>
+                        <span className="pres-kpi-val" style={{ fontSize: '1.3rem' }}>{sorocabaStats.n}</span>
+                      </div>
+                    </div>
+
+                    <div className="pres-kpi-card" style={{ padding: '14px' }}>
+                      <span className="pres-kpi-icon" style={{ fontSize: '1.4rem', width: '38px', height: '38px', color: '#6ee7b7' }}>📊</span>
+                      <div className="pres-kpi-body">
+                        <span className="pres-kpi-label" style={{ fontSize: '0.62rem' }}>IDEB Médio da Rede</span>
+                        <span className="pres-kpi-val" style={{ fontSize: '1.3rem', color: '#6ee7b7' }}>{sorocabaStats.avgIdeb?.toFixed(2) || 'N/A'}</span>
+                      </div>
+                    </div>
+
+                    <div className="pres-kpi-card" style={{ padding: '14px' }}>
+                      <span className="pres-kpi-icon" style={{ fontSize: '1.4rem', width: '38px', height: '38px', color: '#818cf8' }}>⚡</span>
+                      <div className="pres-kpi-body">
+                        <span className="pres-kpi-label" style={{ fontSize: '0.62rem' }}>Infraestrutura Média</span>
+                        <span className="pres-kpi-val" style={{ fontSize: '1.3rem' }}>{sorocabaStats.avgInfra?.toFixed(1) || 'N/A'}%</span>
+                      </div>
+                    </div>
+
+                    <div className="pres-kpi-card" style={{ padding: '14px' }}>
+                      <span className="pres-kpi-icon" style={{ fontSize: '1.4rem', width: '38px', height: '38px', color: '#fbbf24' }}>📝</span>
+                      <div className="pres-kpi-body">
+                        <span className="pres-kpi-label" style={{ fontSize: '0.62rem' }}>Proficiência Média LP</span>
+                        <span className="pres-kpi-val" style={{ fontSize: '1.3rem' }}>{sorocabaStats.avgLp?.toFixed(1) || 'N/A'}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pres-card pres-card-highlight">
+                  <h3 style={{ fontSize: '1rem', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '8px', marginBottom: '12px' }}>
+                    🏆 Líderes de IDEB em Sorocaba (Top 3)
+                  </h3>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {sorocabaTop3.map((s, idx) => (
+                      <div 
+                        key={s.inep_id} 
+                        style={{ 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          justifyContent: 'space-between', 
+                          padding: '10px 14px', 
+                          background: 'rgba(255,255,255,0.02)', 
+                          border: '1px solid rgba(255,255,255,0.05)',
+                          borderRadius: '12px'
+                        }}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                          <span style={{ 
+                            width: '24px', 
+                            height: '24px', 
+                            borderRadius: '6px', 
+                            background: idx === 0 ? 'var(--accent)' : 'rgba(255,255,255,0.08)', 
+                            display: 'grid', 
+                            placeItems: 'center',
+                            fontSize: '0.75rem',
+                            fontWeight: 800,
+                            color: '#fff'
+                          }}>
+                            {idx + 1}
+                          </span>
+                          <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '200px' }} title={s.nome_escola}>
+                            {s.nome_escola.replace('E.M. ', '').replace('EM ', '')}
+                          </span>
+                        </div>
+                        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                          <span className="ideb-badge high" style={{ fontSize: '0.75rem', padding: '2px 8px' }}>{s.ideb?.toFixed(1)}</span>
+                          <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)' }}>Infra: {s.infra_score?.toFixed(0)}%</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.4)', marginTop: '14px', lineHeight: 1.4 }}>
+                    💡 A rede municipal de Sorocaba é robusta, de alta complexidade demográfica e industrial, dispondo de escolas de alto desempenho físico e IDEB de excelência isolado.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* SLIDE 9: PANORAMA VOTORANTIM */}
+        {currentSlide === 8 && (
+          <div className={`pres-slide slide-dir-${direction}`} key="votorantim-panorama">
+            <div className="slide-header">
+              <span className="slide-num">Slide 09 / {TOTAL_SLIDES}</span>
+              <h2 className="slide-title">Mergulho na Rede de Votorantim (SP)</h2>
+            </div>
+            <div className="slide-body">
+              <div className="pres-grid-2">
+                <div>
+                  <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)', marginBottom: '16px' }}>
+                    Estatísticas consolidadas dinamicamente a partir das <strong>{votorantimStats.n} escolas</strong> da rede municipal de Votorantim gravadas no banco:
+                  </p>
+
+                  <div className="pres-kpi-grid" style={{ gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                    <div className="pres-kpi-card" style={{ padding: '14px' }}>
+                      <span className="pres-kpi-icon" style={{ fontSize: '1.4rem', width: '38px', height: '38px' }}>🏫</span>
+                      <div className="pres-kpi-body">
+                        <span className="pres-kpi-label" style={{ fontSize: '0.62rem' }}>Total de Escolas</span>
+                        <span className="pres-kpi-val" style={{ fontSize: '1.3rem' }}>{votorantimStats.n}</span>
+                      </div>
+                    </div>
+
+                    <div className="pres-kpi-card" style={{ padding: '14px' }}>
+                      <span className="pres-kpi-icon" style={{ fontSize: '1.4rem', width: '38px', height: '38px', color: '#6ee7b7' }}>📊</span>
+                      <div className="pres-kpi-body">
+                        <span className="pres-kpi-label" style={{ fontSize: '0.62rem' }}>IDEB Médio da Rede</span>
+                        <span className="pres-kpi-val" style={{ fontSize: '1.3rem', color: '#6ee7b7' }}>{votorantimStats.avgIdeb?.toFixed(2) || 'N/A'}</span>
+                      </div>
+                    </div>
+
+                    <div className="pres-kpi-card" style={{ padding: '14px' }}>
+                      <span className="pres-kpi-icon" style={{ fontSize: '1.4rem', width: '38px', height: '38px', color: '#818cf8' }}>⚡</span>
+                      <div className="pres-kpi-body">
+                        <span className="pres-kpi-label" style={{ fontSize: '0.62rem' }}>Infraestrutura Média</span>
+                        <span className="pres-kpi-val" style={{ fontSize: '1.3rem' }}>{votorantimStats.avgInfra?.toFixed(1) || 'N/A'}%</span>
+                      </div>
+                    </div>
+
+                    <div className="pres-kpi-card" style={{ padding: '14px' }}>
+                      <span className="pres-kpi-icon" style={{ fontSize: '1.4rem', width: '38px', height: '38px', color: '#fbbf24' }}>📝</span>
+                      <div className="pres-kpi-body">
+                        <span className="pres-kpi-label" style={{ fontSize: '0.62rem' }}>Proficiência Média LP</span>
+                        <span className="pres-kpi-val" style={{ fontSize: '1.3rem' }}>{votorantimStats.avgLp?.toFixed(1) || 'N/A'}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pres-card pres-card-highlight-purple">
+                  <h3 style={{ fontSize: '1rem', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '8px', marginBottom: '12px' }}>
+                    🏆 Líderes de IDEB em Votorantim (Top 3)
+                  </h3>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {votorantimTop3.map((s, idx) => (
+                      <div 
+                        key={s.inep_id} 
+                        style={{ 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          justifyContent: 'space-between', 
+                          padding: '10px 14px', 
+                          background: 'rgba(255,255,255,0.02)', 
+                          border: '1px solid rgba(255,255,255,0.05)',
+                          borderRadius: '12px'
+                        }}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                          <span style={{ 
+                            width: '24px', 
+                            height: '24px', 
+                            borderRadius: '6px', 
+                            background: idx === 0 ? 'var(--accent-2)' : 'rgba(255,255,255,0.08)', 
+                            display: 'grid', 
+                            placeItems: 'center',
+                            fontSize: '0.75rem',
+                            fontWeight: 800,
+                            color: '#fff'
+                          }}>
+                            {idx + 1}
+                          </span>
+                          <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '200px' }} title={s.nome_escola}>
+                            {s.nome_escola.replace('EMEIEF ', '').replace('EMEIF ', '')}
+                          </span>
+                        </div>
+                        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                          <span className="ideb-badge high" style={{ fontSize: '0.75rem', padding: '2px 8px' }}>{s.ideb?.toFixed(1)}</span>
+                          <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)' }}>Infra: {s.infra_score?.toFixed(0)}%</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.4)', marginTop: '14px', lineHeight: 1.4 }}>
+                    💡 Votorantim opera uma rede enxuta e centralizada, alcançando médias homogêneas de alto padrão de infraestrutura física e resultados sólidos a menor custo.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* SLIDE 10: CONFRONTO DE REDES */}
+        {currentSlide === 9 && (
+          <div className={`pres-slide slide-dir-${direction}`} key="confronto-redes">
+            <div className="slide-header">
+              <span className="slide-num">Slide 10 / {TOTAL_SLIDES}</span>
+              <h2 className="slide-title">Confronto de Redes Locais: Sorocaba vs. Votorantim</h2>
             </div>
             <div className="slide-body">
               <div className="pres-grid-2">
@@ -569,15 +891,19 @@ export default function Presentation({ initialData }: Props) {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '12px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
                       <span style={{ color: 'rgba(255,255,255,0.6)' }}>IDEB Médio da Rede:</span>
-                      <strong style={{ color: 'var(--accent)' }}>{sorocaba?.avgIdeb?.toFixed(2) || 'N/A'}</strong>
+                      <strong style={{ color: 'var(--accent)' }}>{sorocabaStats.avgIdeb?.toFixed(2) || 'N/A'}</strong>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
                       <span style={{ color: 'rgba(255,255,255,0.6)' }}>Infra Score Médio:</span>
-                      <strong>{sorocaba?.avgInfra?.toFixed(1) || 'N/A'}%</strong>
+                      <strong>{sorocabaStats.avgInfra?.toFixed(1) || 'N/A'}%</strong>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
-                      <span style={{ color: 'rgba(255,255,255,0.6)' }}>Volume de Escolas:</span>
-                      <strong>{sorocaba?.n || 'N/A'} unidades</strong>
+                      <span style={{ color: 'rgba(255,255,255,0.6)' }}>Proficiência Média LP / MT:</span>
+                      <strong>{sorocabaStats.avgLp?.toFixed(1)} / {sorocabaStats.avgMt?.toFixed(1)}</strong>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
+                      <span style={{ color: 'rgba(255,255,255,0.6)' }}>Volume de Escolas / Alunos:</span>
+                      <strong>{sorocabaStats.n} unidades (~48 mil)</strong>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
                       <span style={{ color: 'rgba(255,255,255,0.6)' }}>Custo Anual Estimado:</span>
@@ -585,7 +911,7 @@ export default function Presentation({ initialData }: Props) {
                     </div>
                   </div>
                   <p style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.5)', marginTop: '14px', lineHeight: '1.45' }}>
-                    Sorocaba administra uma malha escolar densa e complexa (polo industrial regional). Embora possua unidades de alta performance pontual e orçamento robusto, a média geral da rede reflete a complexidade do tamanho populacional e das disparidades periféricas da cidade.
+                    Sorocaba gerencia uma rede massiva e descentralizada com alta variação demográfica. Possui polos de excelência extrema pontuais, mas sofre para manter a homogeneidade nas periferias.
                   </p>
                 </div>
 
@@ -594,15 +920,19 @@ export default function Presentation({ initialData }: Props) {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '12px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
                       <span style={{ color: 'rgba(255,255,255,0.6)' }}>IDEB Médio da Rede:</span>
-                      <strong style={{ color: 'var(--accent-2)' }}>{votorantim?.avgIdeb?.toFixed(2) || 'N/A'}</strong>
+                      <strong style={{ color: 'var(--accent-2)' }}>{votorantimStats.avgIdeb?.toFixed(2) || 'N/A'}</strong>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
                       <span style={{ color: 'rgba(255,255,255,0.6)' }}>Infra Score Médio:</span>
-                      <strong>{votorantim?.avgInfra?.toFixed(1) || 'N/A'}%</strong>
+                      <strong>{votorantimStats.avgInfra?.toFixed(1) || 'N/A'}%</strong>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
-                      <span style={{ color: 'rgba(255,255,255,0.6)' }}>Volume de Escolas:</span>
-                      <strong>{votorantim?.n || 'N/A'} unidades</strong>
+                      <span style={{ color: 'rgba(255,255,255,0.6)' }}>Proficiência Média LP / MT:</span>
+                      <strong>{votorantimStats.avgLp?.toFixed(1)} / {votorantimStats.avgMt?.toFixed(1)}</strong>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
+                      <span style={{ color: 'rgba(255,255,255,0.6)' }}>Volume de Escolas / Alunos:</span>
+                      <strong>{votorantimStats.n} unidades (~9.2 mil)</strong>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
                       <span style={{ color: 'rgba(255,255,255,0.6)' }}>Custo Anual Estimado:</span>
@@ -610,7 +940,7 @@ export default function Presentation({ initialData }: Props) {
                     </div>
                   </div>
                   <p style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.5)', marginTop: '14px', lineHeight: '1.45' }}>
-                    Votorantim opera uma rede enxuta e compacta, o que possibilita acompanhamento pedagógico centralizado. A cidade adota parcerias e forte engajamento, conseguindo manter médias homogêneas de alto padrão mesmo dispondo de menor custo por aluno que a vizinha Sorocaba.
+                    Votorantim opera uma rede enxuta e centralizada. Embora seu investimento por aluno seja ligeiramente inferior, a proximidade da gestão e supervisão escolar garante resultados uniformes.
                   </p>
                 </div>
               </div>
@@ -618,11 +948,176 @@ export default function Presentation({ initialData }: Props) {
           </div>
         )}
 
-        {/* SLIDE 9: RECOMENDAÇÕES */}
-        {currentSlide === 8 && (
-          <div className="pres-slide" key="recomendacoes">
+        {/* SLIDE 11: BENCHMARK TOPO NACIONAL */}
+        {currentSlide === 10 && (
+          <div className={`pres-slide slide-dir-${direction}`} key="bench-topo">
             <div className="slide-header">
-              <span className="slide-num">Slide 09 / {TOTAL_SLIDES}</span>
+              <span className="slide-num">Slide 11 / {TOTAL_SLIDES}</span>
+              <h2 className="slide-title">O Topo Nacional: Benchmarks de Sobral (CE)</h2>
+            </div>
+            <div className="slide-body">
+              <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)', marginBottom: '16px' }}>
+                Estatísticas de escolas líderes da rede pública nacional (Sobral) registradas em nossa base:
+              </p>
+
+              <div className="pres-table-wrapper">
+                <table className="pres-table">
+                  <thead>
+                    <tr>
+                      <th>Escola / Município</th>
+                      <th style={{ textAlign: 'center' }}>IDEB 2023</th>
+                      <th style={{ textAlign: 'center' }}>Fluxo (Aprovação)</th>
+                      <th style={{ textAlign: 'center' }}>Aprendizado SAEB</th>
+                      <th style={{ textAlign: 'center' }}>Infra Score (%)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr style={{ background: 'rgba(177, 76, 255, 0.06)' }}>
+                      <td style={{ fontWeight: 700 }}>🏆 E.M. Leonília Gomes Parente (Sobral - CE)</td>
+                      <td style={{ textAlign: 'center', fontWeight: 800, color: 'var(--accent)' }}>10.0</td>
+                      <td style={{ textAlign: 'center' }}>1.00 (100%)</td>
+                      <td style={{ textAlign: 'center', fontWeight: 700 }}>10.00</td>
+                      <td style={{ textAlign: 'center' }}>58.3%</td>
+                    </tr>
+                    <tr style={{ background: 'rgba(177, 76, 255, 0.03)' }}>
+                      <td style={{ fontWeight: 700 }}>🏆 E.M. Raimundo Santana (Sobral - CE)</td>
+                      <td style={{ textAlign: 'center', fontWeight: 800, color: 'var(--accent)' }}>10.0</td>
+                      <td style={{ textAlign: 'center' }}>1.00 (100%)</td>
+                      <td style={{ textAlign: 'center', fontWeight: 700 }}>10.00</td>
+                      <td style={{ textAlign: 'center' }}>66.7%</td>
+                    </tr>
+                    <tr>
+                      <td>🏫 E.M. José da Mata e Silva (Sobral - CE)</td>
+                      <td style={{ textAlign: 'center', fontWeight: 800, color: 'var(--accent-2)' }}>9.8</td>
+                      <td style={{ textAlign: 'center' }}>1.00 (100%)</td>
+                      <td style={{ textAlign: 'center' }}>9.78</td>
+                      <td style={{ textAlign: 'center' }}>58.3%</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div style={{ marginTop: '20px', padding: '12px 16px', background: 'rgba(255, 107, 44, 0.04)', borderRadius: '12px', border: '1px solid rgba(255, 107, 44, 0.12)', fontSize: '0.82rem', color: 'rgba(255,255,255,0.7)', lineHeight: '1.5' }}>
+                💡 <strong>Observação Pedagógica:</strong> Repare que o fluxo dessas escolas é perfeito (<strong>1.00</strong>) e a nota do SAEB é virtualmente perfeita (<strong>10.00</strong>). No entanto, o score infraestrutural atesta uma infraestrutura extremamente básica, demonstrando que as salas de aula e recursos físicos de alto custo não são os fatores determinantes do aprendizado no Ceará.
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* SLIDE 12: DESTAQUES REGIONAIS */}
+        {currentSlide === 11 && (
+          <div className={`pres-slide slide-dir-${direction}`} key="bench-regionais">
+            <div className="slide-header">
+              <span className="slide-num">Slide 12 / {TOTAL_SLIDES}</span>
+              <h2 className="slide-title">Os Líderes Regionais: Destaques de Sorocaba e Votorantim</h2>
+            </div>
+            <div className="slide-body">
+              <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)', marginBottom: '16px' }}>
+                Escolas municipais com melhor desempenho absoluto de IDEB na região metropolitana estudada:
+              </p>
+
+              <div className="pres-table-wrapper">
+                <table className="pres-table">
+                  <thead>
+                    <tr>
+                      <th>Escola / Município</th>
+                      <th style={{ textAlign: 'center' }}>IDEB 2023</th>
+                      <th style={{ textAlign: 'center' }}>Fluxo (Aprovação)</th>
+                      <th style={{ textAlign: 'center' }}>Aprendizado SAEB</th>
+                      <th style={{ textAlign: 'center' }}>Infra Score (%)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr style={{ background: 'rgba(255, 107, 44, 0.05)' }}>
+                      <td style={{ fontWeight: 700 }}>🏙️ E.M. Enéas Proença de Arruda (Sorocaba - SP)</td>
+                      <td style={{ textAlign: 'center', fontWeight: 800, color: 'var(--accent)' }}>7.3</td>
+                      <td style={{ textAlign: 'center' }}>1.00 (100%)</td>
+                      <td style={{ textAlign: 'center', fontWeight: 700 }}>7.28</td>
+                      <td style={{ textAlign: 'center' }}>75.0%</td>
+                    </tr>
+                    <tr style={{ background: 'rgba(255, 107, 44, 0.02)' }}>
+                      <td style={{ fontWeight: 700 }}>🏙️ E.M. Waldemar de Freitas Rosa (Sorocaba - SP)</td>
+                      <td style={{ textAlign: 'center', fontWeight: 800, color: 'var(--accent)' }}>7.2</td>
+                      <td style={{ textAlign: 'center' }}>1.00 (100%)</td>
+                      <td style={{ textAlign: 'center', fontWeight: 700 }}>7.16</td>
+                      <td style={{ textAlign: 'center' }}>83.3%</td>
+                    </tr>
+                    <tr style={{ background: 'rgba(177, 76, 255, 0.04)' }}>
+                      <td style={{ fontWeight: 700 }}>🏘️ EMEIEF Lucinda R. P. Ignácio (Votorantim - SP)</td>
+                      <td style={{ textAlign: 'center', fontWeight: 800, color: 'var(--accent-2)' }}>7.1</td>
+                      <td style={{ textAlign: 'center' }}>1.00 (100%)</td>
+                      <td style={{ textAlign: 'center', fontWeight: 700 }}>7.08</td>
+                      <td style={{ textAlign: 'center' }}>75.0%</td>
+                    </tr>
+                    <tr style={{ background: 'rgba(177, 76, 255, 0.01)' }}>
+                      <td style={{ fontWeight: 700 }}>🏘️ EMEIEF Betty de Souza Oliveira (Votorantim - SP)</td>
+                      <td style={{ textAlign: 'center', fontWeight: 800, color: 'var(--accent-2)' }}>7.0</td>
+                      <td style={{ textAlign: 'center' }}>1.00 (100%)</td>
+                      <td style={{ textAlign: 'center', fontWeight: 700 }}>7.05</td>
+                      <td style={{ textAlign: 'center' }}>66.7%</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div style={{ marginTop: '16px', padding: '10px 14px', background: 'rgba(255,255,255,0.02)', borderRadius: '12px', fontSize: '0.78rem', color: 'rgba(255,255,255,0.5)', textAlign: 'center' }}>
+                📝 Nossos destaques locais também possuem <strong>fluxo perfeito (1.00)</strong>, mas sua nota do SAEB atinge o teto na faixa de <strong>7.0 a 7.3</strong>, demonstrando que mesmo nossas melhores unidades estão longe da proficiência nacional.
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* SLIDE 13: GAP ANALYSIS */}
+        {currentSlide === 12 && (
+          <div className={`pres-slide slide-dir-${direction}`} key="gap-analysis">
+            <div className="slide-header">
+              <span className="slide-num">Slide 13 / {TOTAL_SLIDES}</span>
+              <h2 className="slide-title">Gap Analysis: O Abismo da Proficiência Real</h2>
+            </div>
+            <div className="slide-body">
+              <div className="pres-grid-2">
+                <div className="pres-card pres-card-highlight">
+                  <h3>📊 Onde o IDEB nos separa?</h3>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '14px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '6px' }}>
+                      <span style={{ color: 'rgba(255,255,255,0.6)' }}>Variável Escolar:</span>
+                      <span><strong>Nossa Média</strong> vs <strong>Benchmark Sobral</strong></span>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '6px' }}>
+                      <span>Fluxo (Aprovação):</span>
+                      <span><strong>1.00 (100%)</strong> vs <strong>1.00 (100%)</strong></span>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '6px' }}>
+                      <span>Score de Infraestrutura:</span>
+                      <span><strong style={{ color: '#6ee7b7' }}>{ourStats.avgInfra?.toFixed(1)}%</strong> vs <strong>58.3%</strong></span>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '4px' }}>
+                      <span>Aprendizado SAEB:</span>
+                      <span><strong>{ourStats.avgLp?.toFixed(1) || 'N/A'}</strong> vs <strong style={{ color: 'var(--accent)' }}>10.00</strong></span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pres-list">
+                  <div className="pres-card" style={{ borderLeft: '4px solid var(--accent)', background: 'rgba(255, 107, 44, 0.05)' }}>
+                    <h4 style={{ color: '#fff', fontWeight: 800 }}>🔎 A Revelação Analítica do Gap:</h4>
+                    <p style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.7)', marginTop: '8px', lineHeight: '1.5' }}>
+                      Ambas as redes locais (Sorocaba e Votorantim) entregam **Fluxo Perfeito de 1.0 (100% de aprovação de alunos)** em suas escolas de ponta. O gap de quase <strong>2.8 pontos no IDEB</strong> em relação ao topo do país é <strong>exclusivamente de proficiência SAEB (leitura e matemática básica)</strong>.
+                      <br /><br />
+                      A infraestrutura física local supera Sobral em até 20 pontos percentuais, provando com rigor matemático que <strong>o limitador educacional é pedagógico, não material.</strong>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* SLIDE 14: RECOMENDAÇÕES */}
+        {currentSlide === 13 && (
+          <div className={`pres-slide slide-dir-${direction}`} key="recomendacoes">
+            <div className="slide-header">
+              <span className="slide-num">Slide 14 / {TOTAL_SLIDES}</span>
               <h2 className="slide-title">Recomendações e Plano de Ação Baseado em Dados</h2>
             </div>
             <div className="slide-body">
@@ -667,11 +1162,11 @@ export default function Presentation({ initialData }: Props) {
           </div>
         )}
 
-        {/* SLIDE 10: ENGENHARIA DE DADOS */}
-        {currentSlide === 9 && (
-          <div className="pres-slide" key="metodologia">
+        {/* SLIDE 15: ENGENHARIA DE DADOS */}
+        {currentSlide === 14 && (
+          <div className={`pres-slide slide-dir-${direction}`} key="metodologia">
             <div className="slide-header">
-              <span className="slide-num">Slide 10 / {TOTAL_SLIDES}</span>
+              <span className="slide-num">Slide 15 / {TOTAL_SLIDES}</span>
               <h2 className="slide-title">A Engenharia de Dados: Por Trás do Observatório</h2>
             </div>
             <div className="slide-body">
@@ -712,9 +1207,9 @@ export default function Presentation({ initialData }: Props) {
           </div>
         )}
 
-        {/* SLIDE 11: ENCERRAMENTO */}
-        {currentSlide === 10 && (
-          <div className="pres-slide" key="encerramento">
+        {/* SLIDE 16: ENCERRAMENTO */}
+        {currentSlide === 15 && (
+          <div className={`pres-slide slide-dir-${direction}`} key="encerramento">
             <div className="slide-end">
               <span className="slide-end-icon">💡</span>
               <h2>A Educação Começa na Base!</h2>
@@ -751,10 +1246,22 @@ export default function Presentation({ initialData }: Props) {
             </div>
           </div>
 
+          {/* Interactive Slide dots/click progress */}
+          <div className="pres-slide-dots">
+            {Array.from({ length: TOTAL_SLIDES }).map((_, index) => (
+              <button 
+                key={index} 
+                className={`pres-slide-dot ${currentSlide === index ? 'active' : ''}`}
+                onClick={() => jumpToSlide(index)}
+                title={`Ir para o Slide ${index + 1}`}
+              />
+            ))}
+          </div>
+
           <div className="pres-nav-buttons">
             <button 
               className="pres-btn-nav" 
-              onClick={() => setCurrentSlide(prev => Math.max(prev - 1, 0))}
+              onClick={goToPrevSlide}
               disabled={currentSlide === 0}
               title="Slide Anterior (Seta Esquerda)"
             >
@@ -762,7 +1269,7 @@ export default function Presentation({ initialData }: Props) {
             </button>
             <button 
               className="pres-btn-nav" 
-              onClick={() => setCurrentSlide(prev => Math.min(prev + 1, TOTAL_SLIDES - 1))}
+              onClick={goToNextSlide}
               disabled={currentSlide === TOTAL_SLIDES - 1}
               title="Próximo Slide (Seta Direita / Espaço)"
             >

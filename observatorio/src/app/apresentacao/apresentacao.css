@@ -1,0 +1,841 @@
+/* ==========================================================================
+   Estilos da Apresentação de Slides — apresentacao.css
+   ========================================================================== */
+
+.pres-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: radial-gradient(circle at top left, #1A1D24 0%, #0E1116 100%);
+  color: #F3F4F6;
+  font-family: var(--font, 'Plus Jakarta Sans', sans-serif);
+  position: relative;
+  overflow: hidden;
+  padding: 24px;
+}
+
+.pres-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  z-index: 10;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 14px;
+}
+
+.pres-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 1.15rem;
+}
+
+.pres-logo-icon {
+  background: var(--accent-grad);
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+}
+
+.pres-logo-text {
+  letter-spacing: -0.02em;
+}
+
+.pres-logo-tag {
+  font-size: 0.65rem;
+  background: rgba(255, 107, 44, 0.15);
+  color: var(--accent);
+  padding: 3px 8px;
+  border-radius: 99px;
+  border: 1px solid rgba(255, 107, 44, 0.3);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.pres-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pres-btn-exit {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 99px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #E5E7EB;
+  transition: all 0.2s ease;
+}
+
+.pres-btn-exit:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+/* ─── SLIDE WRAPPER ─── */
+.pres-slide-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 5;
+}
+
+.pres-slide {
+  width: 100%;
+  max-width: 1240px;
+  background: rgba(26, 29, 36, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg, 24px);
+  backdrop-filter: blur(20px);
+  padding: 48px 56px;
+  min-height: 580px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.7);
+  animation: slideInFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  position: relative;
+}
+
+@keyframes slideInFade {
+  0% {
+    opacity: 0;
+    transform: translateY(12px) scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ─── CONTROLS ─── */
+.pres-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
+  z-index: 10;
+}
+
+.pres-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pres-progress-container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+  max-width: 400px;
+}
+
+.pres-progress-bar {
+  flex: 1;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.pres-progress-fill {
+  height: 100%;
+  background: var(--accent-grad);
+  border-radius: 99px;
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pres-slide-indicator {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.45);
+  font-weight: 500;
+}
+
+.pres-nav-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pres-btn-nav {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  transition: all 0.2s;
+}
+
+.pres-btn-nav:hover:not(:disabled) {
+  background: var(--accent);
+  border-color: var(--accent);
+  transform: scale(1.05);
+}
+
+.pres-btn-nav:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.pres-keyboard-hint {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.3);
+  text-align: center;
+  margin-top: 4px;
+}
+
+/* ─── SLIDE CONTENT SPECIFICS ─── */
+
+/* Capa (Slide 1) */
+.slide-cover-split {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 56px;
+  align-items: center;
+  flex: 1;
+  text-align: left;
+  padding: 12px 0;
+}
+
+.slide-cover-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.slide-cover-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accent);
+  background: rgba(255, 107, 44, 0.12);
+  padding: 8px 16px;
+  border-radius: 99px;
+  border: 1px solid rgba(255, 107, 44, 0.3);
+  box-shadow: 0 4px 12px rgba(255, 107, 44, 0.05);
+}
+
+.slide-cover-left h1 {
+  font-size: 3.4rem;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.12;
+  background: linear-gradient(135deg, #FFFFFF 30%, #A5B4FC 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.slide-cover-left p.subtitle {
+  font-size: 1.15rem;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.6;
+  max-width: 90%;
+}
+
+.slide-cover-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--accent-grad);
+  color: #fff;
+  font-weight: 700;
+  padding: 16px 32px;
+  border-radius: 99px;
+  font-size: 0.98rem;
+  box-shadow: 0 10px 25px rgba(255, 107, 44, 0.35);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  border: none;
+  cursor: pointer;
+}
+
+.slide-cover-btn:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 14px 35px rgba(255, 107, 44, 0.5);
+}
+
+.slide-cover-team {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 16px;
+  width: 100%;
+}
+
+.slide-cover-member {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.45);
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.slide-cover-right {
+  display: flex;
+  flex-direction: column;
+}
+
+.thesis-card {
+  background: rgba(26, 29, 36, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 32px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.thesis-card:hover {
+  border-color: rgba(255, 107, 44, 0.35);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 107, 44, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.thesis-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 22px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.thesis-step {
+  display: flex;
+  gap: 18px;
+  margin-bottom: 20px;
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px solid transparent;
+  transition: all 0.25s ease;
+}
+
+.thesis-step:hover {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.05);
+  transform: translateX(4px);
+}
+
+.thesis-step:last-child {
+  margin-bottom: 0;
+}
+
+.thesis-step-num {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(255, 107, 44, 0.15);
+  color: var(--accent);
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 1.05rem;
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(255, 107, 44, 0.1);
+}
+
+.thesis-step-text strong {
+  display: block;
+  font-size: 0.95rem;
+  color: #fff;
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+
+.thesis-step-text p {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* Slides Gerais */
+.slide-header {
+  margin-bottom: 24px;
+}
+
+.slide-num {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.8rem;
+  color: var(--accent);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.slide-title {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-top: 6px;
+  color: #fff;
+}
+
+.slide-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Grids e Layouts Internos dos Slides */
+.pres-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: center;
+}
+
+.pres-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.pres-card-highlight {
+  border-left: 4px solid var(--accent);
+  background: rgba(255, 107, 44, 0.05);
+}
+
+.pres-card-highlight-purple {
+  border-left: 4px solid var(--accent-2);
+  background: rgba(177, 76, 255, 0.05);
+}
+
+.pres-card h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 12px;
+}
+
+.pres-card p {
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.pres-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pres-list-item {
+  display: flex;
+  gap: 14px;
+}
+
+.pres-list-icon {
+  background: rgba(255, 107, 44, 0.1);
+  color: var(--accent);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+.pres-list-body h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.pres-list-body p {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* Recorte Base (Slide 3) */
+.recorte-base-visual {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: var(--radius);
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.recorte-step {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.recorte-step.highlight {
+  background: rgba(255, 107, 44, 0.08);
+  border-color: rgba(255, 107, 44, 0.25);
+}
+
+.recorte-num {
+  font-size: 1.25rem;
+  font-weight: 800;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  display: grid;
+  place-items: center;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.recorte-step.highlight .recorte-num {
+  background: var(--accent-grad);
+  color: #fff;
+}
+
+.recorte-step h4 {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.recorte-step p {
+  font-size: 0.76rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 2px;
+}
+
+/* Metodologia Grid (Slide 5) */
+.metod-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.metod-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.metod-step {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+
+.metod-card h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.metod-card p {
+  font-size: 0.76rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.tech-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.tech-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* KPI Grid (Slide 6) */
+.pres-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.pres-kpi-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.pres-kpi-icon {
+  font-size: 1.8rem;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.pres-kpi-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.pres-kpi-label {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.45);
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.pres-kpi-val {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.02em;
+  margin-top: 2px;
+}
+
+.pres-kpi-sub {
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.35);
+  margin-top: 2px;
+}
+
+/* Slide Gráfico do Paradoxo (Slide 7) */
+.pres-chart-container {
+  display: grid;
+  grid-template-columns: 1.8fr 1fr;
+  gap: 28px;
+  align-items: stretch;
+}
+
+.pres-chart-box {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 18px;
+  padding: 16px;
+  height: 330px;
+}
+
+.pres-chart-desc {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+}
+
+.desc-bullet {
+  display: flex;
+  gap: 12px;
+}
+
+.desc-bullet-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+
+.desc-bullet-dot.orange { background: var(--accent); }
+.desc-bullet-dot.purple { background: var(--accent-2); }
+.desc-bullet-dot.green { background: var(--good); }
+
+.desc-bullet-body h5 {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.desc-bullet-body p {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.5);
+  line-height: 1.45;
+  margin-top: 2px;
+}
+
+/* Encerramento (Slide 10) */
+.slide-end {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  gap: 24px;
+  padding: 40px 0;
+}
+
+.slide-end-icon {
+  font-size: 3.5rem;
+  animation: pulseGrad 2s infinite alternate;
+}
+
+@keyframes pulseGrad {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.08); }
+}
+
+.slide-end h2 {
+  font-size: 2.8rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, #FFE4D5 0%, #FF6B2C 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.slide-end p {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.65);
+  max-width: 600px;
+  line-height: 1.5;
+}
+
+.slide-end-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 107, 44, 0.12);
+  color: var(--accent);
+  border: 1px solid rgba(255, 107, 44, 0.4);
+  font-weight: 700;
+  padding: 14px 28px;
+  border-radius: 99px;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.slide-end-btn:hover {
+  background: var(--accent-grad);
+  color: #fff;
+  border-color: var(--accent);
+  box-shadow: 0 10px 25px rgba(255, 107, 44, 0.35);
+  transform: translateY(-2px);
+}
+
+/* Responsividade de Slides */
+@media (max-width: 900px) {
+  .pres-container { padding: 16px; }
+  .pres-slide { padding: 24px; min-height: auto; }
+  .pres-grid-2, .pres-chart-container { grid-template-columns: 1fr; gap: 20px; }
+  .pres-chart-box { height: 260px; }
+  .metod-grid { grid-template-columns: repeat(2, 1fr); }
+  .pres-kpi-grid { grid-template-columns: 1fr; }
+  .slide-cover h1 { font-size: 2rem; }
+  .slide-cover-team { flex-direction: column; gap: 8px; margin-top: 16px; }
+  .slide-title { font-size: 1.5rem; }
+}
+
+/* ─── AURORA GLOW EFFECTS ─── */
+.glow-blob {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  filter: blur(160px);
+  opacity: 0.12;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.glow-blob-1 {
+  background: #FF6B2C;
+  top: -15%;
+  left: -15%;
+  animation: float1 25s infinite alternate ease-in-out;
+}
+
+.glow-blob-2 {
+  background: #B14CFF;
+  bottom: -20%;
+  right: -15%;
+  animation: float2 30s infinite alternate ease-in-out;
+}
+
+@keyframes float1 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(60px, 80px) scale(1.15); }
+  100% { transform: translate(-30px, -40px) scale(0.9); }
+}
+
+@keyframes float2 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-80px, -60px) scale(1.08); }
+  100% { transform: translate(40px, 70px) scale(0.92); }
+}
+
+/* ─── TABELAS NA APRESENTAÇÃO (DARK MODE) ─── */
+.pres-slide table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.pres-slide thead th {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  font-size: 0.75rem !important;
+  letter-spacing: 0.8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding: 14px 16px !important;
+}
+
+.pres-slide tbody tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+  transition: background 0.2s;
+}
+
+.pres-slide tbody td {
+  padding: 12px 16px !important;
+  color: rgba(255, 255, 255, 0.85) !important;
+}

@@ -1,12 +1,12 @@
 'use client';
 
 import {
-  Chart as ChartJS, LinearScale, PointElement,
+  Chart as ChartJS, LinearScale, PointElement, LineElement,
   Tooltip, Legend,
 } from 'chart.js';
 import { Scatter } from 'react-chartjs-2';
 
-ChartJS.register(LinearScale, PointElement, Tooltip, Legend);
+ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend);
 
 const OUR_CITIES = ['Sorocaba', 'Votorantim'];
 const REF_CITIES = ['Sobral', 'São Caetano do Sul', 'Jaraguá do Sul', 'João Pessoa', 'Recife'];
@@ -21,8 +21,8 @@ interface CityRow {
 interface Props { data: CityRow[]; theme: string; }
 
 export default function ParadoxChart({ data, theme }: Props) {
-  const gc = 'rgba(231,233,238,.8)';
-  const tc = '#9AA0AB';
+  const gc = theme === 'dark' ? 'rgba(255, 255, 255, 0.06)' : 'rgba(231, 233, 238, 0.8)';
+  const tc = theme === 'dark' ? 'rgba(255, 255, 255, 0.5)' : '#9AA0AB';
 
   const valid = data.filter(c => c.avgIdeb != null && c.avgInfra != null);
 

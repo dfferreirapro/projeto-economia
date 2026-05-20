@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 import type { Escola } from '@/lib/types';
 
 const RankingChart = dynamic(() => import('./RankingChart'),  { ssr: false });
@@ -315,7 +316,12 @@ export default function Dashboard({ initialData }: { initialData: Escola[] }) {
               <div className="page-sub">Sorocaba × Votorantim · Ensino Fundamental I</div>
             </div>
           </div>
-          <div className="badge-tag">INEP 2023 <span className="arrow">↗</span></div>
+          <div className="topbar-right" style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+            <Link href="/apresentacao" className="pill-action" style={{ background: 'var(--accent-grad)', color: '#fff', borderColor: 'var(--accent)', cursor: 'pointer' }}>
+              <span className="plus" style={{ background: '#fff', color: 'var(--accent)' }}>▶</span> Apresentar Projeto
+            </Link>
+            <div className="badge-tag">INEP 2023 <span className="arrow">↗</span></div>
+          </div>
         </div>
 
         {/* MAIN GRID */}

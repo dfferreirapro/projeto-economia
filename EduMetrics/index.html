@@ -165,6 +165,40 @@ button, input, select { font-family:inherit; font-size:inherit; }
 }
 .theme-btn:hover { background:var(--acc-soft); color:var(--text); border-color:var(--border2); }
 
+/* SIDEBAR TOGGLE */
+.sidebar-toggle {
+  width:30px; height:30px; border-radius:8px;
+  border:1px solid var(--border);
+  background:var(--surface2); color:var(--dim);
+  cursor:pointer; display:flex;
+  align-items:center; justify-content:center;
+  margin-left:auto; flex-shrink:0;
+  transition:all var(--ease);
+}
+.sidebar-toggle:hover {
+  color:var(--text); border-color:var(--border2);
+  background:var(--acc-soft);
+}
+.sidebar-toggle svg { width:14px; height:14px; }
+
+/* SIDEBAR COLLAPSED */
+.sidebar-col.collapsed { width:64px; min-width:64px; }
+.sidebar-col.collapsed .brand { flex-direction:column; align-items:center; gap:6px; border-bottom:none; padding-bottom:6px; margin-bottom:0; }
+.sidebar-col.collapsed .brand-name,
+.sidebar-col.collapsed .brand-sub { display:none; }
+.sidebar-col.collapsed .side-filter-slot { display:none; }
+.sidebar-col.collapsed .island-foot { display:none; }
+.sidebar-col.collapsed .sidebar-toggle { margin-left:0; }
+@media(max-width:900px) {
+  .sidebar-col.collapsed { width:var(--sidebar-w); min-width:var(--sidebar-w); }
+  .sidebar-col.collapsed .brand { flex-direction:row; }
+  .sidebar-col.collapsed .brand-name,
+  .sidebar-col.collapsed .brand-sub,
+  .sidebar-col.collapsed .side-filter-slot,
+  .sidebar-col.collapsed .island-foot { display:revert; }
+  .sidebar-col.collapsed .sidebar-toggle { margin-left:auto; }
+}
+
 .side-filter-slot { flex:1; min-height:0; overflow:auto; padding:4px 0 12px; }
 .side-filter-title {
   font-size:.78rem; font-weight:800; text-transform:uppercase; letter-spacing:1px;
@@ -812,6 +846,11 @@ body::-webkit-scrollbar-thumb,.side-filter-slot::-webkit-scrollbar-thumb,.tscrol
           <div class="brand-name">EduMetrics</div>
           <div class="brand-sub">Educacional · 2023</div>
         </div>
+        <button class="sidebar-toggle" id="sidebarToggle" aria-label="Abrir/fechar filtro lateral">
+          <svg viewBox="0 0 16 16" fill="none">
+            <path d="M1 3h14l-5 5.5V13l-4-2V8.5L1 3Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+          </svg>
+        </button>
       </div>
 
       <div class="side-filter-slot" id="sideFilterSlot">
@@ -1300,6 +1339,7 @@ if(sideFilterSlot&&topFilters) sideFilterSlot.appendChild(topFilters);
 const sbc=$('sidebarCol'), ov=$('sbOv');
 $('mobBtn')?.addEventListener('click',()=>{ sbc?.classList.toggle('open'); ov?.classList.toggle('active'); });
 ov?.addEventListener('click',()=>{ sbc?.classList.remove('open'); ov?.classList.remove('active'); });
+$('sidebarToggle')?.addEventListener('click',()=>{ sbc?.classList.toggle('collapsed'); });
 
 function switchPage(id) {
   qsa('.page').forEach(p=>p.classList.remove('active'));
@@ -1310,7 +1350,7 @@ function switchPage(id) {
   sbc?.classList.remove('open'); ov?.classList.remove('active');
   const cp=['graficos','infraestrutura','investimentos','comparativo','dashboard'];
   if(cp.includes(id)) setTimeout(renderAllCharts,80);
-  if(id==='mapa') setTimeout(renderMap,80);
+  if(id==='mapa'){ setTimeout(renderMap,80); setTimeout(panMapToTarget,280); }
   if(id==='metodologia') setTimeout(renderDict,80);
   if(id==='equipe'){ renderTeam(); if(allData.length) renderHeroChart(); }
 }
@@ -1538,13 +1578,43 @@ function renderHeroChart(){
 }
 
 /* FILTERS */
+function populateCityOptions(selectedState, preserveValue){
+  const allCities=[...new Set(allData.map(s=>s.no_municipio).filter(Boolean))].sort();
+  const cf=$('cityFilter'); if(!cf)return;
+  const currentVal=preserveValue?cf.value:'';
+  const stateCities=selectedState&&stateCityMap[selectedState]?[...stateCityMap[selectedState]].sort():null;
+  cf.innerHTML='';
+  const emptyOpt=document.createElement('option');emptyOpt.value='';emptyOpt.textContent='Todos municípios';cf.appendChild(emptyOpt);
+  const pool=stateCities||allCities;
+  pool.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;cf.appendChild(o);});
+  if(pool.includes(currentVal))cf.value=currentVal;
+}
+
+/* MAP PAN */
+function panMapToTarget(){
+  if(!$('mapa')?.classList.contains('active'))return;
+  if(!mapReady){initMap();if(!mapReady)return;}
+  setTimeout(()=>{
+    const state=$('stateFilter')?.value||'', city=$('cityFilter')?.value||'';
+    if(city&&CITY_CENTER[city]){mapInstance.setView(CITY_CENTER[city],10);}
+    else if(state&&STATE_CENTER[state]){mapInstance.setView(STATE_CENTER[state],7);}
+  },200);
+}
+
+/* STATE -> CITIES MAP */
+let stateCityMap={};
+
 function initFilters(){
   const cities=[...new Set(allData.map(s=>s.no_municipio).filter(Boolean))].sort();
   const states=[...new Set(allData.map(s=>s.uf_estado).filter(Boolean))].sort();
+  stateCityMap={};
+  allData.forEach(s=>{if(s.no_municipio&&s.uf_estado){if(!stateCityMap[s.uf_estado])stateCityMap[s.uf_estado]=new Set();stateCityMap[s.uf_estado].add(s.no_municipio);}});
   const cf=$('cityFilter');
   cities.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;cf.appendChild(o);});
   const sf=$('stateFilter');
   states.forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=s;sf?.appendChild(o);});
+  sf?.addEventListener('change',function(){populateCityOptions(this.value,true);applyFilters();panMapToTarget();});
+  cf?.addEventListener('change',function(){applyFilters();panMapToTarget();});
   ['compareCity1','compareCity2','compareCity3'].forEach((id,i)=>{
     const sel=$(id);if(!sel)return;
     if(i===2)sel.innerHTML='<option value="">— nenhum —</option>';else sel.innerHTML='';

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Logo Observatório Educacional</title>
+  <desc id="desc">Livro aberto com capelo de formatura nas cores azul, verde e amarelo.</desc>
+  <defs>
+    <linearGradient id="blue" x1="110" y1="90" x2="425" y2="440" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#07558e"/>
+      <stop offset=".55" stop-color="#0068b7"/>
+      <stop offset="1" stop-color="#063c73"/>
+    </linearGradient>
+    <linearGradient id="green" x1="92" y1="248" x2="266" y2="395" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#a7d92b"/>
+      <stop offset=".52" stop-color="#169d48"/>
+      <stop offset="1" stop-color="#006680"/>
+    </linearGradient>
+    <linearGradient id="yellow" x1="104" y1="179" x2="130" y2="308" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffe66d"/>
+      <stop offset="1" stop-color="#f7b500"/>
+    </linearGradient>
+  </defs>
+  <path d="M256 388c-47-47-105-60-174-44V247c86 6 149 39 174 99 25-60 88-93 174-99v97c-69-16-127-3-174 44Z" fill="#fff"/>
+  <path d="M82 267c72 6 131 30 158 82v63c-43-54-97-74-158-61Z" fill="url(#green)"/>
+  <path d="M430 235v116c-61-13-115 7-158 61v-63c27-52 86-76 158-82Z" fill="url(#blue)"/>
+  <path d="M82 351c61-13 115 7 158 61l16 20 16-20c43-54 97-74 158-61v18c-67-13-122 12-174 73-52-61-107-86-174-73Z" fill="#063c73"/>
+  <path d="M116 204h279v60c-62 8-106 26-139 66-33-40-77-58-140-66Z" fill="#07558e"/>
+  <path d="M256 70 104 118c-15 5-15 25 0 30l150 48c5 2 10 2 15 0l150-48c15-5 15-25 0-30L267 70c-4-1-8-1-11 0Z" fill="url(#blue)" stroke="#063c73" stroke-width="4"/>
+  <path d="M118 147v65" fill="none" stroke="#07558e" stroke-width="12" stroke-linecap="round"/>
+  <circle cx="118" cy="219" r="15" fill="#07558e"/>
+  <path d="M104 235h28l10 76c1 7-4 13-11 13h-26c-7 0-12-6-11-13Z" fill="url(#yellow)" stroke="#fff" stroke-width="8"/>
+</svg>

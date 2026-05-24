@@ -1,0 +1,2137 @@
+{
+  "metadados": {
+    "gerado_em": "2026-05-16T02:07:21.504Z",
+    "anos": [
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "periodo_siope_usado": 6,
+    "definicao": "Valores declarados na subfunção Ensino Fundamental em Despesas_Funcao_Educacao_Siope.",
+    "fonte_oficial": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/",
+    "recurso_odata": "Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)",
+    "campos_valores": [
+      "VAL_DESP_EMPE",
+      "VAL_DESP_LIQU",
+      "VAL_DESP_PAGA"
+    ],
+    "tratamento_lacunas": "Sem simulação; valores ficam null quando a fonte não retorna registro.",
+    "consulta_modelo": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?@Ano_Consulta=2024&@Num_Peri=6&@Sig_UF='SP'&$format=json"
+  },
+  "dados": [
+    {
+      "municipio": "Açailândia",
+      "uf": "MA",
+      "fonte": "FNDE/SIOPE - Dados Abertos - Despesas por Função Educação",
+      "serie": [
+        {
+          "ano": 2021,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 89411900.54,
+          "valor_despesa_liquidada": 87722051.05,
+          "valor_despesa_paga": 87264014.34,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2021&%40Num_Peri=6&%40Sig_UF=%27MA%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 21,
+            "sig_uf": "MA",
+            "cod_municipio_siope": 210005,
+            "nome_municipio_siope": "Açailândia",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2022,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 127864930.67,
+          "valor_despesa_liquidada": 117311538.91,
+          "valor_despesa_paga": 114758748.41,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2022&%40Num_Peri=6&%40Sig_UF=%27MA%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 21,
+            "sig_uf": "MA",
+            "cod_municipio_siope": 210005,
+            "nome_municipio_siope": "Açailândia",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2023,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 125609362.67,
+          "valor_despesa_liquidada": 124053512.57,
+          "valor_despesa_paga": 118123165.86,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2023&%40Num_Peri=6&%40Sig_UF=%27MA%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 21,
+            "sig_uf": "MA",
+            "cod_municipio_siope": 210005,
+            "nome_municipio_siope": "Açailândia",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2024,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 148820109.96,
+          "valor_despesa_liquidada": 148646956.2,
+          "valor_despesa_paga": 143819876.38,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2024&%40Num_Peri=6&%40Sig_UF=%27MA%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 21,
+            "sig_uf": "MA",
+            "cod_municipio_siope": 210005,
+            "nome_municipio_siope": "Açailândia",
+            "num_ordem": "7",
+            "des_subfuncao": "361"
+          }
+        },
+        {
+          "ano": 2025,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 165207952.41,
+          "valor_despesa_liquidada": 164733456.39,
+          "valor_despesa_paga": 162084726.45,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2025&%40Num_Peri=6&%40Sig_UF=%27MA%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 21,
+            "sig_uf": "MA",
+            "cod_municipio_siope": 210005,
+            "nome_municipio_siope": "Açailândia",
+            "num_ordem": "7",
+            "des_subfuncao": "361"
+          }
+        }
+      ]
+    },
+    {
+      "municipio": "Beruri",
+      "uf": "AM",
+      "fonte": "FNDE/SIOPE - Dados Abertos - Despesas por Função Educação",
+      "serie": [
+        {
+          "ano": 2021,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 29743593.71,
+          "valor_despesa_liquidada": 27634589.79,
+          "valor_despesa_paga": 27266072.43,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2021&%40Num_Peri=6&%40Sig_UF=%27AM%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 13,
+            "sig_uf": "AM",
+            "cod_municipio_siope": 130063,
+            "nome_municipio_siope": "Beruri",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2022,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 33724847.33,
+          "valor_despesa_liquidada": 33599492.06,
+          "valor_despesa_paga": 33103142.15,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2022&%40Num_Peri=6&%40Sig_UF=%27AM%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 13,
+            "sig_uf": "AM",
+            "cod_municipio_siope": 130063,
+            "nome_municipio_siope": "Beruri",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2023,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 36372401.93,
+          "valor_despesa_liquidada": 34734964.09,
+          "valor_despesa_paga": 34703847.59,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2023&%40Num_Peri=6&%40Sig_UF=%27AM%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 13,
+            "sig_uf": "AM",
+            "cod_municipio_siope": 130063,
+            "nome_municipio_siope": "Beruri",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2024,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 46673419.17,
+          "valor_despesa_liquidada": 46655419.17,
+          "valor_despesa_paga": 45084178.25,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2024&%40Num_Peri=6&%40Sig_UF=%27AM%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 13,
+            "sig_uf": "AM",
+            "cod_municipio_siope": 130063,
+            "nome_municipio_siope": "Beruri",
+            "num_ordem": "7",
+            "des_subfuncao": "361"
+          }
+        },
+        {
+          "ano": 2025,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": null,
+          "valor_despesa_liquidada": null,
+          "valor_despesa_paga": null,
+          "moeda": "BRL",
+          "encontrado": false,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2025&%40Num_Peri=6&%40Sig_UF=%27AM%27&%24format=json",
+          "observacao": "Registro de Ensino Fundamental não encontrado na consulta SIOPE para UF/ano/período.",
+          "registro_siope": null
+        }
+      ]
+    },
+    {
+      "municipio": "Bom Jardim",
+      "uf": "MA",
+      "fonte": "FNDE/SIOPE - Dados Abertos - Despesas por Função Educação",
+      "serie": [
+        {
+          "ano": 2021,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 42950722.56,
+          "valor_despesa_liquidada": 42934722.56,
+          "valor_despesa_paga": 40230481.15,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2021&%40Num_Peri=6&%40Sig_UF=%27MA%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 21,
+            "sig_uf": "MA",
+            "cod_municipio_siope": 210200,
+            "nome_municipio_siope": "Bom Jardim",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2022,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 68446183.8,
+          "valor_despesa_liquidada": 68428426.32,
+          "valor_despesa_paga": 67677769.05,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2022&%40Num_Peri=6&%40Sig_UF=%27MA%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 21,
+            "sig_uf": "MA",
+            "cod_municipio_siope": 210200,
+            "nome_municipio_siope": "Bom Jardim",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2023,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 74846311.93,
+          "valor_despesa_liquidada": 74846311.93,
+          "valor_despesa_paga": 74279043.23,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2023&%40Num_Peri=6&%40Sig_UF=%27MA%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 21,
+            "sig_uf": "MA",
+            "cod_municipio_siope": 210200,
+            "nome_municipio_siope": "Bom Jardim",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2024,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 91556121.48,
+          "valor_despesa_liquidada": 91555121.48,
+          "valor_despesa_paga": 90211168.7,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2024&%40Num_Peri=6&%40Sig_UF=%27MA%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 21,
+            "sig_uf": "MA",
+            "cod_municipio_siope": 210200,
+            "nome_municipio_siope": "Bom Jardim",
+            "num_ordem": "7",
+            "des_subfuncao": "361"
+          }
+        },
+        {
+          "ano": 2025,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 102064728.38,
+          "valor_despesa_liquidada": 102064728.38,
+          "valor_despesa_paga": 101334980.8,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2025&%40Num_Peri=6&%40Sig_UF=%27MA%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 21,
+            "sig_uf": "MA",
+            "cod_municipio_siope": 210200,
+            "nome_municipio_siope": "Bom Jardim",
+            "num_ordem": "7",
+            "des_subfuncao": "361"
+          }
+        }
+      ]
+    },
+    {
+      "municipio": "Brasília",
+      "uf": "DF",
+      "fonte": "FNDE/SIOPE - Dados Abertos - Despesas por Função Educação",
+      "serie": [
+        {
+          "ano": 2021,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 3673760725.07,
+          "valor_despesa_liquidada": 3579260504.11,
+          "valor_despesa_paga": 3250228318.41,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2021&%40Num_Peri=6&%40Sig_UF=%27DF%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Estadual",
+            "cod_uf": 53,
+            "sig_uf": "DF",
+            "cod_municipio_siope": null,
+            "nome_municipio_siope": null,
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2022,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 3990285298.06,
+          "valor_despesa_liquidada": 3936670698.71,
+          "valor_despesa_paga": 3656502180.62,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2022&%40Num_Peri=6&%40Sig_UF=%27DF%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Estadual",
+            "cod_uf": 53,
+            "sig_uf": "DF",
+            "cod_municipio_siope": null,
+            "nome_municipio_siope": null,
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2023,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 3587136173.72,
+          "valor_despesa_liquidada": 3294400272.8,
+          "valor_despesa_paga": 3052137838.41,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2023&%40Num_Peri=6&%40Sig_UF=%27DF%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Estadual",
+            "cod_uf": 53,
+            "sig_uf": "DF",
+            "cod_municipio_siope": null,
+            "nome_municipio_siope": null,
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2024,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 4519917082.77,
+          "valor_despesa_liquidada": 4284014235.14,
+          "valor_despesa_paga": 4075193177.11,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2024&%40Num_Peri=6&%40Sig_UF=%27DF%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Estadual",
+            "cod_uf": 53,
+            "sig_uf": "DF",
+            "cod_municipio_siope": null,
+            "nome_municipio_siope": null,
+            "num_ordem": "7",
+            "des_subfuncao": "361"
+          }
+        },
+        {
+          "ano": 2025,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 5287142793.93,
+          "valor_despesa_liquidada": 5141646172.34,
+          "valor_despesa_paga": 4777713426.96,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2025&%40Num_Peri=6&%40Sig_UF=%27DF%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Estadual",
+            "cod_uf": 53,
+            "sig_uf": "DF",
+            "cod_municipio_siope": null,
+            "nome_municipio_siope": null,
+            "num_ordem": "7",
+            "des_subfuncao": "361"
+          }
+        }
+      ]
+    },
+    {
+      "municipio": "Bujari",
+      "uf": "AC",
+      "fonte": "FNDE/SIOPE - Dados Abertos - Despesas por Função Educação",
+      "serie": [
+        {
+          "ano": 2021,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 8750364.8,
+          "valor_despesa_liquidada": 8750364.8,
+          "valor_despesa_paga": 8750364.8,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2021&%40Num_Peri=6&%40Sig_UF=%27AC%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 12,
+            "sig_uf": "AC",
+            "cod_municipio_siope": 120013,
+            "nome_municipio_siope": "Bujari",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2022,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 7615121.8,
+          "valor_despesa_liquidada": 7615121.8,
+          "valor_despesa_paga": 7615121.8,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2022&%40Num_Peri=6&%40Sig_UF=%27AC%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 12,
+            "sig_uf": "AC",
+            "cod_municipio_siope": 120013,
+            "nome_municipio_siope": "Bujari",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2023,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 8407987.76,
+          "valor_despesa_liquidada": 7533801.47,
+          "valor_despesa_paga": 7533801.47,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2023&%40Num_Peri=6&%40Sig_UF=%27AC%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 12,
+            "sig_uf": "AC",
+            "cod_municipio_siope": 120013,
+            "nome_municipio_siope": "Bujari",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2024,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 17709779.18,
+          "valor_despesa_liquidada": 15657437.7,
+          "valor_despesa_paga": 15506257.7,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2024&%40Num_Peri=6&%40Sig_UF=%27AC%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 12,
+            "sig_uf": "AC",
+            "cod_municipio_siope": 120013,
+            "nome_municipio_siope": "Bujari",
+            "num_ordem": "7",
+            "des_subfuncao": "361"
+          }
+        },
+        {
+          "ano": 2025,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": null,
+          "valor_despesa_liquidada": null,
+          "valor_despesa_paga": null,
+          "moeda": "BRL",
+          "encontrado": false,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2025&%40Num_Peri=6&%40Sig_UF=%27AC%27&%24format=json",
+          "observacao": "Registro de Ensino Fundamental não encontrado na consulta SIOPE para UF/ano/período.",
+          "registro_siope": null
+        }
+      ]
+    },
+    {
+      "municipio": "Cuiabá",
+      "uf": "MT",
+      "fonte": "FNDE/SIOPE - Dados Abertos - Despesas por Função Educação",
+      "serie": [
+        {
+          "ano": 2021,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 322005104.62,
+          "valor_despesa_liquidada": 322005104.62,
+          "valor_despesa_paga": 316640282.08,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2021&%40Num_Peri=6&%40Sig_UF=%27MT%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 51,
+            "sig_uf": "MT",
+            "cod_municipio_siope": 510340,
+            "nome_municipio_siope": "Cuiabá",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2022,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 432870892.19,
+          "valor_despesa_liquidada": 432870892.19,
+          "valor_despesa_paga": 390164863.15,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2022&%40Num_Peri=6&%40Sig_UF=%27MT%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 51,
+            "sig_uf": "MT",
+            "cod_municipio_siope": 510340,
+            "nome_municipio_siope": "Cuiabá",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2023,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 509063820.16,
+          "valor_despesa_liquidada": 463331442.47,
+          "valor_despesa_paga": 444742022.63,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2023&%40Num_Peri=6&%40Sig_UF=%27MT%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 51,
+            "sig_uf": "MT",
+            "cod_municipio_siope": 510340,
+            "nome_municipio_siope": "Cuiabá",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2024,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 462484321.6,
+          "valor_despesa_liquidada": 454372743.79,
+          "valor_despesa_paga": 408403466.54,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2024&%40Num_Peri=6&%40Sig_UF=%27MT%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 51,
+            "sig_uf": "MT",
+            "cod_municipio_siope": 510340,
+            "nome_municipio_siope": "Cuiabá",
+            "num_ordem": "7",
+            "des_subfuncao": "361"
+          }
+        },
+        {
+          "ano": 2025,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 666885460.43,
+          "valor_despesa_liquidada": 665745717.02,
+          "valor_despesa_paga": 563226508.31,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2025&%40Num_Peri=6&%40Sig_UF=%27MT%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 51,
+            "sig_uf": "MT",
+            "cod_municipio_siope": 510340,
+            "nome_municipio_siope": "Cuiabá",
+            "num_ordem": "7",
+            "des_subfuncao": "361"
+          }
+        }
+      ]
+    },
+    {
+      "municipio": "Fortaleza",
+      "uf": "CE",
+      "fonte": "FNDE/SIOPE - Dados Abertos - Despesas por Função Educação",
+      "serie": [
+        {
+          "ano": 2021,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 1616485087.61,
+          "valor_despesa_liquidada": 1512304238.03,
+          "valor_despesa_paga": 1504309867.17,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2021&%40Num_Peri=6&%40Sig_UF=%27CE%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 23,
+            "sig_uf": "CE",
+            "cod_municipio_siope": 230440,
+            "nome_municipio_siope": "Fortaleza",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2022,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 1939278903.93,
+          "valor_despesa_liquidada": 1896704127.51,
+          "valor_despesa_paga": 1884877065.71,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2022&%40Num_Peri=6&%40Sig_UF=%27CE%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 23,
+            "sig_uf": "CE",
+            "cod_municipio_siope": 230440,
+            "nome_municipio_siope": "Fortaleza",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2023,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 2262593252.33,
+          "valor_despesa_liquidada": 2258840270.08,
+          "valor_despesa_paga": 2229304334.01,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2023&%40Num_Peri=6&%40Sig_UF=%27CE%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 23,
+            "sig_uf": "CE",
+            "cod_municipio_siope": 230440,
+            "nome_municipio_siope": "Fortaleza",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2024,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 2548866527.96,
+          "valor_despesa_liquidada": 2544172393.55,
+          "valor_despesa_paga": 2536438747.96,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2024&%40Num_Peri=6&%40Sig_UF=%27CE%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 23,
+            "sig_uf": "CE",
+            "cod_municipio_siope": 230440,
+            "nome_municipio_siope": "Fortaleza",
+            "num_ordem": "7",
+            "des_subfuncao": "361"
+          }
+        },
+        {
+          "ano": 2025,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 2639709018.41,
+          "valor_despesa_liquidada": 2628028047.71,
+          "valor_despesa_paga": 2622089859.5,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2025&%40Num_Peri=6&%40Sig_UF=%27CE%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 23,
+            "sig_uf": "CE",
+            "cod_municipio_siope": 230440,
+            "nome_municipio_siope": "Fortaleza",
+            "num_ordem": "7",
+            "des_subfuncao": "361"
+          }
+        }
+      ]
+    },
+    {
+      "municipio": "Jaraguá do Sul",
+      "uf": "SC",
+      "fonte": "FNDE/SIOPE - Dados Abertos - Despesas por Função Educação",
+      "serie": [
+        {
+          "ano": 2021,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 116245107.34,
+          "valor_despesa_liquidada": 96206693.25,
+          "valor_despesa_paga": 92784241.02,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2021&%40Num_Peri=6&%40Sig_UF=%27SC%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 42,
+            "sig_uf": "SC",
+            "cod_municipio_siope": 420890,
+            "nome_municipio_siope": "Jaraguá do Sul",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2022,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 132885750.03,
+          "valor_despesa_liquidada": 118229636.46,
+          "valor_despesa_paga": 112210060.43,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2022&%40Num_Peri=6&%40Sig_UF=%27SC%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 42,
+            "sig_uf": "SC",
+            "cod_municipio_siope": 420890,
+            "nome_municipio_siope": "Jaraguá do Sul",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2023,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 51087574.63,
+          "valor_despesa_liquidada": 39612159.39,
+          "valor_despesa_paga": 39600918.3,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2023&%40Num_Peri=6&%40Sig_UF=%27SC%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 42,
+            "sig_uf": "SC",
+            "cod_municipio_siope": 420890,
+            "nome_municipio_siope": "Jaraguá do Sul",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2024,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 56396469.8,
+          "valor_despesa_liquidada": 45580394.39,
+          "valor_despesa_paga": 45574272.26,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2024&%40Num_Peri=6&%40Sig_UF=%27SC%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 42,
+            "sig_uf": "SC",
+            "cod_municipio_siope": 420890,
+            "nome_municipio_siope": "Jaraguá do Sul",
+            "num_ordem": "7",
+            "des_subfuncao": "361"
+          }
+        },
+        {
+          "ano": 2025,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 58412836.9,
+          "valor_despesa_liquidada": 50697257.43,
+          "valor_despesa_paga": 50696705.43,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2025&%40Num_Peri=6&%40Sig_UF=%27SC%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 42,
+            "sig_uf": "SC",
+            "cod_municipio_siope": 420890,
+            "nome_municipio_siope": "Jaraguá do Sul",
+            "num_ordem": "7",
+            "des_subfuncao": "361"
+          }
+        }
+      ]
+    },
+    {
+      "municipio": "João Pessoa",
+      "uf": "PB",
+      "fonte": "FNDE/SIOPE - Dados Abertos - Despesas por Função Educação",
+      "serie": [
+        {
+          "ano": 2021,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 494687345.71,
+          "valor_despesa_liquidada": 316078665.7,
+          "valor_despesa_paga": 310709031.28,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2021&%40Num_Peri=6&%40Sig_UF=%27PB%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 25,
+            "sig_uf": "PB",
+            "cod_municipio_siope": 250750,
+            "nome_municipio_siope": "João Pessoa",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2022,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 445268456.88,
+          "valor_despesa_liquidada": 327589743.69,
+          "valor_despesa_paga": 322933088.66,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2022&%40Num_Peri=6&%40Sig_UF=%27PB%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 25,
+            "sig_uf": "PB",
+            "cod_municipio_siope": 250750,
+            "nome_municipio_siope": "João Pessoa",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2023,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 508039437.1,
+          "valor_despesa_liquidada": 422430846.73,
+          "valor_despesa_paga": 413135209.69,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2023&%40Num_Peri=6&%40Sig_UF=%27PB%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 25,
+            "sig_uf": "PB",
+            "cod_municipio_siope": 250750,
+            "nome_municipio_siope": "João Pessoa",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2024,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 548107149.51,
+          "valor_despesa_liquidada": 480238804.67,
+          "valor_despesa_paga": 475246297.42,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2024&%40Num_Peri=6&%40Sig_UF=%27PB%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 25,
+            "sig_uf": "PB",
+            "cod_municipio_siope": 250750,
+            "nome_municipio_siope": "João Pessoa",
+            "num_ordem": "7",
+            "des_subfuncao": "361"
+          }
+        },
+        {
+          "ano": 2025,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 660516491.14,
+          "valor_despesa_liquidada": 538422373.33,
+          "valor_despesa_paga": 529218395.05,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2025&%40Num_Peri=6&%40Sig_UF=%27PB%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 25,
+            "sig_uf": "PB",
+            "cod_municipio_siope": 250750,
+            "nome_municipio_siope": "João Pessoa",
+            "num_ordem": "7",
+            "des_subfuncao": "361"
+          }
+        }
+      ]
+    },
+    {
+      "municipio": "Marau",
+      "uf": "RS",
+      "fonte": "FNDE/SIOPE - Dados Abertos - Despesas por Função Educação",
+      "serie": [
+        {
+          "ano": 2021,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 29308085.26,
+          "valor_despesa_liquidada": 26191387.48,
+          "valor_despesa_paga": 25352354.29,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2021&%40Num_Peri=6&%40Sig_UF=%27RS%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 43,
+            "sig_uf": "RS",
+            "cod_municipio_siope": 431180,
+            "nome_municipio_siope": "Marau",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2022,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 27092604.26,
+          "valor_despesa_liquidada": 25822885.83,
+          "valor_despesa_paga": 25591819.81,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2022&%40Num_Peri=6&%40Sig_UF=%27RS%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 43,
+            "sig_uf": "RS",
+            "cod_municipio_siope": 431180,
+            "nome_municipio_siope": "Marau",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2023,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 27028248.05,
+          "valor_despesa_liquidada": 27003991.15,
+          "valor_despesa_paga": 26456952.3,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2023&%40Num_Peri=6&%40Sig_UF=%27RS%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 43,
+            "sig_uf": "RS",
+            "cod_municipio_siope": 431180,
+            "nome_municipio_siope": "Marau",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2024,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 32659649.54,
+          "valor_despesa_liquidada": 31136521.98,
+          "valor_despesa_paga": 30919927.66,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2024&%40Num_Peri=6&%40Sig_UF=%27RS%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 43,
+            "sig_uf": "RS",
+            "cod_municipio_siope": 431180,
+            "nome_municipio_siope": "Marau",
+            "num_ordem": "7",
+            "des_subfuncao": "361"
+          }
+        },
+        {
+          "ano": 2025,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 32544764.55,
+          "valor_despesa_liquidada": 29137103.39,
+          "valor_despesa_paga": 28847446.6,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2025&%40Num_Peri=6&%40Sig_UF=%27RS%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 43,
+            "sig_uf": "RS",
+            "cod_municipio_siope": 431180,
+            "nome_municipio_siope": "Marau",
+            "num_ordem": "7",
+            "des_subfuncao": "361"
+          }
+        }
+      ]
+    },
+    {
+      "municipio": "Olinda",
+      "uf": "PE",
+      "fonte": "FNDE/SIOPE - Dados Abertos - Despesas por Função Educação",
+      "serie": [
+        {
+          "ano": 2021,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 136783022.23,
+          "valor_despesa_liquidada": 136751079.58,
+          "valor_despesa_paga": 130197790.58,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2021&%40Num_Peri=6&%40Sig_UF=%27PE%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 26,
+            "sig_uf": "PE",
+            "cod_municipio_siope": 260960,
+            "nome_municipio_siope": "Olinda",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2022,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 173692425.38,
+          "valor_despesa_liquidada": 165047707.98,
+          "valor_despesa_paga": 162618955.61,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2022&%40Num_Peri=6&%40Sig_UF=%27PE%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 26,
+            "sig_uf": "PE",
+            "cod_municipio_siope": 260960,
+            "nome_municipio_siope": "Olinda",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2023,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 185229530.19,
+          "valor_despesa_liquidada": 185229530.19,
+          "valor_despesa_paga": 179770291.82,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2023&%40Num_Peri=6&%40Sig_UF=%27PE%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 26,
+            "sig_uf": "PE",
+            "cod_municipio_siope": 260960,
+            "nome_municipio_siope": "Olinda",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2024,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 191758053.2,
+          "valor_despesa_liquidada": 191758053.2,
+          "valor_despesa_paga": 177797748.1,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2024&%40Num_Peri=6&%40Sig_UF=%27PE%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 26,
+            "sig_uf": "PE",
+            "cod_municipio_siope": 260960,
+            "nome_municipio_siope": "Olinda",
+            "num_ordem": "7",
+            "des_subfuncao": "361"
+          }
+        },
+        {
+          "ano": 2025,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 195446161.17,
+          "valor_despesa_liquidada": 195446048.68,
+          "valor_despesa_paga": 178869655.12,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2025&%40Num_Peri=6&%40Sig_UF=%27PE%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 26,
+            "sig_uf": "PE",
+            "cod_municipio_siope": 260960,
+            "nome_municipio_siope": "Olinda",
+            "num_ordem": "7",
+            "des_subfuncao": "361"
+          }
+        }
+      ]
+    },
+    {
+      "municipio": "Pato Branco",
+      "uf": "PR",
+      "fonte": "FNDE/SIOPE - Dados Abertos - Despesas por Função Educação",
+      "serie": [
+        {
+          "ano": 2021,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 49219656.4,
+          "valor_despesa_liquidada": 41912762.65,
+          "valor_despesa_paga": 40813639.07,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2021&%40Num_Peri=6&%40Sig_UF=%27PR%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 41,
+            "sig_uf": "PR",
+            "cod_municipio_siope": 411850,
+            "nome_municipio_siope": "Pato Branco",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2022,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 61599265.91,
+          "valor_despesa_liquidada": 52833187.47,
+          "valor_despesa_paga": 51882350.94,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2022&%40Num_Peri=6&%40Sig_UF=%27PR%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 41,
+            "sig_uf": "PR",
+            "cod_municipio_siope": 411850,
+            "nome_municipio_siope": "Pato Branco",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2023,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 65111743.57,
+          "valor_despesa_liquidada": 58554391.34,
+          "valor_despesa_paga": 57240731.57,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2023&%40Num_Peri=6&%40Sig_UF=%27PR%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 41,
+            "sig_uf": "PR",
+            "cod_municipio_siope": 411850,
+            "nome_municipio_siope": "Pato Branco",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2024,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 73885418.58,
+          "valor_despesa_liquidada": 72316101.52,
+          "valor_despesa_paga": 66777811.86,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2024&%40Num_Peri=6&%40Sig_UF=%27PR%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 41,
+            "sig_uf": "PR",
+            "cod_municipio_siope": 411850,
+            "nome_municipio_siope": "Pato Branco",
+            "num_ordem": "7",
+            "des_subfuncao": "361"
+          }
+        },
+        {
+          "ano": 2025,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 94193369.52,
+          "valor_despesa_liquidada": 83708375.04,
+          "valor_despesa_paga": 82620331.13,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2025&%40Num_Peri=6&%40Sig_UF=%27PR%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 41,
+            "sig_uf": "PR",
+            "cod_municipio_siope": 411850,
+            "nome_municipio_siope": "Pato Branco",
+            "num_ordem": "7",
+            "des_subfuncao": "361"
+          }
+        }
+      ]
+    },
+    {
+      "municipio": "Recife",
+      "uf": "PE",
+      "fonte": "FNDE/SIOPE - Dados Abertos - Despesas por Função Educação",
+      "serie": [
+        {
+          "ano": 2021,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 912466086.23,
+          "valor_despesa_liquidada": 711732892.5,
+          "valor_despesa_paga": 679288272.21,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2021&%40Num_Peri=6&%40Sig_UF=%27PE%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 26,
+            "sig_uf": "PE",
+            "cod_municipio_siope": 261160,
+            "nome_municipio_siope": "Recife",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2022,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 1021621442.4,
+          "valor_despesa_liquidada": 927311603.58,
+          "valor_despesa_paga": 905439408.92,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2022&%40Num_Peri=6&%40Sig_UF=%27PE%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 26,
+            "sig_uf": "PE",
+            "cod_municipio_siope": 261160,
+            "nome_municipio_siope": "Recife",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2023,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 1118070974.96,
+          "valor_despesa_liquidada": 1118070974.96,
+          "valor_despesa_paga": 1090579242.2,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2023&%40Num_Peri=6&%40Sig_UF=%27PE%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 26,
+            "sig_uf": "PE",
+            "cod_municipio_siope": 261160,
+            "nome_municipio_siope": "Recife",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2024,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 1270849415.87,
+          "valor_despesa_liquidada": 1270849415.87,
+          "valor_despesa_paga": 1249275494.37,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2024&%40Num_Peri=6&%40Sig_UF=%27PE%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 26,
+            "sig_uf": "PE",
+            "cod_municipio_siope": 261160,
+            "nome_municipio_siope": "Recife",
+            "num_ordem": "7",
+            "des_subfuncao": "361"
+          }
+        },
+        {
+          "ano": 2025,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 1178392998.93,
+          "valor_despesa_liquidada": 1134202271.24,
+          "valor_despesa_paga": 1101602119.79,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2025&%40Num_Peri=6&%40Sig_UF=%27PE%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 26,
+            "sig_uf": "PE",
+            "cod_municipio_siope": 261160,
+            "nome_municipio_siope": "Recife",
+            "num_ordem": "7",
+            "des_subfuncao": "361"
+          }
+        }
+      ]
+    },
+    {
+      "municipio": "Rio Branco",
+      "uf": "AC",
+      "fonte": "FNDE/SIOPE - Dados Abertos - Despesas por Função Educação",
+      "serie": [
+        {
+          "ano": 2021,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 79869004.84,
+          "valor_despesa_liquidada": 63754337.26,
+          "valor_despesa_paga": 63754337.26,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2021&%40Num_Peri=6&%40Sig_UF=%27AC%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 12,
+            "sig_uf": "AC",
+            "cod_municipio_siope": 120040,
+            "nome_municipio_siope": "Rio Branco",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2022,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 118782610.41,
+          "valor_despesa_liquidada": 100573904.67,
+          "valor_despesa_paga": 100402769.76,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2022&%40Num_Peri=6&%40Sig_UF=%27AC%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 12,
+            "sig_uf": "AC",
+            "cod_municipio_siope": 120040,
+            "nome_municipio_siope": "Rio Branco",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2023,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 125531654.55,
+          "valor_despesa_liquidada": 116545558.9,
+          "valor_despesa_paga": 116545558.9,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2023&%40Num_Peri=6&%40Sig_UF=%27AC%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 12,
+            "sig_uf": "AC",
+            "cod_municipio_siope": 120040,
+            "nome_municipio_siope": "Rio Branco",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2024,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 128015346.32,
+          "valor_despesa_liquidada": 128015346.32,
+          "valor_despesa_paga": 128015346.32,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2024&%40Num_Peri=6&%40Sig_UF=%27AC%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 12,
+            "sig_uf": "AC",
+            "cod_municipio_siope": 120040,
+            "nome_municipio_siope": "Rio Branco",
+            "num_ordem": "7",
+            "des_subfuncao": "361"
+          }
+        },
+        {
+          "ano": 2025,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 146839021.38,
+          "valor_despesa_liquidada": 145103617.32,
+          "valor_despesa_paga": 145103617.32,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2025&%40Num_Peri=6&%40Sig_UF=%27AC%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 12,
+            "sig_uf": "AC",
+            "cod_municipio_siope": 120040,
+            "nome_municipio_siope": "Rio Branco",
+            "num_ordem": "7",
+            "des_subfuncao": "361"
+          }
+        }
+      ]
+    },
+    {
+      "municipio": "Serrano do Maranhão",
+      "uf": "MA",
+      "fonte": "FNDE/SIOPE - Dados Abertos - Despesas por Função Educação",
+      "serie": [
+        {
+          "ano": 2021,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 16451068.12,
+          "valor_despesa_liquidada": 16008613.52,
+          "valor_despesa_paga": 15100402.22,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2021&%40Num_Peri=6&%40Sig_UF=%27MA%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 21,
+            "sig_uf": "MA",
+            "cod_municipio_siope": 211178,
+            "nome_municipio_siope": "Serrano do Maranhão",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2022,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 32896047.44,
+          "valor_despesa_liquidada": 32896037.44,
+          "valor_despesa_paga": 29187461.07,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2022&%40Num_Peri=6&%40Sig_UF=%27MA%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 21,
+            "sig_uf": "MA",
+            "cod_municipio_siope": 211178,
+            "nome_municipio_siope": "Serrano do Maranhão",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2023,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 32891636.25,
+          "valor_despesa_liquidada": 32891636.25,
+          "valor_despesa_paga": 32891636.25,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2023&%40Num_Peri=6&%40Sig_UF=%27MA%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 21,
+            "sig_uf": "MA",
+            "cod_municipio_siope": 211178,
+            "nome_municipio_siope": "Serrano do Maranhão",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2024,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 35659748.57,
+          "valor_despesa_liquidada": 35659748.57,
+          "valor_despesa_paga": 35659748.57,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2024&%40Num_Peri=6&%40Sig_UF=%27MA%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 21,
+            "sig_uf": "MA",
+            "cod_municipio_siope": 211178,
+            "nome_municipio_siope": "Serrano do Maranhão",
+            "num_ordem": "7",
+            "des_subfuncao": "361"
+          }
+        },
+        {
+          "ano": 2025,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 36145645.48,
+          "valor_despesa_liquidada": 35207414.16,
+          "valor_despesa_paga": 35021876.06,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2025&%40Num_Peri=6&%40Sig_UF=%27MA%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 21,
+            "sig_uf": "MA",
+            "cod_municipio_siope": 211178,
+            "nome_municipio_siope": "Serrano do Maranhão",
+            "num_ordem": "7",
+            "des_subfuncao": "361"
+          }
+        }
+      ]
+    },
+    {
+      "municipio": "Sobral",
+      "uf": "CE",
+      "fonte": "FNDE/SIOPE - Dados Abertos - Despesas por Função Educação",
+      "serie": [
+        {
+          "ano": 2021,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 176272906.9,
+          "valor_despesa_liquidada": 174964870.59,
+          "valor_despesa_paga": 146392635.1,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2021&%40Num_Peri=6&%40Sig_UF=%27CE%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 23,
+            "sig_uf": "CE",
+            "cod_municipio_siope": 231290,
+            "nome_municipio_siope": "Sobral",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2022,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 199778744.36,
+          "valor_despesa_liquidada": 199327721.46,
+          "valor_despesa_paga": 192479355.4,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2022&%40Num_Peri=6&%40Sig_UF=%27CE%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 23,
+            "sig_uf": "CE",
+            "cod_municipio_siope": 231290,
+            "nome_municipio_siope": "Sobral",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2023,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 235619438.18,
+          "valor_despesa_liquidada": 227795701.19,
+          "valor_despesa_paga": 219421700.34,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2023&%40Num_Peri=6&%40Sig_UF=%27CE%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 23,
+            "sig_uf": "CE",
+            "cod_municipio_siope": 231290,
+            "nome_municipio_siope": "Sobral",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2024,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 318061326.9,
+          "valor_despesa_liquidada": 315207811.62,
+          "valor_despesa_paga": 312422698.05,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2024&%40Num_Peri=6&%40Sig_UF=%27CE%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 23,
+            "sig_uf": "CE",
+            "cod_municipio_siope": 231290,
+            "nome_municipio_siope": "Sobral",
+            "num_ordem": "7",
+            "des_subfuncao": "361"
+          }
+        },
+        {
+          "ano": 2025,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 383666298.19,
+          "valor_despesa_liquidada": 383660698.35,
+          "valor_despesa_paga": 383371335.43,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2025&%40Num_Peri=6&%40Sig_UF=%27CE%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 23,
+            "sig_uf": "CE",
+            "cod_municipio_siope": 231290,
+            "nome_municipio_siope": "Sobral",
+            "num_ordem": "7",
+            "des_subfuncao": "361"
+          }
+        }
+      ]
+    },
+    {
+      "municipio": "Sorocaba",
+      "uf": "SP",
+      "fonte": "FNDE/SIOPE - Dados Abertos - Despesas por Função Educação",
+      "serie": [
+        {
+          "ano": 2021,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 361639342.68,
+          "valor_despesa_liquidada": 351765830.02,
+          "valor_despesa_paga": 349253899,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2021&%40Num_Peri=6&%40Sig_UF=%27SP%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 35,
+            "sig_uf": "SP",
+            "cod_municipio_siope": 355220,
+            "nome_municipio_siope": "Sorocaba",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2022,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 259914089.1,
+          "valor_despesa_liquidada": 256654114.79,
+          "valor_despesa_paga": 252031252.94,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2022&%40Num_Peri=6&%40Sig_UF=%27SP%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 35,
+            "sig_uf": "SP",
+            "cod_municipio_siope": 355220,
+            "nome_municipio_siope": "Sorocaba",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2023,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 533204898.98,
+          "valor_despesa_liquidada": 529933247.08,
+          "valor_despesa_paga": 517274289,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2023&%40Num_Peri=6&%40Sig_UF=%27SP%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 35,
+            "sig_uf": "SP",
+            "cod_municipio_siope": 355220,
+            "nome_municipio_siope": "Sorocaba",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2024,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 593432796.56,
+          "valor_despesa_liquidada": 585964894.65,
+          "valor_despesa_paga": 573366355.66,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2024&%40Num_Peri=6&%40Sig_UF=%27SP%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 35,
+            "sig_uf": "SP",
+            "cod_municipio_siope": 355220,
+            "nome_municipio_siope": "Sorocaba",
+            "num_ordem": "7",
+            "des_subfuncao": "361"
+          }
+        },
+        {
+          "ano": 2025,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 638721808.36,
+          "valor_despesa_liquidada": 635575194.43,
+          "valor_despesa_paga": 622498814.29,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2025&%40Num_Peri=6&%40Sig_UF=%27SP%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 35,
+            "sig_uf": "SP",
+            "cod_municipio_siope": 355220,
+            "nome_municipio_siope": "Sorocaba",
+            "num_ordem": "7",
+            "des_subfuncao": "361"
+          }
+        }
+      ]
+    },
+    {
+      "municipio": "São Caetano do Sul",
+      "uf": "SP",
+      "fonte": "FNDE/SIOPE - Dados Abertos - Despesas por Função Educação",
+      "serie": [
+        {
+          "ano": 2021,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 222916558.68,
+          "valor_despesa_liquidada": 221355924.87,
+          "valor_despesa_paga": 211212568.95,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2021&%40Num_Peri=6&%40Sig_UF=%27SP%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 35,
+            "sig_uf": "SP",
+            "cod_municipio_siope": 354880,
+            "nome_municipio_siope": "São Caetano do Sul",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2022,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 257511810.67,
+          "valor_despesa_liquidada": 251087806.61,
+          "valor_despesa_paga": 246666235.13,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2022&%40Num_Peri=6&%40Sig_UF=%27SP%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 35,
+            "sig_uf": "SP",
+            "cod_municipio_siope": 354880,
+            "nome_municipio_siope": "São Caetano do Sul",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2023,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 239876497.24,
+          "valor_despesa_liquidada": 237970274.94,
+          "valor_despesa_paga": 234157176.59,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2023&%40Num_Peri=6&%40Sig_UF=%27SP%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 35,
+            "sig_uf": "SP",
+            "cod_municipio_siope": 354880,
+            "nome_municipio_siope": "São Caetano do Sul",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2024,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 326564366.51,
+          "valor_despesa_liquidada": 309489706.13,
+          "valor_despesa_paga": 289513355.05,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2024&%40Num_Peri=6&%40Sig_UF=%27SP%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 35,
+            "sig_uf": "SP",
+            "cod_municipio_siope": 354880,
+            "nome_municipio_siope": "São Caetano do Sul",
+            "num_ordem": "7",
+            "des_subfuncao": "361"
+          }
+        },
+        {
+          "ano": 2025,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 302264679.07,
+          "valor_despesa_liquidada": 299498966.2,
+          "valor_despesa_paga": 269630361.21,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2025&%40Num_Peri=6&%40Sig_UF=%27SP%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 35,
+            "sig_uf": "SP",
+            "cod_municipio_siope": 354880,
+            "nome_municipio_siope": "São Caetano do Sul",
+            "num_ordem": "7",
+            "des_subfuncao": "361"
+          }
+        }
+      ]
+    },
+    {
+      "municipio": "Votorantim",
+      "uf": "SP",
+      "fonte": "FNDE/SIOPE - Dados Abertos - Despesas por Função Educação",
+      "serie": [
+        {
+          "ano": 2021,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 66722798.63,
+          "valor_despesa_liquidada": 66644333.91,
+          "valor_despesa_paga": 61507065.78,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2021&%40Num_Peri=6&%40Sig_UF=%27SP%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 35,
+            "sig_uf": "SP",
+            "cod_municipio_siope": 355700,
+            "nome_municipio_siope": "Votorantim",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2022,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 87529875.51,
+          "valor_despesa_liquidada": 83957056.91,
+          "valor_despesa_paga": 80453018.2,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2022&%40Num_Peri=6&%40Sig_UF=%27SP%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 35,
+            "sig_uf": "SP",
+            "cod_municipio_siope": 355700,
+            "nome_municipio_siope": "Votorantim",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2023,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 78705114.25,
+          "valor_despesa_liquidada": 77665841.79,
+          "valor_despesa_paga": 74583326.36,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2023&%40Num_Peri=6&%40Sig_UF=%27SP%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 35,
+            "sig_uf": "SP",
+            "cod_municipio_siope": 355700,
+            "nome_municipio_siope": "Votorantim",
+            "num_ordem": "6",
+            "des_subfuncao": "361 - Ensino Fundamental"
+          }
+        },
+        {
+          "ano": 2024,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 90808417.64,
+          "valor_despesa_liquidada": 89239950.32,
+          "valor_despesa_paga": 84510362.57,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2024&%40Num_Peri=6&%40Sig_UF=%27SP%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 35,
+            "sig_uf": "SP",
+            "cod_municipio_siope": 355700,
+            "nome_municipio_siope": "Votorantim",
+            "num_ordem": "7",
+            "des_subfuncao": "361"
+          }
+        },
+        {
+          "ano": 2025,
+          "periodo_siope": 6,
+          "subfuncao": "Ensino Fundamental",
+          "valor_despesa_empenhada": 103345758.24,
+          "valor_despesa_liquidada": 100608359.73,
+          "valor_despesa_paga": 90588913.84,
+          "moeda": "BRL",
+          "encontrado": true,
+          "fonte_consulta": "https://www.fnde.gov.br/olinda-ide/servico/DADOS_ABERTOS_SIOPE/versao/v1/odata/Despesas_Funcao_Educacao_Siope(Ano_Consulta=@Ano_Consulta,Num_Peri=@Num_Peri,Sig_UF=@Sig_UF)?%40Ano_Consulta=2025&%40Num_Peri=6&%40Sig_UF=%27SP%27&%24format=json",
+          "observacao": null,
+          "registro_siope": {
+            "tipo": "Municipal",
+            "cod_uf": 35,
+            "sig_uf": "SP",
+            "cod_municipio_siope": 355700,
+            "nome_municipio_siope": "Votorantim",
+            "num_ordem": "7",
+            "des_subfuncao": "361"
+          }
+        }
+      ]
+    }
+  ]
+}

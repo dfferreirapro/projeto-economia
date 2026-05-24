@@ -1,0 +1,1213 @@
+{
+  "metadados": {
+    "gerado_em": "2026-05-16T01:40:54.939Z",
+    "descricao": "Unificacao dos arquivos de investimento do ensino fundamental por municipio, preservando dados originais e registros normalizados.",
+    "municipios": [
+      "Sorocaba",
+      "Sobral",
+      "Votorantim"
+    ],
+    "observacao": "base_s.json foi identificado como a fonte de Sorocaba. Para compara??es entre munic?pios, usar anos em comum e o maior acumulado/total anual por ano.",
+    "fontes": {
+      "votorantim": {
+        "arquivo": "C:/Users/biel-/Downloads/votorantim_ensino_fundamental_bimestres_valores.json"
+      },
+      "sobral": {
+        "arquivo": "C:/Users/biel-/Downloads/sobral_ensino_fundamental_bimestres.json"
+      },
+      "sorocaba": {
+        "arquivo": "C:/Users/biel-/Downloads/base_s.json"
+      }
+    }
+  },
+  "dados_originais": {
+    "votorantim": {
+      "2021": {
+        "valor_bimestre": {
+          "1": 6299239.56,
+          "2": 7957206.14,
+          "3": 8738262.37,
+          "4": 12180380,
+          "5": 11192914.69
+        },
+        "acumulado_ate_bimestre": {
+          "1": 6299239.56,
+          "2": 14256445.7,
+          "3": 22994708.07,
+          "4": 35175088.07,
+          "5": 46368002.76
+        },
+        "total_ano": 46368002.76
+      },
+      "2022": {
+        "valor_bimestre": {
+          "1": 10065827,
+          "2": 11667860.88,
+          "3": 12114715.2,
+          "4": 13183219.2,
+          "5": 13309865.97,
+          "6": 24783342.4
+        },
+        "acumulado_ate_bimestre": {
+          "1": 10065827,
+          "2": 21733687.88,
+          "3": 33848403.08,
+          "4": 47031622.28,
+          "5": 60341488.25,
+          "6": 85124830.65
+        },
+        "total_ano": 85124830.65
+      },
+      "2023": {
+        "valor_bimestre": {
+          "1": 7789153.54,
+          "2": 13041035.57,
+          "3": 14925061.31,
+          "6": 55147729.55
+        },
+        "acumulado_ate_bimestre": {
+          "1": 7789153.54,
+          "2": 20830189.11,
+          "3": 35755250.42,
+          "6": 90902979.97
+        },
+        "total_ano": 90902979.97
+      },
+      "2024": {
+        "valor_bimestre": {
+          "1": 15697799.51,
+          "2": 17870395.68,
+          "3": 17045274.16,
+          "4": 15192558.47,
+          "5": 16097942.01,
+          "6": 23934649.66
+        },
+        "acumulado_ate_bimestre": {
+          "1": 15697799.51,
+          "2": 33568195.19,
+          "3": 50613469.35,
+          "4": 65806027.82,
+          "5": 81903969.83,
+          "6": 105838619.49
+        },
+        "total_ano": 105838619.49
+      }
+    },
+    "sobral": {
+      "ensino_fundamental": [
+        {
+          "ano": 2021,
+          "bimestre": 2,
+          "periodo": "JANEIRO A ABRIL/2021",
+          "liquidada_valor": 31734909.87
+        },
+        {
+          "ano": 2021,
+          "bimestre": 3,
+          "periodo": "JANEIRO A JUNHO/2021",
+          "liquidada_valor": 53850079.86
+        },
+        {
+          "ano": 2021,
+          "bimestre": 4,
+          "periodo": "JANEIRO A AGOSTO/2021",
+          "liquidada_valor": 82172004.08
+        },
+        {
+          "ano": 2021,
+          "bimestre": 5,
+          "periodo": "JANEIRO A OUTUBRO/2021",
+          "liquidada_valor": 112728417.51
+        },
+        {
+          "ano": 2021,
+          "bimestre": 6,
+          "periodo": "JANEIRO A DEZEMBRO/2021",
+          "liquidada_valor": 193273008.96
+        },
+        {
+          "ano": 2022,
+          "bimestre": 2,
+          "periodo": "JANEIRO A ABRIL/2022",
+          "liquidada_valor": 50317607.24
+        },
+        {
+          "ano": 2022,
+          "bimestre": 3,
+          "periodo": "JANEIRO A JUNHO/2022",
+          "liquidada_valor": 90594943.93
+        },
+        {
+          "ano": 2022,
+          "bimestre": 4,
+          "periodo": "JANEIRO A AGOSTO/2022",
+          "liquidada_valor": 129418087.37
+        },
+        {
+          "ano": 2022,
+          "bimestre": 5,
+          "periodo": "JANEIRO A OUTUBRO/2022",
+          "liquidada_valor": 177018229.62
+        },
+        {
+          "ano": 2023,
+          "bimestre": 1,
+          "periodo": "JANEIRO A FEVEREIRO/2023",
+          "liquidada_valor": 30882258.17
+        },
+        {
+          "ano": 2023,
+          "bimestre": 2,
+          "periodo": "JANEIRO A ABRIL/2023",
+          "liquidada_valor": 76944852.49
+        },
+        {
+          "ano": 2023,
+          "bimestre": 3,
+          "periodo": "JANEIRO A JUNHO/2023",
+          "liquidada_valor": 166606835.72
+        },
+        {
+          "ano": 2023,
+          "bimestre": 4,
+          "periodo": "JANEIRO A AGOSTO/2023",
+          "liquidada_valor": 189787551.97
+        },
+        {
+          "ano": 2023,
+          "bimestre": 5,
+          "periodo": "JANEIRO A OUTUBRO/2023",
+          "liquidada_valor": 228646767.88
+        },
+        {
+          "ano": 2023,
+          "bimestre": 6,
+          "periodo": "JANEIRO A DEZEMBRO/2023",
+          "liquidada_valor": 282057458.8
+        },
+        {
+          "ano": 2024,
+          "bimestre": 1,
+          "periodo": "JANEIRO A FEVEREIRO/2024",
+          "liquidada_valor": 37449801.16
+        },
+        {
+          "ano": 2024,
+          "bimestre": 2,
+          "periodo": "JANEIRO A ABRIL/2024",
+          "liquidada_valor": 92623736.87
+        },
+        {
+          "ano": 2024,
+          "bimestre": 3,
+          "periodo": "JANEIRO A JUNHO/2024",
+          "liquidada_valor": 158638990.99
+        },
+        {
+          "ano": 2024,
+          "bimestre": 4,
+          "periodo": "JANEIRO A AGOSTO/2024",
+          "liquidada_valor": 221865734.66
+        },
+        {
+          "ano": 2024,
+          "bimestre": 5,
+          "periodo": "JANEIRO A OUTUBRO/2024",
+          "liquidada_valor": 284254783.21
+        },
+        {
+          "ano": 2024,
+          "bimestre": 6,
+          "periodo": "JANEIRO A DEZEMBRO/2024",
+          "liquidada_valor": 316142487.34
+        },
+        {
+          "ano": 2025,
+          "bimestre": 1,
+          "periodo": "JANEIRO A FEVEREIRO/2025",
+          "liquidada_valor": 28616999.71
+        },
+        {
+          "ano": 2025,
+          "bimestre": 2,
+          "periodo": "JANEIRO A ABRIL/2025",
+          "liquidada_valor": 68132953.83
+        },
+        {
+          "ano": 2025,
+          "bimestre": 3,
+          "periodo": "JANEIRO A JUNHO/2025",
+          "liquidada_valor": 113582603.45
+        },
+        {
+          "ano": 2025,
+          "bimestre": 4,
+          "periodo": "JANEIRO A AGOSTO/2025",
+          "liquidada_valor": 146057775.38
+        },
+        {
+          "ano": 2025,
+          "bimestre": 5,
+          "periodo": "JANEIRO A OUTUBRO/2025",
+          "liquidada_valor": 184354232.23
+        },
+        {
+          "ano": 2025,
+          "bimestre": 6,
+          "periodo": "JANEIRO A DEZEMBRO/2025",
+          "liquidada_valor": 234322395.8
+        }
+      ]
+    },
+    "sorocaba": {
+      "resumo_ensino_fundamental": [
+        {
+          "ano": 2021,
+          "trimestre": 1,
+          "periodo": "JANEIRO A MARCO/2021",
+          "liquidada_valor": 31391087.41
+        },
+        {
+          "ano": 2021,
+          "trimestre": 2,
+          "periodo": "JANEIRO A JUNHO/2021",
+          "liquidada_valor": 42400620.36
+        },
+        {
+          "ano": 2021,
+          "trimestre": 3,
+          "periodo": "JANEIRO A SETEMBRO/2021",
+          "liquidada_valor": 66461487.48
+        },
+        {
+          "ano": 2021,
+          "trimestre": 4,
+          "periodo": "JANEIRO A DEZEMBRO/2021",
+          "liquidada_valor": 203679744.15
+        },
+        {
+          "ano": 2022,
+          "trimestre": 1,
+          "periodo": "JANEIRO A MARCO/2022",
+          "liquidada_valor": 17655404.02
+        },
+        {
+          "ano": 2022,
+          "trimestre": 2,
+          "periodo": "JANEIRO A JUNHO/2022",
+          "liquidada_valor": 77191118.41
+        },
+        {
+          "ano": 2022,
+          "trimestre": 3,
+          "periodo": "JANEIRO A SETEMBRO/2022",
+          "liquidada_valor": 115001477.84
+        },
+        {
+          "ano": 2022,
+          "trimestre": 4,
+          "periodo": "JANEIRO A DEZEMBRO/2022",
+          "liquidada_valor": 190273250.35
+        },
+        {
+          "ano": 2023,
+          "trimestre": 1,
+          "periodo": "JANEIRO A MARCO/2023",
+          "liquidada_valor": 30850909.81
+        },
+        {
+          "ano": 2023,
+          "trimestre": 2,
+          "periodo": "JANEIRO A JUNHO/2023",
+          "liquidada_valor": 78300705.58
+        },
+        {
+          "ano": 2023,
+          "trimestre": 4,
+          "periodo": "JANEIRO A DEZEMBRO/2023",
+          "liquidada_valor": 229102380.13
+        },
+        {
+          "ano": 2024,
+          "trimestre": 1,
+          "periodo": "JANEIRO A MARCO/2024",
+          "liquidada_valor": 58342727.04
+        },
+        {
+          "ano": 2024,
+          "trimestre": 2,
+          "periodo": "JANEIRO A JUNHO/2024",
+          "liquidada_valor": 105223384.3
+        },
+        {
+          "ano": 2024,
+          "trimestre": 3,
+          "periodo": "JANEIRO A SETEMBRO/2024",
+          "liquidada_valor": 170962418.98
+        },
+        {
+          "ano": 2024,
+          "trimestre": 4,
+          "periodo": "JANEIRO A DEZEMBRO/2024",
+          "liquidada_valor": 278750990.48
+        },
+        {
+          "ano": 2025,
+          "trimestre": 1,
+          "periodo": "JANEIRO A MARCO/2025",
+          "liquidada_valor": 51899803.31
+        },
+        {
+          "ano": 2025,
+          "trimestre": 2,
+          "periodo": "JANEIRO A JUNHO/2025",
+          "liquidada_valor": 115070065.45
+        },
+        {
+          "ano": 2025,
+          "trimestre": 3,
+          "periodo": "JANEIRO A SETEMBRO/2025",
+          "liquidada_valor": 200299224.54
+        },
+        {
+          "ano": 2025,
+          "trimestre": 4,
+          "periodo": "JANEIRO A DEZEMBRO/2025",
+          "liquidada_valor": 311321957.21
+        }
+      ],
+      "dicionario": [
+        {
+          "Nome da Coluna": "an",
+          "Tipo de Dado": "Inteiro",
+          "Descrição": "Ano de referência do exercício financeiro.",
+          "Observação Técnica": "No caso atual, refere-se a 2021."
+        },
+        {
+          "Nome da Coluna": "trimes",
+          "Tipo de Dado": "Inteiro",
+          "Descrição": "Número do trimestre acumulado (1 a 4).",
+          "Observação Técnica": "Representa o fechamento de cada período do ano."
+        },
+        {
+          "Nome da Coluna": "periodo",
+          "Tipo de Dado": "Texto",
+          "Descrição": "Descrição por extenso do intervalo de meses acumulados.",
+          "Observação Técnica": "Exemplo: \"JANEIRO A DEZEMBRO/2021\"."
+        },
+        {
+          "Nome da Coluna": "liquidada_valor",
+          "Tipo de Dado": "Decimal (Moeda)",
+          "Descrição": "Valor acumulado da Despesa Paga (saída efetiva de recursos do caixa municipal).",
+          "Observação Técnica": "Importante: Embora o nome da coluna no seu banco seja \"liquidada\", o valor de R$ 203.679.744,15 corresponde à despesa paga do Ensino Fundamental no relatório oficial."
+        }
+      ]
+    }
+  },
+  "registros_normalizados": [
+    {
+      "fonte": "sobral_ensino_fundamental_bimestres",
+      "municipio": "Sobral",
+      "etapa": "ensino_fundamental",
+      "ano": 2021,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 2,
+      "periodo": "JANEIRO A ABRIL/2021",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 31734909.87,
+      "total_ano": null
+    },
+    {
+      "fonte": "sobral_ensino_fundamental_bimestres",
+      "municipio": "Sobral",
+      "etapa": "ensino_fundamental",
+      "ano": 2021,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 3,
+      "periodo": "JANEIRO A JUNHO/2021",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 53850079.86,
+      "total_ano": null
+    },
+    {
+      "fonte": "sobral_ensino_fundamental_bimestres",
+      "municipio": "Sobral",
+      "etapa": "ensino_fundamental",
+      "ano": 2021,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 4,
+      "periodo": "JANEIRO A AGOSTO/2021",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 82172004.08,
+      "total_ano": null
+    },
+    {
+      "fonte": "sobral_ensino_fundamental_bimestres",
+      "municipio": "Sobral",
+      "etapa": "ensino_fundamental",
+      "ano": 2021,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 5,
+      "periodo": "JANEIRO A OUTUBRO/2021",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 112728417.51,
+      "total_ano": null
+    },
+    {
+      "fonte": "sobral_ensino_fundamental_bimestres",
+      "municipio": "Sobral",
+      "etapa": "ensino_fundamental",
+      "ano": 2021,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 6,
+      "periodo": "JANEIRO A DEZEMBRO/2021",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 193273008.96,
+      "total_ano": null
+    },
+    {
+      "fonte": "sobral_ensino_fundamental_bimestres",
+      "municipio": "Sobral",
+      "etapa": "ensino_fundamental",
+      "ano": 2022,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 2,
+      "periodo": "JANEIRO A ABRIL/2022",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 50317607.24,
+      "total_ano": null
+    },
+    {
+      "fonte": "sobral_ensino_fundamental_bimestres",
+      "municipio": "Sobral",
+      "etapa": "ensino_fundamental",
+      "ano": 2022,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 3,
+      "periodo": "JANEIRO A JUNHO/2022",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 90594943.93,
+      "total_ano": null
+    },
+    {
+      "fonte": "sobral_ensino_fundamental_bimestres",
+      "municipio": "Sobral",
+      "etapa": "ensino_fundamental",
+      "ano": 2022,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 4,
+      "periodo": "JANEIRO A AGOSTO/2022",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 129418087.37,
+      "total_ano": null
+    },
+    {
+      "fonte": "sobral_ensino_fundamental_bimestres",
+      "municipio": "Sobral",
+      "etapa": "ensino_fundamental",
+      "ano": 2022,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 5,
+      "periodo": "JANEIRO A OUTUBRO/2022",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 177018229.62,
+      "total_ano": null
+    },
+    {
+      "fonte": "sobral_ensino_fundamental_bimestres",
+      "municipio": "Sobral",
+      "etapa": "ensino_fundamental",
+      "ano": 2023,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 1,
+      "periodo": "JANEIRO A FEVEREIRO/2023",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 30882258.17,
+      "total_ano": null
+    },
+    {
+      "fonte": "sobral_ensino_fundamental_bimestres",
+      "municipio": "Sobral",
+      "etapa": "ensino_fundamental",
+      "ano": 2023,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 2,
+      "periodo": "JANEIRO A ABRIL/2023",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 76944852.49,
+      "total_ano": null
+    },
+    {
+      "fonte": "sobral_ensino_fundamental_bimestres",
+      "municipio": "Sobral",
+      "etapa": "ensino_fundamental",
+      "ano": 2023,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 3,
+      "periodo": "JANEIRO A JUNHO/2023",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 166606835.72,
+      "total_ano": null
+    },
+    {
+      "fonte": "sobral_ensino_fundamental_bimestres",
+      "municipio": "Sobral",
+      "etapa": "ensino_fundamental",
+      "ano": 2023,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 4,
+      "periodo": "JANEIRO A AGOSTO/2023",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 189787551.97,
+      "total_ano": null
+    },
+    {
+      "fonte": "sobral_ensino_fundamental_bimestres",
+      "municipio": "Sobral",
+      "etapa": "ensino_fundamental",
+      "ano": 2023,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 5,
+      "periodo": "JANEIRO A OUTUBRO/2023",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 228646767.88,
+      "total_ano": null
+    },
+    {
+      "fonte": "sobral_ensino_fundamental_bimestres",
+      "municipio": "Sobral",
+      "etapa": "ensino_fundamental",
+      "ano": 2023,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 6,
+      "periodo": "JANEIRO A DEZEMBRO/2023",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 282057458.8,
+      "total_ano": null
+    },
+    {
+      "fonte": "sobral_ensino_fundamental_bimestres",
+      "municipio": "Sobral",
+      "etapa": "ensino_fundamental",
+      "ano": 2024,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 1,
+      "periodo": "JANEIRO A FEVEREIRO/2024",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 37449801.16,
+      "total_ano": null
+    },
+    {
+      "fonte": "sobral_ensino_fundamental_bimestres",
+      "municipio": "Sobral",
+      "etapa": "ensino_fundamental",
+      "ano": 2024,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 2,
+      "periodo": "JANEIRO A ABRIL/2024",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 92623736.87,
+      "total_ano": null
+    },
+    {
+      "fonte": "sobral_ensino_fundamental_bimestres",
+      "municipio": "Sobral",
+      "etapa": "ensino_fundamental",
+      "ano": 2024,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 3,
+      "periodo": "JANEIRO A JUNHO/2024",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 158638990.99,
+      "total_ano": null
+    },
+    {
+      "fonte": "sobral_ensino_fundamental_bimestres",
+      "municipio": "Sobral",
+      "etapa": "ensino_fundamental",
+      "ano": 2024,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 4,
+      "periodo": "JANEIRO A AGOSTO/2024",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 221865734.66,
+      "total_ano": null
+    },
+    {
+      "fonte": "sobral_ensino_fundamental_bimestres",
+      "municipio": "Sobral",
+      "etapa": "ensino_fundamental",
+      "ano": 2024,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 5,
+      "periodo": "JANEIRO A OUTUBRO/2024",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 284254783.21,
+      "total_ano": null
+    },
+    {
+      "fonte": "sobral_ensino_fundamental_bimestres",
+      "municipio": "Sobral",
+      "etapa": "ensino_fundamental",
+      "ano": 2024,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 6,
+      "periodo": "JANEIRO A DEZEMBRO/2024",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 316142487.34,
+      "total_ano": null
+    },
+    {
+      "fonte": "sobral_ensino_fundamental_bimestres",
+      "municipio": "Sobral",
+      "etapa": "ensino_fundamental",
+      "ano": 2025,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 1,
+      "periodo": "JANEIRO A FEVEREIRO/2025",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 28616999.71,
+      "total_ano": null
+    },
+    {
+      "fonte": "sobral_ensino_fundamental_bimestres",
+      "municipio": "Sobral",
+      "etapa": "ensino_fundamental",
+      "ano": 2025,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 2,
+      "periodo": "JANEIRO A ABRIL/2025",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 68132953.83,
+      "total_ano": null
+    },
+    {
+      "fonte": "sobral_ensino_fundamental_bimestres",
+      "municipio": "Sobral",
+      "etapa": "ensino_fundamental",
+      "ano": 2025,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 3,
+      "periodo": "JANEIRO A JUNHO/2025",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 113582603.45,
+      "total_ano": null
+    },
+    {
+      "fonte": "sobral_ensino_fundamental_bimestres",
+      "municipio": "Sobral",
+      "etapa": "ensino_fundamental",
+      "ano": 2025,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 4,
+      "periodo": "JANEIRO A AGOSTO/2025",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 146057775.38,
+      "total_ano": null
+    },
+    {
+      "fonte": "sobral_ensino_fundamental_bimestres",
+      "municipio": "Sobral",
+      "etapa": "ensino_fundamental",
+      "ano": 2025,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 5,
+      "periodo": "JANEIRO A OUTUBRO/2025",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 184354232.23,
+      "total_ano": null
+    },
+    {
+      "fonte": "sobral_ensino_fundamental_bimestres",
+      "municipio": "Sobral",
+      "etapa": "ensino_fundamental",
+      "ano": 2025,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 6,
+      "periodo": "JANEIRO A DEZEMBRO/2025",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 234322395.8,
+      "total_ano": null
+    },
+    {
+      "fonte": "base_s",
+      "municipio": "Sorocaba",
+      "etapa": "ensino_fundamental",
+      "ano": 2021,
+      "periodo_tipo": "trimestre",
+      "periodo_numero": 1,
+      "periodo": "JANEIRO A MARCO/2021",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 31391087.41,
+      "total_ano": null
+    },
+    {
+      "fonte": "base_s",
+      "municipio": "Sorocaba",
+      "etapa": "ensino_fundamental",
+      "ano": 2021,
+      "periodo_tipo": "trimestre",
+      "periodo_numero": 2,
+      "periodo": "JANEIRO A JUNHO/2021",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 42400620.36,
+      "total_ano": null
+    },
+    {
+      "fonte": "base_s",
+      "municipio": "Sorocaba",
+      "etapa": "ensino_fundamental",
+      "ano": 2021,
+      "periodo_tipo": "trimestre",
+      "periodo_numero": 3,
+      "periodo": "JANEIRO A SETEMBRO/2021",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 66461487.48,
+      "total_ano": null
+    },
+    {
+      "fonte": "base_s",
+      "municipio": "Sorocaba",
+      "etapa": "ensino_fundamental",
+      "ano": 2021,
+      "periodo_tipo": "trimestre",
+      "periodo_numero": 4,
+      "periodo": "JANEIRO A DEZEMBRO/2021",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 203679744.15,
+      "total_ano": null
+    },
+    {
+      "fonte": "base_s",
+      "municipio": "Sorocaba",
+      "etapa": "ensino_fundamental",
+      "ano": 2022,
+      "periodo_tipo": "trimestre",
+      "periodo_numero": 1,
+      "periodo": "JANEIRO A MARCO/2022",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 17655404.02,
+      "total_ano": null
+    },
+    {
+      "fonte": "base_s",
+      "municipio": "Sorocaba",
+      "etapa": "ensino_fundamental",
+      "ano": 2022,
+      "periodo_tipo": "trimestre",
+      "periodo_numero": 2,
+      "periodo": "JANEIRO A JUNHO/2022",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 77191118.41,
+      "total_ano": null
+    },
+    {
+      "fonte": "base_s",
+      "municipio": "Sorocaba",
+      "etapa": "ensino_fundamental",
+      "ano": 2022,
+      "periodo_tipo": "trimestre",
+      "periodo_numero": 3,
+      "periodo": "JANEIRO A SETEMBRO/2022",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 115001477.84,
+      "total_ano": null
+    },
+    {
+      "fonte": "base_s",
+      "municipio": "Sorocaba",
+      "etapa": "ensino_fundamental",
+      "ano": 2022,
+      "periodo_tipo": "trimestre",
+      "periodo_numero": 4,
+      "periodo": "JANEIRO A DEZEMBRO/2022",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 190273250.35,
+      "total_ano": null
+    },
+    {
+      "fonte": "base_s",
+      "municipio": "Sorocaba",
+      "etapa": "ensino_fundamental",
+      "ano": 2023,
+      "periodo_tipo": "trimestre",
+      "periodo_numero": 1,
+      "periodo": "JANEIRO A MARCO/2023",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 30850909.81,
+      "total_ano": null
+    },
+    {
+      "fonte": "base_s",
+      "municipio": "Sorocaba",
+      "etapa": "ensino_fundamental",
+      "ano": 2023,
+      "periodo_tipo": "trimestre",
+      "periodo_numero": 2,
+      "periodo": "JANEIRO A JUNHO/2023",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 78300705.58,
+      "total_ano": null
+    },
+    {
+      "fonte": "base_s",
+      "municipio": "Sorocaba",
+      "etapa": "ensino_fundamental",
+      "ano": 2023,
+      "periodo_tipo": "trimestre",
+      "periodo_numero": 4,
+      "periodo": "JANEIRO A DEZEMBRO/2023",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 229102380.13,
+      "total_ano": null
+    },
+    {
+      "fonte": "base_s",
+      "municipio": "Sorocaba",
+      "etapa": "ensino_fundamental",
+      "ano": 2024,
+      "periodo_tipo": "trimestre",
+      "periodo_numero": 1,
+      "periodo": "JANEIRO A MARCO/2024",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 58342727.04,
+      "total_ano": null
+    },
+    {
+      "fonte": "base_s",
+      "municipio": "Sorocaba",
+      "etapa": "ensino_fundamental",
+      "ano": 2024,
+      "periodo_tipo": "trimestre",
+      "periodo_numero": 2,
+      "periodo": "JANEIRO A JUNHO/2024",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 105223384.3,
+      "total_ano": null
+    },
+    {
+      "fonte": "base_s",
+      "municipio": "Sorocaba",
+      "etapa": "ensino_fundamental",
+      "ano": 2024,
+      "periodo_tipo": "trimestre",
+      "periodo_numero": 3,
+      "periodo": "JANEIRO A SETEMBRO/2024",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 170962418.98,
+      "total_ano": null
+    },
+    {
+      "fonte": "base_s",
+      "municipio": "Sorocaba",
+      "etapa": "ensino_fundamental",
+      "ano": 2024,
+      "periodo_tipo": "trimestre",
+      "periodo_numero": 4,
+      "periodo": "JANEIRO A DEZEMBRO/2024",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 278750990.48,
+      "total_ano": null
+    },
+    {
+      "fonte": "base_s",
+      "municipio": "Sorocaba",
+      "etapa": "ensino_fundamental",
+      "ano": 2025,
+      "periodo_tipo": "trimestre",
+      "periodo_numero": 1,
+      "periodo": "JANEIRO A MARCO/2025",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 51899803.31,
+      "total_ano": null
+    },
+    {
+      "fonte": "base_s",
+      "municipio": "Sorocaba",
+      "etapa": "ensino_fundamental",
+      "ano": 2025,
+      "periodo_tipo": "trimestre",
+      "periodo_numero": 2,
+      "periodo": "JANEIRO A JUNHO/2025",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 115070065.45,
+      "total_ano": null
+    },
+    {
+      "fonte": "base_s",
+      "municipio": "Sorocaba",
+      "etapa": "ensino_fundamental",
+      "ano": 2025,
+      "periodo_tipo": "trimestre",
+      "periodo_numero": 3,
+      "periodo": "JANEIRO A SETEMBRO/2025",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 200299224.54,
+      "total_ano": null
+    },
+    {
+      "fonte": "base_s",
+      "municipio": "Sorocaba",
+      "etapa": "ensino_fundamental",
+      "ano": 2025,
+      "periodo_tipo": "trimestre",
+      "periodo_numero": 4,
+      "periodo": "JANEIRO A DEZEMBRO/2025",
+      "valor_periodo": null,
+      "acumulado_ate_periodo": 311321957.21,
+      "total_ano": null
+    },
+    {
+      "fonte": "votorantim_ensino_fundamental_bimestres_valores",
+      "municipio": "Votorantim",
+      "etapa": "ensino_fundamental",
+      "ano": 2021,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 1,
+      "periodo": "1? BIMESTRE/2021",
+      "valor_periodo": 6299239.56,
+      "acumulado_ate_periodo": 6299239.56,
+      "total_ano": 46368002.76
+    },
+    {
+      "fonte": "votorantim_ensino_fundamental_bimestres_valores",
+      "municipio": "Votorantim",
+      "etapa": "ensino_fundamental",
+      "ano": 2021,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 2,
+      "periodo": "2? BIMESTRE/2021",
+      "valor_periodo": 7957206.14,
+      "acumulado_ate_periodo": 14256445.7,
+      "total_ano": 46368002.76
+    },
+    {
+      "fonte": "votorantim_ensino_fundamental_bimestres_valores",
+      "municipio": "Votorantim",
+      "etapa": "ensino_fundamental",
+      "ano": 2021,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 3,
+      "periodo": "3? BIMESTRE/2021",
+      "valor_periodo": 8738262.37,
+      "acumulado_ate_periodo": 22994708.07,
+      "total_ano": 46368002.76
+    },
+    {
+      "fonte": "votorantim_ensino_fundamental_bimestres_valores",
+      "municipio": "Votorantim",
+      "etapa": "ensino_fundamental",
+      "ano": 2021,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 4,
+      "periodo": "4? BIMESTRE/2021",
+      "valor_periodo": 12180380,
+      "acumulado_ate_periodo": 35175088.07,
+      "total_ano": 46368002.76
+    },
+    {
+      "fonte": "votorantim_ensino_fundamental_bimestres_valores",
+      "municipio": "Votorantim",
+      "etapa": "ensino_fundamental",
+      "ano": 2021,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 5,
+      "periodo": "5? BIMESTRE/2021",
+      "valor_periodo": 11192914.69,
+      "acumulado_ate_periodo": 46368002.76,
+      "total_ano": 46368002.76
+    },
+    {
+      "fonte": "votorantim_ensino_fundamental_bimestres_valores",
+      "municipio": "Votorantim",
+      "etapa": "ensino_fundamental",
+      "ano": 2022,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 1,
+      "periodo": "1? BIMESTRE/2022",
+      "valor_periodo": 10065827,
+      "acumulado_ate_periodo": 10065827,
+      "total_ano": 85124830.65
+    },
+    {
+      "fonte": "votorantim_ensino_fundamental_bimestres_valores",
+      "municipio": "Votorantim",
+      "etapa": "ensino_fundamental",
+      "ano": 2022,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 2,
+      "periodo": "2? BIMESTRE/2022",
+      "valor_periodo": 11667860.88,
+      "acumulado_ate_periodo": 21733687.88,
+      "total_ano": 85124830.65
+    },
+    {
+      "fonte": "votorantim_ensino_fundamental_bimestres_valores",
+      "municipio": "Votorantim",
+      "etapa": "ensino_fundamental",
+      "ano": 2022,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 3,
+      "periodo": "3? BIMESTRE/2022",
+      "valor_periodo": 12114715.2,
+      "acumulado_ate_periodo": 33848403.08,
+      "total_ano": 85124830.65
+    },
+    {
+      "fonte": "votorantim_ensino_fundamental_bimestres_valores",
+      "municipio": "Votorantim",
+      "etapa": "ensino_fundamental",
+      "ano": 2022,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 4,
+      "periodo": "4? BIMESTRE/2022",
+      "valor_periodo": 13183219.2,
+      "acumulado_ate_periodo": 47031622.28,
+      "total_ano": 85124830.65
+    },
+    {
+      "fonte": "votorantim_ensino_fundamental_bimestres_valores",
+      "municipio": "Votorantim",
+      "etapa": "ensino_fundamental",
+      "ano": 2022,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 5,
+      "periodo": "5? BIMESTRE/2022",
+      "valor_periodo": 13309865.97,
+      "acumulado_ate_periodo": 60341488.25,
+      "total_ano": 85124830.65
+    },
+    {
+      "fonte": "votorantim_ensino_fundamental_bimestres_valores",
+      "municipio": "Votorantim",
+      "etapa": "ensino_fundamental",
+      "ano": 2022,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 6,
+      "periodo": "6? BIMESTRE/2022",
+      "valor_periodo": 24783342.4,
+      "acumulado_ate_periodo": 85124830.65,
+      "total_ano": 85124830.65
+    },
+    {
+      "fonte": "votorantim_ensino_fundamental_bimestres_valores",
+      "municipio": "Votorantim",
+      "etapa": "ensino_fundamental",
+      "ano": 2023,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 1,
+      "periodo": "1? BIMESTRE/2023",
+      "valor_periodo": 7789153.54,
+      "acumulado_ate_periodo": 7789153.54,
+      "total_ano": 90902979.97
+    },
+    {
+      "fonte": "votorantim_ensino_fundamental_bimestres_valores",
+      "municipio": "Votorantim",
+      "etapa": "ensino_fundamental",
+      "ano": 2023,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 2,
+      "periodo": "2? BIMESTRE/2023",
+      "valor_periodo": 13041035.57,
+      "acumulado_ate_periodo": 20830189.11,
+      "total_ano": 90902979.97
+    },
+    {
+      "fonte": "votorantim_ensino_fundamental_bimestres_valores",
+      "municipio": "Votorantim",
+      "etapa": "ensino_fundamental",
+      "ano": 2023,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 3,
+      "periodo": "3? BIMESTRE/2023",
+      "valor_periodo": 14925061.31,
+      "acumulado_ate_periodo": 35755250.42,
+      "total_ano": 90902979.97
+    },
+    {
+      "fonte": "votorantim_ensino_fundamental_bimestres_valores",
+      "municipio": "Votorantim",
+      "etapa": "ensino_fundamental",
+      "ano": 2023,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 6,
+      "periodo": "6? BIMESTRE/2023",
+      "valor_periodo": 55147729.55,
+      "acumulado_ate_periodo": 90902979.97,
+      "total_ano": 90902979.97
+    },
+    {
+      "fonte": "votorantim_ensino_fundamental_bimestres_valores",
+      "municipio": "Votorantim",
+      "etapa": "ensino_fundamental",
+      "ano": 2024,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 1,
+      "periodo": "1? BIMESTRE/2024",
+      "valor_periodo": 15697799.51,
+      "acumulado_ate_periodo": 15697799.51,
+      "total_ano": 105838619.49
+    },
+    {
+      "fonte": "votorantim_ensino_fundamental_bimestres_valores",
+      "municipio": "Votorantim",
+      "etapa": "ensino_fundamental",
+      "ano": 2024,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 2,
+      "periodo": "2? BIMESTRE/2024",
+      "valor_periodo": 17870395.68,
+      "acumulado_ate_periodo": 33568195.19,
+      "total_ano": 105838619.49
+    },
+    {
+      "fonte": "votorantim_ensino_fundamental_bimestres_valores",
+      "municipio": "Votorantim",
+      "etapa": "ensino_fundamental",
+      "ano": 2024,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 3,
+      "periodo": "3? BIMESTRE/2024",
+      "valor_periodo": 17045274.16,
+      "acumulado_ate_periodo": 50613469.35,
+      "total_ano": 105838619.49
+    },
+    {
+      "fonte": "votorantim_ensino_fundamental_bimestres_valores",
+      "municipio": "Votorantim",
+      "etapa": "ensino_fundamental",
+      "ano": 2024,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 4,
+      "periodo": "4? BIMESTRE/2024",
+      "valor_periodo": 15192558.47,
+      "acumulado_ate_periodo": 65806027.82,
+      "total_ano": 105838619.49
+    },
+    {
+      "fonte": "votorantim_ensino_fundamental_bimestres_valores",
+      "municipio": "Votorantim",
+      "etapa": "ensino_fundamental",
+      "ano": 2024,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 5,
+      "periodo": "5? BIMESTRE/2024",
+      "valor_periodo": 16097942.01,
+      "acumulado_ate_periodo": 81903969.83,
+      "total_ano": 105838619.49
+    },
+    {
+      "fonte": "votorantim_ensino_fundamental_bimestres_valores",
+      "municipio": "Votorantim",
+      "etapa": "ensino_fundamental",
+      "ano": 2024,
+      "periodo_tipo": "bimestre",
+      "periodo_numero": 6,
+      "periodo": "6? BIMESTRE/2024",
+      "valor_periodo": 23934649.66,
+      "acumulado_ate_periodo": 105838619.49,
+      "total_ano": 105838619.49
+    }
+  ]
+}

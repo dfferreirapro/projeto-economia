@@ -804,6 +804,19 @@ body::-webkit-scrollbar-thumb,.side-filter-slot::-webkit-scrollbar-thumb,.tscrol
 .invest-list { display:grid; gap:8px; }
 .invest-item { padding:10px 12px; border:1px solid var(--border); border-radius:10px; background:var(--surface2); color:var(--muted); line-height:1.55; font-size:.9rem; }
 .invest-item strong { color:var(--text); }
+.foco-section { margin-top:32px; padding-top:24px; border-top:1px solid var(--border); }
+.foco-desc { color:var(--muted); font-size:.9rem; line-height:1.55; margin-bottom:16px; }
+.foco-filters { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
+.foco-btn { padding:6px 18px; border:1px solid var(--border); border-radius:99px; background:var(--surface2); color:var(--muted); font-size:.8rem; font-weight:600; cursor:pointer; transition:var(--ease); font-family:var(--font-sans); }
+.foco-btn:hover { border-color:var(--accent); color:var(--text); }
+.foco-btn.active { background:var(--accent); color:var(--bg); border-color:var(--accent); }
+.foco-btn.foco-clear { border-style:dashed; opacity:.55; font-weight:400; font-size:.75rem; }
+.foco-btn.foco-clear:hover { opacity:1; border-color:var(--accent3); color:var(--accent3); }
+.foco-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin-bottom:16px; }
+.foco-card { padding:16px; border:1px solid var(--border); border-radius:12px; background:var(--surface); box-shadow:var(--sh-card); }
+.foco-card small { color:var(--dim); display:block; font-weight:800; text-transform:uppercase; letter-spacing:.7px; font-size:.65rem; margin-bottom:6px; }
+.foco-card strong { font-family:var(--font-mono); font-size:1.15rem; }
+.foco-card .foco-note { display:block; color:var(--dim); font-size:.68rem; margin-top:4px; }
 @media(max-width:900px) {
   .data-island {
     top:58px;
@@ -812,11 +825,13 @@ body::-webkit-scrollbar-thumb,.side-filter-slot::-webkit-scrollbar-thumb,.tscrol
   .dynamic-nav-slot .nav-scroll { padding-bottom:4px; }
   .t-avatar { width:180px; height:180px; }
   .invest-grid { grid-template-columns:1fr 1fr; }
+  .foco-grid { grid-template-columns:1fr 1fr; }
   .infra-compare-grid { grid-template-columns:1fr; }
 }
 @media(max-width:600px) {
   .stats-grid,.infra-kpi,.vgrid { grid-template-columns:1fr; }
   .invest-grid { grid-template-columns:1fr; }
+  .foco-grid { grid-template-columns:1fr; }
   .t-avatar { width:min(240px,70vw); height:min(240px,70vw); }
 }
 </style>
@@ -1086,6 +1101,34 @@ body::-webkit-scrollbar-thumb,.side-filter-slot::-webkit-scrollbar-thumb,.tscrol
           <div class="chd"><span class="ct">Leitura analítica</span></div>
           <div class="invest-list" id="investInsights"></div>
         </div>
+
+        <div class="foco-section">
+          <h3 style="font-family:var(--font-serif);font-size:1.1rem;margin:0 0 6px">Foco nas Análises</h3>
+          <p class="foco-desc">Nesta seção você pode filtrar e comparar os dados de investimento e matrículas de <strong>Sorocaba</strong>, <strong>Sobral</strong> e <strong>Votorantim</strong> entre 2021 e 2025. Matrículas (Censo Escolar INEP) disponíveis apenas para 2025.</p>
+          <div class="foco-filters" id="focoCityFilters">
+            <button class="foco-btn" data-city="Sorocaba">Sorocaba</button>
+            <button class="foco-btn" data-city="Sobral">Sobral</button>
+            <button class="foco-btn" data-city="Votorantim">Votorantim</button>
+            <button class="foco-btn foco-clear" id="focoClearCities">Limpar filtros</button>
+          </div>
+          <div class="foco-filters" id="focoYearFilters">
+            <button class="foco-btn" data-year="2021">2021</button>
+            <button class="foco-btn" data-year="2022">2022</button>
+            <button class="foco-btn" data-year="2023">2023</button>
+            <button class="foco-btn" data-year="2024">2024</button>
+            <button class="foco-btn" data-year="2025">2025</button>
+            <button class="foco-btn foco-clear" id="focoClearYears">Limpar filtros</button>
+          </div>
+          <div class="foco-grid" id="focoCards"></div>
+          <div class="chart-card">
+            <div class="chd"><span class="ct">Investimento por Ano</span></div>
+            <div class="cw-lg"><canvas id="focoChart"></canvas></div>
+          </div>
+          <div class="chart-card" style="margin-top:13px">
+            <div class="chd"><span class="ct">Leitura analítica</span></div>
+            <div class="invest-list" id="focoInsights"></div>
+          </div>
+        </div>
       </section>
 
       <!-- COMPARATIVO -->
@@ -1300,7 +1343,7 @@ const CITY_CENTER={
   'João Pessoa':[-7.12,-34.86],'Campina Grande':[-7.23,-35.88],'São Luís':[-2.53,-44.30]
 };
 
-let allData=[], filtered=[], investmentData=[], investmentFiltered=[], investmentLoadError='', investmentUsingFallback=false, currentPage=1, sortKey='ideb', sortDir='desc', isDark=true;
+let allData=[], filtered=[], investmentData=[], investmentFiltered=[], investmentLoadError='', investmentUsingFallback=false, currentPage=1, sortKey='ideb', sortDir='desc', isDark=true, newInvestmentData=null;
 let longitudeRows=[], mapInstance=null, mapLayer=null, mapReady=false;
 const charts={};
 
@@ -1488,6 +1531,7 @@ fetch('data/base_i.json')
     initFilters(); applyFilters();
     loadLongitudes();
     loadInvestments();
+    loadNewInvestments();
     $('sdot').classList.add('live');
     $('stxt').textContent=allData.length+' escolas';
     $('navBadge').textContent=allData.length;
@@ -1562,6 +1606,20 @@ function loadInvestments(){
     });
 }
 
+function brMoneyShort(v){
+  if(v==null)return '-';
+  const bi=v/1e9;
+  if(bi>=1)return 'R$ '+bi.toFixed(1)+' bi';
+  const mi=v/1e6;
+  if(mi>=1)return 'R$ '+mi.toFixed(0)+' M';
+  return v.toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0});
+}
+function loadNewInvestments(){
+  fetch('data/investimentos_novo.json')
+    .then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
+    .then(data=>{newInvestmentData=data;renderFocoAnalises();})
+    .catch(err=>{console.error(err);newInvestmentData=null;});
+}
 /* HERO CHART */
 function renderHeroChart(){
   dc('hero'); const c=cx('heroChart'); if(!c)return;
@@ -2041,6 +2099,139 @@ function renderInvestments(){
     relation?`No cruzamento investimento-desempenho, <strong>${esc(relation.label)}</strong> aparece com IDEB médio ${relation.y.toFixed(2)} entre os municípios vinculados.`:'Ainda não há correspondência suficiente entre investimento e IDEB no recorte atual.'
   ].filter(Boolean).forEach(html=>{const el=document.createElement('div');el.className='invest-item';el.innerHTML=html;list.appendChild(el);});
   ensureChartNotes();
+  if(window.__focoRefresh&&newInvestmentData)window.__focoRefresh();
+}
+
+function renderFocoAnalises(){
+  if(!newInvestmentData||!newInvestmentData.dados)return;
+  const dados=newInvestmentData.dados;
+  const cardsDiv=$('focoCards');
+  const insightsDiv=$('focoInsights');
+  const chartCanvas=$('focoChart');
+  if(!cardsDiv||!insightsDiv||!chartCanvas)return;
+
+  function getActive(){
+    const cities=[...document.querySelectorAll('#focoCityFilters .foco-btn')].filter(b=>b.classList.contains('active')).map(b=>b.dataset.city);
+    const years=[...document.querySelectorAll('#focoYearFilters .foco-btn')].filter(b=>b.classList.contains('active')).map(b=>parseInt(b.dataset.year));
+    return{cities,years};
+  }
+  function filteredData(){
+    const{cities,years}=getActive();
+    const rows=[];
+    dados.forEach(cidade=>{
+      if(cities.length&&!cities.includes(cidade.municipio))return;
+      cidade.serie.forEach(ano=>{
+        if(years.length&&!years.includes(ano.ano))return;
+        rows.push({municipio:cidade.municipio,uf:cidade.uf,...ano});
+      });
+    });
+    return rows;
+  }
+
+  function updateCards(){
+    const rows=filteredData();
+    const totalInv=rows.reduce((a,r)=>a+(r.investimento||0),0);
+    const has2025=rows.some(r=>r.ano===2025);
+    const alunos2025=rows.filter(r=>r.ano===2025).reduce((a,r)=>a+(r.matriculas||0),0);
+    const invAluno2025=rows.filter(r=>r.ano===2025&&r.investimento_por_aluno!=null);
+    const avgInvAluno=invAluno2025.length?invAluno2025.reduce((a,r)=>a+r.investimento_por_aluno,0)/invAluno2025.length:null;
+    cardsDiv.innerHTML='';
+    const mk=(label,value,note)=>{const el=document.createElement('div');el.className='foco-card';el.innerHTML=`<small>${label}</small><strong>${value}</strong>${note?`<span class="foco-note">${note}</span>`:''}`;cardsDiv.appendChild(el);};
+    mk('Alunos (2025)',has2025?alunos2025.toLocaleString('pt-BR'):'\u2014',has2025?'Total das cidades selecionadas':'Selecione 2025');
+    mk('Investimento Total',totalInv?brMoney(totalInv):'\u2014','Per\u00edodo selecionado');
+    mk('Invest./Aluno (2025)',avgInvAluno!=null?brMoney(avgInvAluno):'\u2014',!has2025?'Selecione 2025':avgInvAluno!=null?'M\u00e9dia das cidades selecionadas':'');
+  }
+
+  function updateChart(){
+    const{cities}=getActive();
+    const rows=filteredData();
+    const yearsSorted=[...new Set(rows.map(r=>r.ano))].sort();
+    const citiesSorted=cities.length?cities:['Sorocaba','Sobral','Votorantim'];
+    const COLORS=['#14b8a6','#f59e0b','#ef4444'];
+    const datasets=citiesSorted.map((city,i)=>{
+      const data=yearsSorted.map(y=>{
+        const r=rows.find(rr=>rr.municipio===city&&rr.ano===y);
+        return r&&r.investimento!=null?r.investimento:null;
+      });
+      return{label:city,data,backgroundColor:COLORS[i%COLORS.length],borderRadius:4};
+    });
+    if(charts.foco){charts.foco.destroy();delete charts.foco;}
+    const dataLabelPlugin={id:'dl',afterDraw(chart){
+      const ctx=chart.ctx;
+      chart.data.datasets.forEach((ds,di)=>{
+        const meta=chart.getDatasetMeta(di);
+        meta.data.forEach((bar,idx)=>{
+          const val=ds.data[idx];
+          if(val==null)return;
+          ctx.fillStyle=isDark?'#f8fafc':'#101828';
+          ctx.font='8px DM Mono, monospace';
+          ctx.textAlign='center';
+          ctx.fillText(brMoneyShort(val),bar.x,bar.y-5);
+        });
+      });
+    }};
+    charts.foco=new Chart(chartCanvas,{
+      type:'bar',
+      data:{labels:yearsSorted.map(String),datasets},
+      options:{
+        responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{labels:{color:ac(),font:{size:10}}},tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+brMoney(ctx.raw)}}},
+        scales:{
+          x:{stacked:false,grid:{display:false},ticks:{color:ac(),font:{size:9}}},
+          y:{beginAtZero:true,grid:{color:gc()},ticks:{callback:v=>brMoneyShort(v),font:{size:9}}}
+        }
+      },
+      plugins:[dataLabelPlugin]
+    });
+  }
+
+  function updateInsights(){
+    const rows=filteredData();
+    const{cities}=getActive();
+    const cityLabel=cities.length?cities.join(', '):'Todas as cidades';
+    const totalInv=rows.reduce((a,r)=>a+(r.investimento||0),0);
+    const totalAlunos=rows.filter(r=>r.ano===2025).reduce((a,r)=>a+(r.matriculas||0),0);
+    const anos=[...new Set(rows.map(r=>r.ano))].sort();
+    const items=[];
+    if(anos.length)items.push(`Per\u00edodo analisado: <strong>${anos.join(', ')}</strong>.`);
+    items.push(`Munic\u00edpios: <strong>${esc(cityLabel)}</strong>.`);
+    items.push(`Investimento total no per\u00edodo: <strong>${brMoney(totalInv)}</strong>.`);
+    if(totalAlunos)items.push(`Total de matr\u00edculas (2025): <strong>${totalAlunos.toLocaleString('pt-BR')}</strong>.`);
+    if(anos.length>1){
+      const variacoes=[];
+      for(let i=1;i<anos.length;i++){
+        const anoAnt=rows.filter(r=>r.ano===anos[i-1]);
+        const anoAtual=rows.filter(r=>r.ano===anos[i]);
+        const totalAnt=anoAnt.reduce((a,r)=>a+(r.investimento||0),0);
+        const totalAtual=anoAtual.reduce((a,r)=>a+(r.investimento||0),0);
+        if(totalAnt&&totalAtual){
+          const v=((totalAtual-totalAnt)/totalAnt*100);
+          variacoes.push(`${anos[i-1]}-${anos[i]}: <strong>${v>0?'+':''}${v.toFixed(1)}%</strong>`);
+        }
+      }
+      if(variacoes.length)items.push(`Varia\u00e7\u00e3o anual do investimento: ${variacoes.join('; ')}.`);
+    }
+    items.push('Matr\u00edculas e R$/aluno dispon\u00edveis apenas para <strong>2025</strong> (Censo Escolar INEP).');
+    insightsDiv.innerHTML=items.map(t=>`<div class="invest-item">${t}</div>`).join('');
+  }
+
+  function refresh(){updateCards();updateChart();updateInsights();}
+  window.__focoRefresh=refresh;
+
+  if(!window.__focoInited){
+    document.querySelectorAll('#focoCityFilters .foco-btn:not(.foco-clear), #focoYearFilters .foco-btn:not(.foco-clear)').forEach(btn=>{
+      btn.addEventListener('click',function(){this.classList.toggle('active');refresh();});
+    });
+    document.querySelectorAll('.foco-clear').forEach(btn=>{
+      btn.addEventListener('click',function(){
+        const parent=this.parentElement;
+        parent.querySelectorAll('.foco-btn:not(.foco-clear)').forEach(b=>b.classList.remove('active'));
+        refresh();
+      });
+    });
+    window.__focoInited=true;
+  }
+  refresh();
 }
 
 /* COMPARATIVO */

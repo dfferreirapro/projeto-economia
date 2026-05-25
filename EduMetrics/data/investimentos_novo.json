@@ -1,0 +1,143 @@
+{
+  "metadados": {
+    "gerado_em": "2026-05-25T00:19:12Z",
+    "anos": [
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "municipios": [
+      "Votorantim",
+      "Sorocaba",
+      "Sobral"
+    ],
+    "observacao_matriculas": "Matriculas disponiveis apenas para 2025 (Censo Escolar INEP). Anos anteriores mostram apenas investimento total."
+  },
+  "dados": [
+    {
+      "municipio": "Votorantim",
+      "uf": "SP",
+      "serie": [
+        {
+          "ano": 2021,
+          "investimento": 46368002.76,
+          "fonte": "base_votorantim.json",
+          "matriculas": null,
+          "investimento_por_aluno": null
+        },
+        {
+          "ano": 2022,
+          "investimento": 85124830.65,
+          "fonte": "base_votorantim.json",
+          "matriculas": null,
+          "investimento_por_aluno": null
+        },
+        {
+          "ano": 2023,
+          "investimento": 90902979.97,
+          "fonte": "base_votorantim.json",
+          "matriculas": null,
+          "investimento_por_aluno": null
+        },
+        {
+          "ano": 2024,
+          "investimento": 105838619.49,
+          "fonte": "base_votorantim.json",
+          "matriculas": null,
+          "investimento_por_aluno": null
+        },
+        {
+          "ano": 2025,
+          "investimento": null,
+          "fonte": null,
+          "matriculas": 6121,
+          "investimento_por_aluno": null
+        }
+      ]
+    },
+    {
+      "municipio": "Sorocaba",
+      "uf": "SP",
+      "serie": [
+        {
+          "ano": 2021,
+          "investimento": 203679744.15,
+          "fonte": "base_sorocaba.json",
+          "matriculas": null,
+          "investimento_por_aluno": null
+        },
+        {
+          "ano": 2022,
+          "investimento": 190273250.35,
+          "fonte": "base_sorocaba.json",
+          "matriculas": null,
+          "investimento_por_aluno": null
+        },
+        {
+          "ano": 2023,
+          "investimento": 229102380.13,
+          "fonte": "base_sorocaba.json",
+          "matriculas": null,
+          "investimento_por_aluno": null
+        },
+        {
+          "ano": 2024,
+          "investimento": 278750990.48,
+          "fonte": "base_sorocaba.json",
+          "matriculas": null,
+          "investimento_por_aluno": null
+        },
+        {
+          "ano": 2025,
+          "investimento": 311321957.21,
+          "fonte": "base_sorocaba.json",
+          "matriculas": 45853,
+          "investimento_por_aluno": 6789.57
+        }
+      ]
+    },
+    {
+      "municipio": "Sobral",
+      "uf": "CE",
+      "serie": [
+        {
+          "ano": 2021,
+          "investimento": 193273008.96,
+          "fonte": "base_sobral.json",
+          "matriculas": null,
+          "investimento_por_aluno": null
+        },
+        {
+          "ano": 2022,
+          "investimento": 177018229.62,
+          "fonte": "base_sobral.json",
+          "matriculas": null,
+          "investimento_por_aluno": null
+        },
+        {
+          "ano": 2023,
+          "investimento": 282057458.8,
+          "fonte": "base_sobral.json",
+          "matriculas": null,
+          "investimento_por_aluno": null
+        },
+        {
+          "ano": 2024,
+          "investimento": 316142487.34,
+          "fonte": "base_sobral.json",
+          "matriculas": null,
+          "investimento_por_aluno": null
+        },
+        {
+          "ano": 2025,
+          "investimento": 234322395.8,
+          "fonte": "base_sobral.json",
+          "matriculas": 16819,
+          "investimento_por_aluno": 13932.01
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,144 @@
+{
+"resumo_ensino_fundamental":[
+ {
+  "ano": 2021,
+  "trimestre": 1,
+  "periodo": "JANEIRO A MARCO\/2021",
+  "liquidada_valor": 31391087.41
+ },
+ {
+  "ano": 2021,
+  "trimestre": 2,
+  "periodo": "JANEIRO A JUNHO\/2021",
+  "liquidada_valor": 42400620.36
+ },
+ {
+  "ano": 2021,
+  "trimestre": 3,
+  "periodo": "JANEIRO A SETEMBRO\/2021",
+  "liquidada_valor": 66461487.48
+ },
+ {
+  "ano": 2021,
+  "trimestre": 4,
+  "periodo": "JANEIRO A DEZEMBRO\/2021",
+  "liquidada_valor": 203679744.15
+ },
+ {
+  "ano": 2022,
+  "trimestre": 1,
+  "periodo": "JANEIRO A MARCO\/2022",
+  "liquidada_valor": 17655404.02
+ },
+ {
+  "ano": 2022,
+  "trimestre": 2,
+  "periodo": "JANEIRO A JUNHO\/2022",
+  "liquidada_valor": 77191118.41
+ },
+ {
+  "ano": 2022,
+  "trimestre": 3,
+  "periodo": "JANEIRO A SETEMBRO\/2022",
+  "liquidada_valor": 115001477.84
+ },
+ {
+  "ano": 2022,
+  "trimestre": 4,
+  "periodo": "JANEIRO A DEZEMBRO\/2022",
+  "liquidada_valor": 190273250.35
+ },
+ {
+  "ano": 2023,
+  "trimestre": 1,
+  "periodo": "JANEIRO A MARCO\/2023",
+  "liquidada_valor": 30850909.81
+ },
+ {
+  "ano": 2023,
+  "trimestre": 2,
+  "periodo": "JANEIRO A JUNHO\/2023",
+  "liquidada_valor": 78300705.58
+ },
+ {
+  "ano": 2023,
+  "trimestre": 4,
+  "periodo": "JANEIRO A DEZEMBRO\/2023",
+  "liquidada_valor": 229102380.13
+ },
+ {
+  "ano": 2024,
+  "trimestre": 1,
+  "periodo": "JANEIRO A MARCO\/2024",
+  "liquidada_valor": 58342727.04
+ },
+ {
+  "ano": 2024,
+  "trimestre": 2,
+  "periodo": "JANEIRO A JUNHO\/2024",
+  "liquidada_valor": 105223384.3
+ },
+ {
+  "ano": 2024,
+  "trimestre": 3,
+  "periodo": "JANEIRO A SETEMBRO\/2024",
+  "liquidada_valor": 170962418.98
+ },
+ {
+  "ano": 2024,
+  "trimestre": 4,
+  "periodo": "JANEIRO A DEZEMBRO\/2024",
+  "liquidada_valor": 278750990.48
+ },
+ {
+  "ano": 2025,
+  "trimestre": 1,
+  "periodo": "JANEIRO A MARCO\/2025",
+  "liquidada_valor": 51899803.31
+ },
+ {
+  "ano": 2025,
+  "trimestre": 2,
+  "periodo": "JANEIRO A JUNHO\/2025",
+  "liquidada_valor": 115070065.45
+ },
+ {
+  "ano": 2025,
+  "trimestre": 3,
+  "periodo": "JANEIRO A SETEMBRO\/2025",
+  "liquidada_valor": 200299224.54
+ },
+ {
+  "ano": 2025,
+  "trimestre": 4,
+  "periodo": "JANEIRO A DEZEMBRO\/2025",
+  "liquidada_valor": 311321957.21
+ }
+],
+"dicionario":[
+ {
+  "Nome da Coluna": "an",
+  "Tipo de Dado": "Inteiro",
+  "Descrição": "Ano de referência do exercício financeiro.",
+  "Observação Técnica": "No caso atual, refere-se a 2021."
+ },
+ {
+  "Nome da Coluna": "trimes",
+  "Tipo de Dado": "Inteiro",
+  "Descrição": "Número do trimestre acumulado (1 a 4).",
+  "Observação Técnica": "Representa o fechamento de cada período do ano."
+ },
+ {
+  "Nome da Coluna": "periodo",
+  "Tipo de Dado": "Texto",
+  "Descrição": "Descrição por extenso do intervalo de meses acumulados.",
+  "Observação Técnica": "Exemplo: \"JANEIRO A DEZEMBRO\/2021\"."
+ },
+ {
+  "Nome da Coluna": "liquidada_valor",
+  "Tipo de Dado": "Decimal (Moeda)",
+  "Descrição": "Valor acumulado da Despesa Paga (saída efetiva de recursos do caixa municipal).",
+  "Observação Técnica": "Importante: Embora o nome da coluna no seu banco seja \"liquidada\", o valor de R$ 203.679.744,15 corresponde à despesa paga do Ensino Fundamental no relatório oficial."
+ }
+]
+}

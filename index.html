@@ -358,12 +358,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .team-grid {
   display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
+  grid-template-columns:repeat(3,minmax(0,1fr));
   gap:12px;
   margin:0 auto 20px;
   justify-content:center;
   align-items:stretch;
-  max-width:1180px;
+  max-width:960px;
 }
 .team-card {
   background:var(--surface); border:1px solid var(--border);
@@ -387,6 +387,15 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .t-name  { font-family:var(--font-serif); font-size:1.18rem; font-weight:700; }
 .t-role  { font-size:.78rem; font-weight:800; text-transform:uppercase; letter-spacing:.7px; color:var(--dim); }
 .t-bio   { font-size:.92rem; color:var(--muted); line-height:1.65; margin-top:6px; max-width:270px; }
+.t-github {
+  display:inline-flex; align-items:center; gap:5px;
+  margin-top:10px; padding:6px 14px;
+  background:var(--surface2); border:1px solid var(--border);
+  border-radius:99px; font-size:.82rem; font-weight:700;
+  color:var(--muted); text-decoration:none;
+  transition:all var(--ease);
+}
+.t-github:hover { border-color:var(--border2); color:var(--text); background:var(--acc-soft); }
 
 .proj-card {
   background:var(--surface); border:1px solid var(--border);
@@ -629,7 +638,7 @@ tbody tr:last-child td { border-bottom:none; }
   .dynamic-nav-slot .nav-sep { display:none; }
   .content { padding:11px 13px 32px; padding-top:61px; }
   .charts-row { grid-template-columns:1fr; }
-  .team-grid { grid-template-columns:repeat(2,minmax(0,1fr)); max-width:760px; }
+  .team-grid { grid-template-columns:repeat(2,minmax(0,1fr)); max-width:660px; }
   .team-card { min-height:340px; }
   .t-avatar { width:clamp(142px, 28vw, 190px); height:clamp(142px, 28vw, 190px); }
   #schoolMap,.map-card { min-height:460px; height:460px; }
@@ -637,6 +646,7 @@ tbody tr:last-child td { border-bottom:none; }
 @media(max-width:600px) {
   html { font-size:15px; }
   .team-grid { grid-template-columns:1fr; max-width:420px; }
+  .team-card { min-height:0; }
   .charts-3 { grid-template-columns:1fr; }
   .stats-grid { grid-template-columns:1fr 1fr; }
   .dg { grid-template-columns:1fr; }
@@ -989,7 +999,7 @@ body::-webkit-scrollbar-thumb,.side-filter-slot::-webkit-scrollbar-thumb,.tscrol
           </div>
         </div>
 
-        <div class="section-title">Equipe do Projeto <span>4 integrantes</span></div>
+        <div class="section-title">Equipe do Projeto</div>
         <div class="team-grid" id="teamGrid"></div>
 
         <div class="proj-card">
@@ -1303,10 +1313,9 @@ function cmpClrs() {
 }
 
 const TEAM = [
-  {name:'Douglas Ferreira',role:'Coleta e Tratamento de Dados',bio:'Responsável pela coleta, organização e padronização das bases educacionais, garantindo consistência inicial para as análises do observatório.',initials:'DF',photo:'EduMetrics/fotos/douglas-ferreira.jpeg'},
-  {name:'Mateus Mariano',role:'Qualidade e Limpeza de Dados',bio:'Responsável pela revisão, limpeza e validação dos dados, apoiando a confiabilidade dos indicadores usados nos filtros, cards e gráficos.',initials:'MM',photo:'EduMetrics/fotos/Mateus-Mariano.jpeg'},
-  {name:'Gabriel Ferreira',role:'Desenvolvimento Front-end',bio:'Responsável pelo desenvolvimento do site, identidade visual, funcionalidades interativas, responsividade e integração dos dados no dashboard.',initials:'GF',photo:'EduMetrics/fotos/gabriel-ferreira.jpg'},
-  {name:'Peterson',role:'Arquitetura de Software, Validação de Dados e Suporte Técnico',bio:'Apoio na sustentação do sistema por meio da estruturação do ecossistema tecnológico, validação da exatidão das estatísticas pedagógicas e apoio contínuo às etapas de desenvolvimento e engenharia.',initials:'P',photo:'EduMetrics/fotos/peterson.jpeg'},
+  {name:'Douglas Ferreira',role:'Coleta e Tratamento de Dados',bio:'Responsável pela coleta, organização e padronização das bases educacionais, garantindo consistência inicial para as análises do observatório.',initials:'DF',photo:'EduMetrics/fotos/douglas-ferreira.jpeg',github:'https://github.com/dfferreirapro'},
+  {name:'Gabriel Ferreira',role:'Desenvolvimento Front-end',bio:'Responsável pelo desenvolvimento do site, identidade visual, funcionalidades interativas, responsividade e integração dos dados no dashboard.',initials:'GF',photo:'EduMetrics/fotos/gabriel-ferreira.jpg',github:'https://github.com/GFTECH05'},
+  {name:'Mateus Mariano',role:'Qualidade e Limpeza de Dados',bio:'Responsável pela revisão, limpeza e validação dos dados, apoiando a confiabilidade dos indicadores usados nos filtros, cards e gráficos.',initials:'MM',photo:'EduMetrics/fotos/Mateus-Mariano.jpeg',github:'https://github.com/mateusmariano7'},
 ];
 
 const DATA_DICT = [
@@ -2294,7 +2303,7 @@ function renderDepTbl(groups){
 /* TEAM & DICT */
 function renderTeam(){
   const grid=$('teamGrid');if(!grid||grid.children.length)return;
-  TEAM.forEach(m=>{const card=document.createElement('div');card.className='team-card';const media=m.photo?`<img src="${esc(m.photo)}" alt="Foto de ${esc(m.name)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><span style="display:none">${esc(m.initials)}</span>`:`<span style="display:flex">${esc(m.initials)}</span>`;card.innerHTML=`<div class="t-avatar">${media}</div><div class="t-name">${esc(m.name)}</div><div class="t-role">${esc(m.role)}</div><div class="t-bio">${esc(m.bio)}</div>`;grid.appendChild(card);});
+  TEAM.forEach(m=>{const card=document.createElement('div');card.className='team-card';const media=m.photo?`<img src="${esc(m.photo)}" alt="Foto de ${esc(m.name)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><span style="display:none">${esc(m.initials)}</span>`:`<span style="display:flex">${esc(m.initials)}</span>`;card.innerHTML=`<div class="t-avatar">${media}</div><div class="t-name">${esc(m.name)}</div><div class="t-role">${esc(m.role)}</div><div class="t-bio">${esc(m.bio)}</div>${m.github?`<a href="${esc(m.github)}" target="_blank" rel="noopener noreferrer" class="t-github">GitHub ↗</a>`:''}`;grid.appendChild(card);});
 }
 function renderDict(){
   const grid=$('dictGrid');if(!grid||grid.children.length)return;

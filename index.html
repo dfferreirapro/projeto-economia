@@ -1,0 +1,2500 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Observatório Educacional</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
+<link rel="icon" href="EduMetrics/assets/logo-observatorio.svg" type="image/svg+xml">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+<style>
+:root {
+  --font-serif: 'Lora', Georgia, serif;
+  --font-sans:  'DM Sans', system-ui, sans-serif;
+  --font-mono:  'DM Mono', monospace;
+  --sidebar-w:  224px;
+  --r-xl: 22px;
+  --r-lg: 16px;
+  --r-md: 11px;
+  --r-sm: 8px;
+  --ease: 0.2s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* DARK — preto e branco */
+.theme-dark {
+  --bg:       #101828;
+  --bg2:      #172033;
+  --surface:  #182338;
+  --surface2: #22304a;
+  --surface3: #2e405f;
+  --border:   rgba(255,255,255,0.10);
+  --border2:  rgba(125,211,252,0.28);
+  --text:     #f8fafc;
+  --muted:    #c3cce0;
+  --dim:      #8997b4;
+  --accent:   #14b8a6;
+  --accent2:  #60a5fa;
+  --accent3:  #f59e0b;
+  --accent4:  #a78bfa;
+  --acc-soft: rgba(20,184,166,0.14);
+  --danger:   #fb7185;
+  --success:  #22c55e;
+  --sh-card:  0 12px 30px rgba(4,12,28,.28), 0 0 0 1px rgba(255,255,255,.05);
+  --sh-float: 0 18px 54px rgba(4,12,28,.42), 0 0 0 1px rgba(125,211,252,.10);
+}
+
+/* LIGHT — branco e azul-marinho */
+.theme-light {
+  --bg:       #f3f7fb;
+  --bg2:      #e8f1f8;
+  --surface:  #ffffff;
+  --surface2: #eef6fb;
+  --surface3: #dbeafe;
+  --border:   rgba(15,72,112,0.10);
+  --border2:  rgba(14,116,144,0.24);
+  --text:     #102033;
+  --muted:    #475569;
+  --dim:      #7890a8;
+  --accent:   #0f9f8f;
+  --accent2:  #2563eb;
+  --accent3:  #d97706;
+  --accent4:  #7c3aed;
+  --acc-soft: rgba(15,159,143,0.10);
+  --danger:   #dc2626;
+  --success:  #16a34a;
+  --sh-card:  0 10px 28px rgba(15,72,112,.08), 0 0 0 1px rgba(15,72,112,.06);
+  --sh-float: 0 18px 48px rgba(15,72,112,.16), 0 0 0 1px rgba(14,116,144,.10);
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; -webkit-font-smoothing:antialiased; }
+body {
+  font-family: var(--font-sans);
+  background:
+    linear-gradient(135deg, color-mix(in srgb,var(--bg) 88%,var(--accent2)) 0%, var(--bg) 42%, color-mix(in srgb,var(--bg2) 86%,var(--accent)) 100%);
+  color: var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+  transition: background var(--ease), color var(--ease);
+  line-height:1.55;
+}
+a { color:inherit; text-decoration:none; }
+img, svg, canvas { max-width:100%; display:block; }
+button, input, select { font-family:inherit; font-size:inherit; }
+
+/* ═══ LAYOUT ═══ */
+.shell { display:flex; min-height:100vh; }
+
+/* ═══ SIDEBAR ILHA ═══ */
+.sidebar-col {
+  width: var(--sidebar-w);
+  min-width: var(--sidebar-w);
+  padding: 18px 12px;
+  position: sticky;
+  top: 0; height: 100vh;
+  display: flex; flex-direction: column;
+  flex-shrink: 0;
+}
+
+.island {
+  background: color-mix(in srgb,var(--surface) 94%,var(--accent2));
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  box-shadow: var(--sh-float);
+  padding: 16px 13px;
+  display: flex; flex-direction: column;
+  flex: 1; overflow: hidden;
+  transition: background var(--ease), box-shadow var(--ease);
+}
+
+.brand {
+  display:flex; align-items:center; gap:10px;
+  padding-bottom:14px; border-bottom:1px solid var(--border);
+  margin-bottom:6px;
+}
+.brand-mark {
+  width:34px; height:34px; border-radius:10px;
+  background:#f8fafc;
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+  border:1px solid var(--border2);
+  overflow:hidden;
+}
+.brand-mark img { width:29px; height:29px; object-fit:contain; display:block; }
+.brand-mark svg { width:15px; height:15px; }
+.theme-dark .brand-mark svg { filter:none; }
+.brand-name { font-family:var(--font-serif); font-size:1rem; font-weight:700; line-height:1.2; letter-spacing:-.2px; }
+.brand-sub  { font-size:.72rem; color:var(--dim); margin-top:2px; }
+
+.nav-scroll { flex:1; overflow-y:auto; overflow-x:hidden; display:flex; flex-direction:column; gap:1px; padding:2px 0; }
+.nav-scroll::-webkit-scrollbar { display:none; }
+
+.nav-sep { font-size:.68rem; font-weight:800; text-transform:uppercase; letter-spacing:1.1px; color:var(--dim); padding:11px 7px 4px; }
+
+.nav-item {
+  display:flex; align-items:center; gap:9px;
+  padding:9px 11px; border-radius:var(--r-md);
+  font-size:.92rem; font-weight:600; color:var(--muted);
+  cursor:pointer; transition:all var(--ease); white-space:nowrap;
+}
+.nav-item svg { width:14px; height:14px; flex-shrink:0; opacity:.55; }
+.nav-item:hover { background:var(--acc-soft); color:var(--text); }
+.nav-item:hover svg { opacity:.9; }
+.nav-item.active { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; font-weight:700; }
+.theme-light .nav-item.active { color:#fff; }
+.nav-item.active svg { opacity:1; color:#fff; }
+.theme-light .nav-item.active svg { color:#fff; }
+
+.nav-badge { margin-left:auto; font-size:.68rem; font-family:var(--font-mono); background:var(--surface3); color:var(--dim); padding:2px 7px; border-radius:99px; }
+.nav-item.active .nav-badge { background:rgba(255,255,255,.2); color:inherit; }
+
+.island-foot { padding-top:11px; border-top:1px solid var(--border); flex-shrink:0; }
+.theme-btn {
+  display:flex; align-items:center; gap:8px;
+  width:100%; padding:7px 9px;
+  background:transparent; border:1px solid var(--border);
+  border-radius:var(--r-sm); font-size:.88rem; color:var(--muted);
+  cursor:pointer; transition:all var(--ease);
+}
+.theme-btn:hover { background:var(--acc-soft); color:var(--text); border-color:var(--border2); }
+
+/* SIDEBAR TOGGLE */
+.sidebar-toggle {
+  width:30px; height:30px; border-radius:8px;
+  border:1px solid var(--border);
+  background:var(--surface2); color:var(--dim);
+  cursor:pointer; display:flex;
+  align-items:center; justify-content:center;
+  margin-left:auto; flex-shrink:0;
+  transition:all var(--ease);
+}
+.sidebar-toggle:hover {
+  color:var(--text); border-color:var(--border2);
+  background:var(--acc-soft);
+}
+.sidebar-toggle svg { width:14px; height:14px; }
+
+/* SIDEBAR COLLAPSED */
+.sidebar-col.collapsed { width:64px; min-width:64px; }
+.sidebar-col.collapsed .brand { flex-direction:column; align-items:center; gap:6px; border-bottom:none; padding-bottom:6px; margin-bottom:0; }
+.sidebar-col.collapsed .brand-name,
+.sidebar-col.collapsed .brand-sub { display:none; }
+.sidebar-col.collapsed .side-filter-slot { display:none; }
+.sidebar-col.collapsed .island-foot { display:none; }
+.sidebar-col.collapsed .sidebar-toggle { margin-left:0; }
+@media(max-width:900px) {
+  .sidebar-col.collapsed { width:var(--sidebar-w); min-width:var(--sidebar-w); }
+  .sidebar-col.collapsed .brand { flex-direction:row; }
+  .sidebar-col.collapsed .brand-name,
+  .sidebar-col.collapsed .brand-sub,
+  .sidebar-col.collapsed .side-filter-slot,
+  .sidebar-col.collapsed .island-foot { display:revert; }
+  .sidebar-col.collapsed .sidebar-toggle { margin-left:auto; }
+}
+
+.side-filter-slot { flex:1; min-height:0; overflow:auto; padding:4px 0 12px; }
+.side-filter-title {
+  font-size:.78rem; font-weight:800; text-transform:uppercase; letter-spacing:1px;
+  color:var(--dim); padding:10px 7px 8px;
+}
+.side-filter-slot .tb-right {
+  display:flex; flex-direction:column; align-items:stretch; justify-content:flex-start;
+  gap:10px; flex:0 0 auto;
+}
+.side-filter-slot .srch, .side-filter-slot .fi, .side-filter-slot .fs, .side-filter-slot .fb { width:100%; max-width:none; }
+.side-filter-slot .fi:focus { width:100%; }
+.side-filter-slot .fb {
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  border-color:transparent; color:#fff; justify-content:center;
+}
+.side-filter-slot .srch::before,
+.side-filter-slot select::before { display:none; }
+
+/* ═══ MAIN ═══ */
+.main-col { flex:1; min-width:0; display:flex; flex-direction:column; }
+
+/* TOPBAR */
+.topbar {
+  position:sticky; top:0; z-index:80; min-height:64px;
+  background:color-mix(in srgb,var(--bg) 84%,transparent);
+  backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; padding:0 22px; gap:14px;
+}
+.tb-left { display:flex; align-items:center; gap:12px; flex-shrink:0; }
+.breadcrumb { font-size:1rem; font-weight:700; font-family:var(--font-serif); }
+.status-pill {
+  display:inline-flex; align-items:center; gap:5px;
+  padding:3px 9px; background:var(--surface); border:1px solid var(--border);
+  border-radius:99px; font-size:.78rem; color:var(--muted);
+}
+.sdot { width:5px; height:5px; border-radius:50%; background:var(--dim); flex-shrink:0; }
+.sdot.live { background:var(--text); animation:blink 2.5s ease infinite; }
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:.25;} }
+.tb-right { display:flex; align-items:center; gap:8px; flex:1; justify-content:flex-end; flex-wrap:wrap; }
+.srch { position:relative; }
+.sico { position:absolute; left:8px; top:50%; transform:translateY(-50%); width:13px; height:13px; color:var(--dim); pointer-events:none; }
+.fi,.fs,.fb { height:38px; border-radius:10px; border:1px solid var(--border); background:var(--surface); color:var(--text); font-size:.9rem; transition:all var(--ease); outline:none; }
+.fi { padding:0 11px 0 30px; width:220px; }
+.fi::placeholder { color:var(--dim); }
+.fi:focus { border-color:var(--border2); width:260px; }
+.fs { padding:0 30px 0 11px; max-width:190px; cursor:pointer; appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23777' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat; background-position:right 7px center; background-size:10px; }
+.fs:focus { border-color:var(--border2); }
+.fs option { background:var(--surface2); }
+.fb { padding:0 14px; cursor:pointer; color:var(--muted); font-weight:700; }
+.fb:hover { border-color:var(--danger); color:var(--danger); }
+
+/* FLOATING DATA ISLAND */
+.data-island {
+  position:sticky; top:14px; z-index:90;
+  width:min(1180px, calc(100% - 44px)); margin:18px auto 0;
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:center;
+  gap:10px; padding:12px;
+  background:color-mix(in srgb,var(--surface) 82%,transparent);
+  border:1px solid var(--border2); border-radius:20px;
+  box-shadow:var(--sh-float);
+  backdrop-filter:blur(24px) saturate(140%); -webkit-backdrop-filter:blur(24px) saturate(140%);
+}
+.data-island::before {
+  content:''; position:absolute; inset:0; pointer-events:none; border-radius:inherit;
+  background:linear-gradient(135deg,color-mix(in srgb,var(--accent2) 26%,transparent),transparent 42%,color-mix(in srgb,var(--accent) 18%,transparent));
+  opacity:.65;
+}
+.island-search { position:relative; min-width:0; z-index:1; }
+.island-search .fi { width:100%; height:44px; background:color-mix(in srgb,var(--surface2) 72%,transparent); }
+.island-search .fi:focus { width:100%; }
+.dynamic-nav-slot { min-width:0; width:100%; flex:1 1 100%; position:relative; z-index:1; }
+.dynamic-nav-slot .nav-scroll {
+  flex:0 1 auto; display:flex; flex-direction:row; flex-wrap:wrap;
+  align-items:center; justify-content:center; gap:8px;
+  overflow:visible; padding:0; scrollbar-width:none;
+}
+.dynamic-nav-slot .nav-scroll::-webkit-scrollbar { display:none; }
+.dynamic-nav-slot .nav-sep {
+  flex:0 0 auto; padding:0 6px; color:var(--dim); font-size:.72rem;
+  white-space:nowrap; min-height:42px; display:inline-flex; align-items:center;
+}
+.dynamic-nav-slot .nav-item {
+  flex:0 0 auto; padding:9px 12px; border:1px solid var(--border);
+  background:color-mix(in srgb,var(--surface) 76%,transparent);
+  border-radius:13px; box-shadow:none; font-size:.9rem; white-space:nowrap;
+}
+.dynamic-nav-slot .nav-item svg { width:16px; height:16px; }
+.dynamic-nav-slot .nav-item.active {
+  border-color:transparent; box-shadow:0 8px 22px rgba(14,116,144,.22);
+}
+
+:focus-visible { outline:2px solid var(--text); outline-offset:3px; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible { box-shadow:0 0 0 4px var(--acc-soft); }
+
+/* CONTENT */
+.content { padding:28px 30px 44px; flex:1; }
+.page { display:none; animation:pg-in .2s ease; }
+.page.active { display:block; }
+@keyframes pg-in { from{opacity:0;transform:translateY(5px);} to{opacity:1;transform:translateY(0);} }
+
+/* PAGE HEADER */
+.ph { margin-bottom:20px; }
+.ph-title { font-family:var(--font-serif); font-size:1.85rem; font-weight:700; letter-spacing:-.4px; }
+.ph-sub { font-size:1rem; color:var(--muted); margin-top:4px; }
+
+/* ═══ HOME — EQUIPE ═══ */
+.home-hero {
+  display:grid; grid-template-columns:1.1fr 0.9fr;
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--r-xl); overflow:hidden;
+  margin-bottom:20px; box-shadow:var(--sh-card); min-height:260px;
+}
+.hh-text {
+  padding:38px 42px;
+  display:flex; flex-direction:column; justify-content:center;
+}
+.eyebrow {
+  font-size:.62rem; font-weight:700; text-transform:uppercase;
+  letter-spacing:2px; color:var(--muted); margin-bottom:13px;
+  display:flex; align-items:center; gap:8px;
+}
+.eyebrow::before { content:''; display:inline-block; width:20px; height:1px; background:var(--dim); }
+.headline {
+  font-family:var(--font-serif);
+  font-size:clamp(2.2rem,3.6vw,3.4rem);
+  font-weight:700; line-height:1.14;
+  letter-spacing:-.5px; margin-bottom:13px;
+}
+.headline em { font-style:italic; color:var(--muted); }
+.desc { font-size:1.05rem; color:var(--muted); line-height:1.7; max-width:520px; margin-bottom:20px; }
+.chips { display:flex; flex-wrap:wrap; gap:6px; }
+.chip {
+  display:inline-flex; align-items:center; gap:5px;
+  padding:3px 10px; background:var(--surface2); border:1px solid var(--border);
+  border-radius:99px; font-size:.82rem; font-weight:700; color:var(--muted); letter-spacing:.2px;
+}
+.hh-visual {
+  background:var(--surface2); border-left:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center; padding:32px;
+}
+.hero-cw { width:100%; height:190px; position:relative; }
+
+/* TEAM SECTION */
+.section-title {
+  font-family:var(--font-serif); font-size:1.2rem; font-weight:700;
+  margin-bottom:14px; padding-bottom:9px; border-bottom:1px solid var(--border);
+  display:flex; align-items:center; gap:10px;
+}
+.section-title span {
+  font-family:var(--font-mono); font-size:.72rem;
+  background:var(--surface2); border:1px solid var(--border);
+  color:var(--dim); padding:2px 8px; border-radius:99px;
+}
+
+.team-grid {
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+  margin:0 auto 20px;
+  justify-content:center;
+  align-items:stretch;
+  max-width:1180px;
+}
+.team-card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:12px; padding:22px 16px 20px;
+  min-height:350px;
+  display:flex; flex-direction:column; align-items:center; text-align:center; gap:7px;
+  transition:all var(--ease); box-shadow:var(--sh-card);
+}
+.team-card:hover { border-color:var(--border2); transform:translateY(-2px); box-shadow:var(--sh-float); }
+.t-avatar {
+  width:clamp(142px, 12vw, 176px); height:clamp(142px, 12vw, 176px); border-radius:18px;
+  background:linear-gradient(135deg,var(--accent),var(--accent4)); display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-serif); font-size:1.45rem; font-weight:700;
+  color:var(--bg); margin-bottom:12px; letter-spacing:.5px;
+  overflow:hidden; border:1px solid var(--border2);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12), 0 14px 34px rgba(0,0,0,.22);
+}
+.t-avatar img { width:100%; height:100%; object-fit:cover; object-position:center; display:block; image-rendering:auto; }
+.t-avatar span { display:flex; align-items:center; justify-content:center; width:100%; height:100%; }
+.theme-light .t-avatar { color:#fff; }
+.t-name  { font-family:var(--font-serif); font-size:1.18rem; font-weight:700; }
+.t-role  { font-size:.78rem; font-weight:800; text-transform:uppercase; letter-spacing:.7px; color:var(--dim); }
+.t-bio   { font-size:.92rem; color:var(--muted); line-height:1.65; margin-top:6px; max-width:270px; }
+
+.proj-card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--r-lg); padding:26px 30px; box-shadow:var(--sh-card);
+}
+.proj-inner { display:grid; grid-template-columns:repeat(3,1fr); gap:26px; }
+.proj-block h4 { font-family:var(--font-serif); font-size:1.02rem; font-weight:700; margin-bottom:8px; padding-bottom:7px; border-bottom:1px solid var(--border); }
+.proj-block p  { font-size:.92rem; color:var(--muted); line-height:1.65; }
+
+/* ═══ CARDS UNIVERSAIS ═══ */
+.stat-card, .chart-card, .table-card, .cc {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--r-lg); box-shadow:var(--sh-card);
+}
+.chart-card, .stat-card { padding:20px; transition:border-color var(--ease),transform var(--ease),box-shadow var(--ease); }
+.chart-card:hover, .stat-card:hover { border-color:var(--border2); transform:translateY(-1px); box-shadow:var(--sh-float); }
+
+.chd { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+.ct  { font-size:.82rem; font-weight:800; text-transform:uppercase; letter-spacing:.7px; color:var(--muted); }
+.cbadge { font-size:.72rem; font-family:var(--font-mono); background:var(--surface2); border:1px solid var(--border); color:var(--dim); padding:2px 8px; border-radius:99px; }
+
+.stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:11px; margin-bottom:14px; }
+.sl { font-size:.78rem; font-weight:800; text-transform:uppercase; letter-spacing:.7px; color:var(--muted); margin-bottom:6px; }
+.sv { font-family:var(--font-serif); font-size:2.15rem; font-weight:700; letter-spacing:-.6px; line-height:1.1; color:var(--accent2); }
+.ss { font-size:.82rem; color:var(--dim); margin-top:6px; }
+
+.insight-panel {
+  display:grid; grid-template-columns:1.05fr .95fr; gap:12px; margin-bottom:14px;
+}
+.insight-card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--r-lg); padding:17px; box-shadow:var(--sh-card);
+}
+.insight-title { font-size:.84rem; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:.8px; margin-bottom:11px; }
+.insight-list { display:flex; flex-direction:column; gap:8px; }
+.insight-item { display:grid; grid-template-columns:8px 1fr; gap:10px; align-items:start; font-size:.95rem; color:var(--muted); line-height:1.58; }
+.insight-item::before { content:''; width:7px; height:7px; border-radius:50%; background:var(--accent); margin-top:6px; }
+.risk-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+.risk-pill { background:var(--surface2); border:1px solid var(--border); border-radius:12px; padding:10px; min-width:0; }
+.risk-value { font-family:var(--font-serif); font-size:1.35rem; font-weight:700; color:var(--accent3); }
+.risk-label { color:var(--dim); font-size:.72rem; text-transform:uppercase; letter-spacing:.6px; font-weight:800; margin-top:3px; }
+
+.cw    { position:relative; height:200px; }
+.cw-lg { position:relative; height:295px; }
+.cw-xl { position:relative; height:360px; }
+
+.charts-row { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:13px; }
+.charts-2   { display:grid; grid-template-columns:repeat(2,1fr);  gap:12px; margin-bottom:13px; }
+.charts-3   { display:grid; grid-template-columns:repeat(3,1fr);  gap:12px; margin-bottom:13px; }
+.infra-kpi  { display:grid; grid-template-columns:repeat(auto-fit,minmax(138px,1fr)); gap:9px; margin-bottom:13px; }
+.vgrid      { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:9px; margin-bottom:13px; }
+.span2 { grid-column:span 2; }
+
+.map-shell { display:grid; grid-template-columns:minmax(0,1fr) 270px; gap:12px; align-items:stretch; }
+.map-card { min-height:560px; overflow:hidden; padding:0; position:relative; }
+#schoolMap { width:100%; height:560px; background:var(--surface2); }
+.leaflet-container { font-family:var(--font-sans); background:var(--surface2); color:#111; }
+.leaflet-popup-content-wrapper,.leaflet-popup-tip { background:var(--surface); color:var(--text); border:1px solid var(--border); box-shadow:var(--sh-float); }
+.leaflet-popup-content { margin:12px 13px; min-width:220px; }
+.map-popup-title { font-weight:800; color:var(--text); margin-bottom:6px; }
+.map-popup-meta { color:var(--muted); font-size:.84rem; line-height:1.55; }
+.map-dot { width:18px; height:18px; border-radius:50%; border:2px solid #fff; box-shadow:0 4px 16px rgba(0,0,0,.28); }
+.map-side { display:flex; flex-direction:column; gap:12px; }
+.map-legend,.map-summary {
+  background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:15px; box-shadow:var(--sh-card);
+}
+.map-side-title { font-size:.78rem; font-weight:900; letter-spacing:.8px; text-transform:uppercase; color:var(--dim); margin-bottom:10px; }
+.legend-row { display:flex; align-items:center; gap:9px; color:var(--muted); font-size:.86rem; margin:8px 0; }
+.legend-dot { width:12px; height:12px; border-radius:50%; flex-shrink:0; }
+.map-metric { display:flex; justify-content:space-between; gap:10px; padding:8px 0; border-bottom:1px solid var(--border); color:var(--muted); font-size:.88rem; }
+.map-metric:last-child { border-bottom:0; }
+.map-metric strong { color:var(--text); font-family:var(--font-mono); }
+.saeb-score { display:inline-flex; align-items:center; justify-content:flex-end; gap:4px; font-family:var(--font-mono); font-weight:900; color:var(--text); }
+.saeb-scale { display:block; margin-top:5px; color:var(--dim); font-size:.7rem; font-family:var(--font-sans); font-weight:700; }
+
+.dbars { display:flex; flex-direction:column; gap:11px; }
+.ditem { display:flex; flex-direction:column; gap:3px; }
+.drow  { display:flex; justify-content:space-between; align-items:center; }
+.dname { font-size:.75rem; color:var(--muted); font-weight:500; }
+.dpct  { font-size:.69rem; font-family:var(--font-mono); font-weight:500; }
+.dtrk  { height:3px; background:var(--surface3); border-radius:99px; overflow:hidden; }
+.dfill { height:100%; border-radius:99px; background:linear-gradient(90deg,var(--accent),var(--accent2)); transition:width .9s ease; }
+.dmeta { font-size:.78rem; color:var(--dim); }
+
+.icard { padding:12px 13px; position:relative; overflow:hidden; }
+.icard .infra-icon {
+  position:absolute; right:10px; top:9px;
+  width:30px; height:30px; margin:0;
+  font-size:1.2rem; background:var(--surface2);
+}
+.ipct  { font-size:1.55rem; font-weight:700; font-family:var(--font-serif); letter-spacing:-.4px; margin-bottom:2px; color:var(--accent2); }
+.ilbl  { font-size:.86rem; color:var(--muted); margin-bottom:8px; }
+.itrk  { height:3px; background:var(--surface3); border-radius:99px; }
+.ifill { height:100%; border-radius:99px; background:linear-gradient(90deg,var(--accent),var(--accent3)); transition:width 1s ease; }
+.icnt  { font-size:.75rem; color:var(--dim); margin-top:5px; font-family:var(--font-mono); }
+
+.vslbl { display:flex; align-items:center; gap:7px; font-size:.76rem; text-transform:uppercase; letter-spacing:.9px; color:var(--dim); font-weight:800; margin-bottom:10px; }
+.vsico { width:24px; height:24px; display:inline-flex; align-items:center; justify-content:center; border-radius:8px; background:var(--surface2); border:1px solid var(--border); font-size:1rem; letter-spacing:0; }
+.vsrow { display:flex; flex-direction:column; gap:2px; margin-bottom:6px; }
+.vscity{ font-size:.88rem; font-weight:700; }
+.vbtrk { height:3px; background:var(--surface3); border-radius:99px; margin:2px 0; }
+.vbfil { height:100%; border-radius:99px; background:var(--accent); transition:width .8s ease; }
+.vsval { font-size:.84rem; font-family:var(--font-mono); color:var(--muted); }
+
+/* TABLE */
+.table-card { overflow:hidden; }
+.tscroll { overflow-x:auto; max-height:60vh; }
+table { width:100%; border-collapse:collapse; }
+thead th {
+  position:sticky; top:0; z-index:5; padding:11px 13px;
+  background:var(--surface2); font-size:.76rem; font-weight:800;
+  text-transform:uppercase; letter-spacing:.8px; color:var(--dim);
+  border-bottom:1px solid var(--border); white-space:nowrap; text-align:left; user-select:none;
+}
+th.srt { cursor:pointer; }
+th.srt:hover { color:var(--text); }
+.thr, td.r { text-align:right; }
+tbody td { padding:11px 13px; border-bottom:1px solid var(--border); font-size:.92rem; color:var(--muted); vertical-align:middle; }
+tbody tr:hover td { background:var(--acc-soft); }
+tbody tr:last-child td { border-bottom:none; }
+.rnk { display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; background:var(--surface2); border-radius:6px; font-size:.72rem; font-family:var(--font-mono); color:var(--dim); }
+.sn  { font-weight:700; color:var(--text); font-size:.94rem; }
+.dpill { display:inline-block; padding:3px 9px; border-radius:99px; font-size:.72rem; font-weight:800; letter-spacing:.2px; }
+.dp-Municipal { background:color-mix(in srgb,var(--accent) 18%,transparent); color:var(--accent); }
+.dp-Estadual  { background:color-mix(in srgb,var(--accent2) 16%,transparent); border:1px solid color-mix(in srgb,var(--accent2) 38%,transparent); color:var(--accent2); }
+.iv  { font-weight:800; font-family:var(--font-mono); font-size:.94rem; }
+.ihi { color:var(--success); }
+.imd { color:var(--accent3); }
+.ilo { color:var(--danger); }
+.tfoot { display:flex; align-items:center; justify-content:space-between; padding:11px 14px; border-top:1px solid var(--border); font-size:.82rem; color:var(--dim); background:var(--surface2); }
+.pbtns { display:flex; gap:4px; }
+.pbtn { padding:7px 13px; border:1px solid var(--border); border-radius:8px; background:var(--surface); color:var(--muted); cursor:pointer; font-size:.86rem; transition:all var(--ease); }
+.pbtn:hover:not(:disabled) { border-color:var(--border2); color:var(--text); }
+.pbtn:disabled { opacity:.3; cursor:not-allowed; }
+
+/* METODOLOGIA */
+.mg { display:grid; grid-template-columns:1fr 1fr; gap:13px; }
+.cc { padding:22px; }
+.steps { display:flex; flex-direction:column; gap:13px; }
+.step  { display:flex; gap:12px; }
+.snum  { width:28px; height:28px; min-width:28px; background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:.78rem; font-weight:800; font-family:var(--font-mono); flex-shrink:0; }
+.theme-light .snum { color:#fff; }
+.step h4 { font-size:.96rem; font-weight:700; margin-bottom:3px; }
+.step p  { font-size:.9rem; color:var(--muted); line-height:1.6; }
+.dg { display:grid; grid-template-columns:1fr 1fr; gap:7px; }
+.di { background:var(--surface2); border:1px solid var(--border); border-radius:var(--r-sm); padding:9px; }
+.df { font-size:.72rem; font-family:var(--font-mono); color:var(--accent2); background:color-mix(in srgb,var(--accent2) 14%,transparent); padding:2px 7px; border-radius:5px; display:inline-block; margin-bottom:4px; }
+.dn { font-size:.92rem; font-weight:700; margin-bottom:2px; }
+.dd { font-size:.84rem; color:var(--muted); }
+.sl2 { display:flex; flex-direction:column; gap:8px; }
+.sl2 p { font-size:.92rem; color:var(--muted); line-height:1.6; }
+.sl2 strong { color:var(--text); font-weight:600; }
+
+/* COMPARATIVO */
+.cmpctrl { display:flex; flex-wrap:wrap; align-items:flex-end; gap:13px; padding:17px 19px; background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); margin-bottom:14px; box-shadow:var(--sh-card); }
+.cg { display:flex; flex-direction:column; gap:4px; }
+.cl { font-size:.76rem; font-weight:800; text-transform:uppercase; letter-spacing:.8px; color:var(--dim); }
+.cs { height:40px; border-radius:10px; border:1px solid var(--border2); background:var(--surface2); color:var(--text); font-size:.92rem; padding:0 11px; outline:none; cursor:pointer; min-width:190px; }
+.cs:focus { border-color:var(--text); }
+.cvs { font-size:.67rem; font-weight:800; color:var(--dim); letter-spacing:1px; align-self:flex-end; padding-bottom:6px; }
+.phr { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:9px; margin-bottom:13px; }
+
+.empty { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:50px 20px; color:var(--dim); text-align:center; gap:7px; }
+.eico { font-size:1.7rem; opacity:.35; }
+.empty p { font-size:.94rem; max-width:330px; line-height:1.6; }
+
+/* TOAST */
+.toast { position:fixed; bottom:17px; right:17px; z-index:9999; background:var(--surface2); border:1px solid var(--border2); border-left:4px solid var(--accent); border-radius:var(--r-sm); padding:11px 14px; font-size:.9rem; color:var(--text); box-shadow:var(--sh-float); transform:translateY(130%); opacity:0; transition:transform .27s cubic-bezier(0.4,0,0.2,1),opacity .27s ease; max-width:320px; }
+.toast.show { transform:translateY(0); opacity:1; }
+.toast.error { border-left-color:var(--danger); }
+
+/* CHATBOT */
+.chat-fab {
+  position:fixed; right:20px; bottom:20px; z-index:9000;
+  width:52px; height:52px; border-radius:16px; border:1px solid rgba(45,212,191,.55);
+  background:linear-gradient(135deg,#0f766e,#14b8a6);
+  color:#f8fafc;
+  box-shadow:0 16px 38px rgba(20,184,166,.22),0 0 0 1px rgba(255,255,255,.08);
+  display:flex; align-items:center; justify-content:center; cursor:pointer; transition:transform var(--ease), box-shadow var(--ease);
+}
+.theme-light .chat-fab { background:linear-gradient(135deg,#123b66,#2f7ab8); border-color:rgba(18,59,102,.35); color:#fff; }
+.chat-fab:hover { transform:translateY(-2px); box-shadow:0 18px 46px rgba(20,184,166,.32),0 0 0 1px rgba(255,255,255,.14); }
+.chat-fab svg { width:22px; height:22px; }
+.chat-panel {
+  position:fixed; right:20px; bottom:84px; z-index:9000;
+  width:min(390px, calc(100vw - 28px)); max-height:min(640px, calc(100vh - 116px));
+  display:none; grid-template-rows:auto 1fr auto;
+  background:color-mix(in srgb,var(--surface) 94%,transparent);
+  border:1px solid var(--border2); border-radius:18px; box-shadow:var(--sh-float);
+  overflow:hidden; backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
+}
+.chat-panel.open { display:grid; }
+.chat-head { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:14px 15px; border-bottom:1px solid var(--border); }
+.chat-kicker { font-size:.58rem; text-transform:uppercase; letter-spacing:1px; color:var(--dim); font-weight:800; }
+.chat-title { font-family:var(--font-serif); font-weight:700; font-size:1.08rem; }
+.chat-close { border:1px solid var(--border); background:var(--surface2); color:var(--muted); border-radius:10px; width:30px; height:30px; cursor:pointer; }
+.chat-body { padding:14px; overflow:auto; display:flex; flex-direction:column; gap:10px; }
+.msg { max-width:86%; padding:10px 12px; border-radius:14px; font-size:.9rem; line-height:1.52; border:1px solid var(--border); white-space:pre-line; }
+.msg.bot { background:var(--surface2); color:var(--muted); align-self:flex-start; border-top-left-radius:6px; }
+.msg.user { background:var(--text); color:var(--bg); align-self:flex-end; border-color:transparent; border-top-right-radius:6px; }
+.suggestions { display:flex; flex-wrap:wrap; gap:6px; padding:0 14px 10px; max-height:104px; overflow:auto; }
+.suggestions button { border:1px solid var(--border); background:var(--surface2); color:var(--muted); border-radius:99px; padding:7px 10px; font-size:.8rem; cursor:pointer; }
+.suggestions button:hover { color:var(--text); border-color:var(--border2); transform:translateY(-1px); }
+.chat-form { display:flex; gap:8px; padding:12px; border-top:1px solid var(--border); }
+.chat-input { flex:1; min-width:0; height:44px; border-radius:12px; border:1px solid var(--border); background:var(--surface2); color:var(--text); padding:0 12px; outline:none; font-size:.9rem; }
+.chat-send { width:46px; border-radius:12px; border:0; background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; cursor:pointer; font-weight:800; }
+
+.site-footer { padding:14px 30px; border-top:1px solid var(--border); font-size:.8rem; color:var(--dim); display:flex; gap:5px; flex-wrap:wrap; }
+.fsep { opacity:.3; }
+
+/* MOBILE */
+.mob-hdr { display:none; position:fixed; top:0; left:0; right:0; height:49px; z-index:250; background:var(--surface); border-bottom:1px solid var(--border); align-items:center; justify-content:space-between; padding:0 13px; }
+.mbtn { background:none; border:none; color:var(--text); padding:6px; cursor:pointer; border-radius:8px; display:flex; align-items:center; }
+.mbtn svg { width:20px; height:20px; }
+.mbrand { font-family:var(--font-serif); font-weight:600; font-size:.86rem; }
+.mtheme { font-size:.95rem; }
+.sb-ov { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:190; backdrop-filter:blur(2px); }
+.sb-ov.active { display:block; }
+
+@media(max-width:1200px) {
+  .charts-3 { grid-template-columns:1fr 1fr; }
+  .proj-inner { grid-template-columns:1fr 1fr; }
+}
+@media(max-width:1050px) {
+  .home-hero { grid-template-columns:1fr; }
+  .hh-visual { display:none; }
+  .charts-2 { grid-template-columns:1fr; }
+  .charts-row { grid-template-columns:1fr 1fr; }
+  .mg { grid-template-columns:1fr; }
+  .map-shell { grid-template-columns:1fr; }
+}
+@media(max-width:900px) {
+  .sidebar-col { position:fixed; left:0; top:0; height:100vh; transform:translateX(-110%); z-index:300; transition:transform .28s cubic-bezier(0.4,0,0.2,1); }
+  .sidebar-col.open { transform:translateX(0); }
+  .mob-hdr { display:flex; }
+  .topbar { display:none; }
+  .data-island { top:58px; width:calc(100% - 26px); margin-top:10px; }
+  .island-search { grid-column:1 / -1; }
+  .dynamic-nav-slot .nav-scroll { justify-content:flex-start; flex-wrap:nowrap; overflow-x:auto; padding-bottom:2px; }
+  .dynamic-nav-slot .nav-sep { display:none; }
+  .content { padding:11px 13px 32px; padding-top:61px; }
+  .charts-row { grid-template-columns:1fr; }
+  .team-grid { grid-template-columns:repeat(2,minmax(0,1fr)); max-width:760px; }
+  .team-card { min-height:340px; }
+  .t-avatar { width:clamp(142px, 28vw, 190px); height:clamp(142px, 28vw, 190px); }
+  #schoolMap,.map-card { min-height:460px; height:460px; }
+}
+@media(max-width:600px) {
+  html { font-size:15px; }
+  .team-grid { grid-template-columns:1fr; max-width:420px; }
+  .charts-3 { grid-template-columns:1fr; }
+  .stats-grid { grid-template-columns:1fr 1fr; }
+  .dg { grid-template-columns:1fr; }
+  .vgrid { grid-template-columns:1fr 1fr; }
+  .proj-inner { grid-template-columns:1fr; }
+  .infra-kpi { grid-template-columns:1fr 1fr; }
+  .insight-panel, .risk-grid { grid-template-columns:1fr; }
+  .chat-panel { left:12px; right:12px; width:auto; max-height:72vh; }
+  #schoolMap,.map-card { min-height:380px; height:380px; }
+}
+
+/* PREMIUM UX REFINEMENTS */
+.theme-dark {
+  --bg:#050505;
+  --bg2:#0a0a0a;
+  --surface:#101010;
+  --surface2:#171717;
+  --surface3:#222222;
+  --border:rgba(255,255,255,.075);
+  --border2:rgba(255,255,255,.18);
+  --text:#f7f7f7;
+  --muted:#c9c9c9;
+  --dim:#858585;
+  --accent:#f8f8f8;
+  --accent2:#d7d7d7;
+  --accent3:#a8a8a8;
+  --accent4:#efefef;
+  --acc-soft:rgba(255,255,255,.075);
+  --sh-card:0 10px 34px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.035);
+  --sh-float:0 18px 58px rgba(0,0,0,.44), 0 0 0 1px rgba(255,255,255,.055);
+}
+.theme-light {
+  --bg:#ffffff;
+  --bg2:#f5f8fc;
+  --surface:#ffffff;
+  --surface2:#f4f8fd;
+  --surface3:#e8f1fb;
+  --border:rgba(12,38,68,.10);
+  --border2:rgba(21,79,132,.20);
+  --text:#07182d;
+  --muted:#3c5069;
+  --dim:#7890aa;
+  --accent:#123b66;
+  --accent2:#6b9fd3;
+  --accent3:#9fb7d2;
+  --accent4:#d8e8f7;
+  --acc-soft:rgba(54,111,169,.10);
+  --sh-card:0 12px 28px rgba(13,55,98,.07), 0 0 0 1px rgba(13,55,98,.045);
+  --sh-float:0 18px 48px rgba(13,55,98,.13), 0 0 0 1px rgba(13,55,98,.08);
+}
+body {
+  background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%);
+  letter-spacing:0;
+}
+body::-webkit-scrollbar,.side-filter-slot::-webkit-scrollbar,.tscroll::-webkit-scrollbar { width:10px; height:10px; }
+body::-webkit-scrollbar-track,.side-filter-slot::-webkit-scrollbar-track,.tscroll::-webkit-scrollbar-track { background:var(--bg); }
+body::-webkit-scrollbar-thumb,.side-filter-slot::-webkit-scrollbar-thumb,.tscroll::-webkit-scrollbar-thumb {
+  background:var(--surface3); border:2px solid var(--bg); border-radius:99px;
+}
+.side-filter-slot .fb,.snum {
+  background:linear-gradient(135deg,var(--text),var(--muted));
+  color:var(--bg);
+}
+.theme-light .side-filter-slot .fb,.theme-light .snum {
+  background:linear-gradient(135deg,#0f2d4f,#6b9fd3);
+  color:#fff;
+}
+.nav-item.active {
+  background:linear-gradient(135deg,#f8fafc,#cbd5e1);
+  color:#050505;
+  border-color:transparent;
+}
+.theme-dark .nav-item.active svg { color:#050505; filter:none; }
+.theme-light .nav-item.active { background:linear-gradient(135deg,#0f2d4f,#6b9fd3); color:#fff; }
+.theme-light .nav-item.active svg,.theme-light .brand-mark svg { color:#fff; }
+.home-hero,.stat-card,.chart-card,.table-card,.cc,.insight-card,.proj-card,.team-card {
+  border-radius:12px;
+  background:color-mix(in srgb,var(--surface) 94%,transparent);
+}
+.home-hero,.chart-card,.stat-card,.table-card,.insight-card,.proj-card,.team-card {
+  animation:softRise .34s ease both;
+}
+@keyframes softRise { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+.data-island {
+  top:10px;
+  width:min(1320px,calc(100% - 36px));
+  margin-top:12px;
+  display:block;
+  padding:8px;
+  border-radius:14px;
+  min-height:58px;
+  overflow:hidden;
+}
+.data-island::before { opacity:.18; background:linear-gradient(90deg,rgba(255,255,255,.12),transparent 42%,rgba(255,255,255,.06)); }
+.theme-light .data-island::before { background:linear-gradient(90deg,rgba(49,103,158,.12),transparent 42%,rgba(49,103,158,.06)); }
+.dynamic-nav-slot { width:auto; flex:initial; }
+.dynamic-nav-slot .nav-scroll {
+  justify-content:flex-start;
+  flex-wrap:nowrap;
+  overflow-x:auto;
+  gap:6px;
+  padding:0 2px 2px;
+}
+.dynamic-nav-slot .nav-sep { display:none; }
+.dynamic-nav-slot .nav-item {
+  min-height:40px;
+  padding:8px 10px;
+  border-radius:10px;
+  font-size:.83rem;
+  background:transparent;
+}
+.dynamic-nav-slot .nav-item.active {
+  background:#f8fafc;
+  color:#050505;
+  border-color:#f8fafc;
+  box-shadow:0 0 0 1px rgba(255,255,255,.35),0 8px 22px rgba(255,255,255,.12);
+}
+.dynamic-nav-slot .nav-item.active svg,
+.dynamic-nav-slot .nav-item.active span {
+  color:#050505;
+}
+.theme-light .dynamic-nav-slot .nav-item.active {
+  background:#0f2d4f;
+  color:#fff;
+  border-color:#0f2d4f;
+  box-shadow:0 8px 22px rgba(15,45,79,.18);
+}
+.theme-light .dynamic-nav-slot .nav-item.active svg,
+.theme-light .dynamic-nav-slot .nav-item.active span {
+  color:#fff;
+}
+.sv,.ipct { color:var(--text); }
+.theme-light .sv,.theme-light .ipct { color:var(--accent); }
+.dfill,.ifill { background:linear-gradient(90deg,var(--text),var(--dim)); }
+.theme-light .dfill,.theme-light .ifill { background:linear-gradient(90deg,#123b66,#6b9fd3); }
+.kpi-icon {
+  width:26px; height:26px; border-radius:8px; display:inline-flex; align-items:center; justify-content:center;
+  background:var(--surface2); border:1px solid var(--border); color:var(--muted); margin-bottom:8px;
+}
+.perf-badge {
+  display:inline-flex; align-items:center; justify-content:center; min-width:62px;
+  margin-top:4px; padding:2px 7px; border-radius:99px; font-size:.68rem; font-weight:800;
+  background:var(--surface2); border:1px solid var(--border); color:var(--muted);
+}
+.perf-badge.high { color:var(--success); }
+.perf-badge.mid { color:var(--accent3); }
+.perf-badge.low { color:var(--danger); }
+.ideb-meter { width:72px; height:4px; margin-left:auto; margin-top:5px; background:var(--surface3); border-radius:99px; overflow:hidden; }
+.ideb-meter span { display:block; height:100%; border-radius:inherit; background:currentColor; }
+.data-island.compact-pulse { animation:islandPulse .55s ease; }
+@keyframes islandPulse { 0%{transform:translateY(-2px) scale(.995);} 100%{transform:none;} }
+.chart-note { margin:9px 2px 0; color:var(--dim); font-size:.78rem; line-height:1.45; }
+.infra-icon { width:34px; height:34px; display:inline-flex; align-items:center; justify-content:center; border-radius:10px; background:var(--surface2); border:1px solid var(--border); color:var(--text); font-size:1.05rem; margin-bottom:8px; }
+.infra-compare-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+.infra-compare-item { border:1px solid var(--border); border-radius:10px; padding:10px; background:var(--surface2); }
+.infra-compare-head { display:flex; justify-content:space-between; gap:8px; font-size:.82rem; font-weight:800; margin-bottom:8px; }
+.infra-bars { display:grid; gap:7px; }
+.infra-bar-row { display:grid; grid-template-columns:58px 1fr 44px; align-items:center; gap:8px; font-size:.75rem; color:var(--muted); }
+.infra-track { height:7px; border-radius:99px; background:var(--surface3); overflow:hidden; }
+.infra-fill { height:100%; border-radius:inherit; background:linear-gradient(90deg,var(--text),var(--dim)); }
+.invest-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin-bottom:13px; }
+.invest-kpi { padding:14px; border:1px solid var(--border); border-radius:12px; background:var(--surface); box-shadow:var(--sh-card); }
+.invest-kpi small { color:var(--dim); display:block; font-weight:800; text-transform:uppercase; letter-spacing:.7px; font-size:.65rem; margin-bottom:6px; }
+.invest-kpi strong { font-family:var(--font-mono); font-size:1.15rem; }
+.invest-list { display:grid; gap:8px; }
+.invest-item { padding:10px 12px; border:1px solid var(--border); border-radius:10px; background:var(--surface2); color:var(--muted); line-height:1.55; font-size:.9rem; }
+.invest-item strong { color:var(--text); }
+.foco-section { margin-top:32px; padding-top:24px; border-top:1px solid var(--border); }
+.foco-desc { color:var(--muted); font-size:.9rem; line-height:1.55; margin-bottom:16px; }
+.foco-filters { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
+.foco-btn { padding:6px 18px; border:1px solid var(--border); border-radius:99px; background:var(--surface2); color:var(--muted); font-size:.8rem; font-weight:600; cursor:pointer; transition:var(--ease); font-family:var(--font-sans); }
+.foco-btn:hover { border-color:var(--accent); color:var(--text); }
+.foco-btn.active { background:var(--accent); color:var(--bg); border-color:var(--accent); }
+.foco-btn.foco-clear { border-style:dashed; opacity:.55; font-weight:400; font-size:.75rem; }
+.foco-btn.foco-clear:hover { opacity:1; border-color:var(--accent3); color:var(--accent3); }
+.foco-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin-bottom:16px; }
+.foco-card { padding:16px; border:1px solid var(--border); border-radius:12px; background:var(--surface); box-shadow:var(--sh-card); }
+.foco-card small { color:var(--dim); display:block; font-weight:800; text-transform:uppercase; letter-spacing:.7px; font-size:.65rem; margin-bottom:6px; }
+.foco-card strong { font-family:var(--font-mono); font-size:1.15rem; }
+.foco-card .foco-note { display:block; color:var(--dim); font-size:.68rem; margin-top:4px; }
+@media(max-width:900px) {
+  .data-island {
+    top:58px;
+    min-height:0;
+  }
+  .dynamic-nav-slot .nav-scroll { padding-bottom:4px; }
+  .t-avatar { width:180px; height:180px; }
+  .invest-grid { grid-template-columns:1fr 1fr; }
+  .foco-grid { grid-template-columns:1fr 1fr; }
+  .infra-compare-grid { grid-template-columns:1fr; }
+}
+@media(max-width:600px) {
+  .stats-grid,.infra-kpi,.vgrid { grid-template-columns:1fr; }
+  .invest-grid { grid-template-columns:1fr; }
+  .foco-grid { grid-template-columns:1fr; }
+  .t-avatar { width:min(240px,70vw); height:min(240px,70vw); }
+}
+</style>
+</head>
+<body class="theme-dark">
+
+<header class="mob-hdr" id="mobHdr">
+  <button class="mbtn" id="mobBtn">
+    <svg viewBox="0 0 20 20" fill="none"><path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  </button>
+  <span class="mbrand">Observatório Educacional</span>
+  <button class="mbtn mtheme" id="themeToggleMobile">🌙</button>
+</header>
+
+<div class="sb-ov" id="sbOv"></div>
+
+<div class="shell">
+
+  <!-- ═══ SIDEBAR ILHA ═══ -->
+  <div class="sidebar-col" id="sidebarCol">
+    <div class="island">
+      <div class="brand">
+        <div class="brand-mark">
+          <img src="EduMetrics/assets/logo-observatorio.svg" alt="Logo do Observatório Educacional">
+        </div>
+        <div>
+          <div class="brand-name">EduMetrics</div>
+          <div class="brand-sub">Educacional · 2023</div>
+        </div>
+        <button class="sidebar-toggle" id="sidebarToggle" aria-label="Abrir/fechar filtro lateral">
+          <svg viewBox="0 0 16 16" fill="none">
+            <path d="M1 3h14l-5 5.5V13l-4-2V8.5L1 3Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="side-filter-slot" id="sideFilterSlot">
+        <div class="side-filter-title">Filtros e busca</div>
+      </div>
+
+      <div class="nav-scroll">
+        <div class="nav-sep">Apresentação</div>
+        <a class="nav-item active" data-section="equipe" href="#equipe">
+          <svg viewBox="0 0 16 16" fill="none"><circle cx="5.5" cy="5" r="2.5" stroke="currentColor" stroke-width="1.6"/><path d="M1 14c0-2.5 2-4.5 4.5-4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="11" cy="5" r="2.5" stroke="currentColor" stroke-width="1.6"/><path d="M15 14c0-2.5-2-4.5-4.5-4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <span>Nossa Equipe</span>
+        </a>
+        <a class="nav-item" data-section="metodologia" href="#metodologia">
+          <svg viewBox="0 0 16 16" fill="none"><path d="M2 3h12M2 7h8M2 11h10M2 15h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <span>Metodologia</span>
+        </a>
+
+        <div class="nav-sep">Análises</div>
+        <a class="nav-item" data-section="dashboard" href="#dashboard">
+          <svg viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1.5" fill="currentColor" opacity=".9"/><rect x="9" y="1" width="6" height="6" rx="1.5" fill="currentColor" opacity=".3"/><rect x="1" y="9" width="6" height="6" rx="1.5" fill="currentColor" opacity=".3"/><rect x="9" y="9" width="6" height="6" rx="1.5" fill="currentColor" opacity=".3"/></svg>
+          <span>Dashboard</span>
+          <span class="nav-badge" id="navBadge">—</span>
+        </a>
+        <a class="nav-item" data-section="graficos" href="#graficos">
+          <svg viewBox="0 0 16 16" fill="none"><path d="M1 12L5 7 8 9 11 4 15 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>Gráficos</span>
+        </a>
+        <a class="nav-item" data-section="mapa" href="#mapa">
+          <svg viewBox="0 0 16 16" fill="none"><path d="M2 5.2 6 3l4 2 4-2.2v8L10 13l-4-2-4 2.2v-8Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M6 3v8m4-6v8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          <span>Mapa</span>
+        </a>
+        <a class="nav-item" data-section="infraestrutura" href="#infraestrutura">
+          <svg viewBox="0 0 16 16" fill="none"><path d="M1 14L1 7 8 2 15 7 15 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><rect x="5.5" y="10" width="5" height="4" rx="1" stroke="currentColor" stroke-width="1.4"/></svg>
+          <span>Infraestrutura</span>
+        </a>
+        <a class="nav-item" data-section="investimentos" href="#investimentos">
+          <svg viewBox="0 0 16 16" fill="none"><path d="M2 13h12M4 13V7m4 6V3m4 10V5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M3 5.5 8 2l5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>Investimentos</span>
+        </a>
+        <a class="nav-item" data-section="comparativo" href="#comparativo">
+          <svg viewBox="0 0 16 16" fill="none"><circle cx="5.5" cy="8" r="4" stroke="currentColor" stroke-width="1.6"/><circle cx="10.5" cy="8" r="4" stroke="currentColor" stroke-width="1.6"/></svg>
+          <span>Comparativo</span>
+        </a>
+        <a class="nav-item" data-section="escolas" href="#escolas">
+          <svg viewBox="0 0 16 16" fill="none"><path d="M1 6L8 1 15 6 15 14 1 14Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><rect x="6" y="10" width="4" height="4" rx=".5" stroke="currentColor" stroke-width="1.3"/></svg>
+          <span>Escolas</span>
+        </a>
+      </div>
+
+      <div class="island-foot">
+        <button class="theme-btn" id="themeToggle">
+          <span id="tIco">🌙</span>
+          <span id="tLbl">Tema escuro</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ MAIN ═══ -->
+  <div class="main-col">
+
+    <header class="topbar">
+      <div class="tb-left">
+        <div class="breadcrumb" id="bc">Nossa Equipe</div>
+        <div class="status-pill">
+          <span class="sdot" id="sdot"></span>
+          <span id="stxt">carregando…</span>
+        </div>
+      </div>
+      <div class="tb-right">
+        <div class="srch">
+          <svg class="sico" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.4"/><path d="M11 11L14 14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          <input type="text" id="searchInput" class="fi" placeholder="Buscar escola…" autocomplete="off">
+        </div>
+        <select id="cityFilter" class="fs"><option value="">Todos municípios</option></select>
+        <select id="stateFilter" class="fs"><option value="">Todos estados</option></select>
+        <select id="depFilter" class="fs">
+          <option value="">Todas redes</option>
+          <option value="Municipal">Municipal</option>
+          <option value="Estadual">Estadual</option>
+        </select>
+        <select id="saebFilter" class="fs">
+          <option value="">Todo SAEB</option>
+          <option value="200-300">SAEB 200–300</option>
+          <option value="300-400">SAEB 300–400</option>
+          <option value="400-500">SAEB 400–500</option>
+        </select>
+        <select id="idebFilter" class="fs">
+          <option value="">Todo IDEB</option>
+          <option value="high">Alto ≥ 7</option>
+          <option value="mid">Médio 5–7</option>
+          <option value="low">Baixo &lt; 5</option>
+          <option value="nodata">Sem dados</option>
+        </select>
+        <button id="clearFilters" class="fb">Limpar</button>
+      </div>
+    </header>
+
+    <section class="data-island" aria-label="Ilha dinâmica de navegação">
+      <nav class="dynamic-nav-slot" id="dynamicNavSlot" aria-label="Navegação principal"></nav>
+    </section>
+
+    <div class="content">
+
+      <!-- EQUIPE (HOME) -->
+      <section class="page active" id="equipe">
+        <div class="home-hero">
+          <div class="hh-text">
+            <div class="eyebrow">Ciência de Dados para Negócios</div>
+            <h1 class="headline">Observatório<br><em>Educacional</em><br>Brasileiro</h1>
+            <p class="desc">Análise dos dados educacionais das redes públicas do Brasil — cruzamento de IDEB, SAEB e infraestrutura escolar com dados do INEP 2023.</p>
+            <div class="chips">
+              <span class="chip">📊 INEP 2023</span>
+              <span class="chip">🏫 EF I · 1º–5º ano</span>
+              <span class="chip">🌎 Brasil</span>
+              <span class="chip" id="homeCount">— escolas</span>
+            </div>
+          </div>
+          <div class="hh-visual">
+            <div class="hero-cw"><canvas id="heroChart"></canvas></div>
+          </div>
+        </div>
+
+        <div class="section-title">Equipe do Projeto <span>4 integrantes</span></div>
+        <div class="team-grid" id="teamGrid"></div>
+
+        <div class="proj-card">
+          <div class="proj-inner">
+            <div class="proj-block"><h4>🎯 Objetivo</h4><p>Mapear e analisar os indicadores educacionais das escolas públicas no Ensino Fundamental I, identificando padrões e oportunidades de melhoria nas políticas públicas de educação.</p></div>
+            <div class="proj-block"><h4>📐 Metodologia</h4><p>Dados do Censo Escolar 2023 (INEP) tratados em Python com Pandas. Cruzamento de IDEB, proficiências SAEB (LP e MT), taxas de fluxo e dados socioeconômicos do IBGE.</p></div>
+            <div class="proj-block"><h4>🔬 Tecnologias</h4><p>Python (Pandas, NumPy), visualização com Chart.js, front-end em HTML/CSS/JS puro. Base com mais de 1.300 registros de escolas públicas brasileiras.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DASHBOARD -->
+      <section class="page" id="dashboard">
+        <div class="ph"><h2 class="ph-title">Dashboard</h2><p class="ph-sub">Visão geral dos indicadores</p></div>
+        <div class="stats-grid" id="kpiGrid"></div>
+        <div class="insight-panel" aria-live="polite">
+          <div class="insight-card">
+            <div class="insight-title">Leitura automática</div>
+            <div class="insight-list" id="autoInsights"></div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-title">Atenções da seleção</div>
+            <div class="risk-grid" id="riskGrid"></div>
+          </div>
+        </div>
+        <div class="charts-row">
+          <div class="chart-card">
+            <div class="chd"><span class="ct">Distribuição por Rede</span><span class="cbadge" id="distCount">0</span></div>
+            <div id="distBars" class="dbars"></div>
+          </div>
+          <div class="chart-card">
+            <div class="chd"><span class="ct">IDEB por Município</span></div>
+            <div class="cw"><canvas id="miniCityChart"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <div class="chd"><span class="ct">IDEB por Dependência</span></div>
+            <div class="cw"><canvas id="miniDepChart"></canvas></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- GRÁFICOS -->
+      <section class="page" id="graficos">
+        <div class="ph"><h2 class="ph-title">Gráficos e Análises</h2><p class="ph-sub" id="grafCount">—</p></div>
+        <div class="charts-2" style="margin-bottom:13px">
+          <div class="chart-card span2">
+            <div class="chd"><span class="ct">Top 20 Escolas — IDEB</span></div>
+            <div class="cw-xl"><canvas id="idebBarChart"></canvas></div>
+          </div>
+        </div>
+        <div class="charts-2">
+          <div class="chart-card"><div class="chd"><span class="ct">IDEB Médio por Município</span></div><div class="cw-lg"><canvas id="idebCityChart"></canvas></div></div>
+          <div class="chart-card"><div class="chd"><span class="ct">SAEB — LP vs Matemática</span></div><div class="cw-lg"><canvas id="saebCityChart"></canvas></div></div>
+          <div class="chart-card"><div class="chd"><span class="ct">IDEB × Aprovação</span></div><div class="cw"><canvas id="scatterChart"></canvas></div></div>
+          <div class="chart-card"><div class="chd"><span class="ct">Distribuição IDEB</span></div><div class="cw"><canvas id="histChart"></canvas></div></div>
+        </div>
+      </section>
+
+      <!-- MAPA -->
+      <section class="page" id="mapa">
+        <div class="ph"><h2 class="ph-title">Mapa das Escolas</h2><p class="ph-sub" id="mapCount">Marcadores atualizados conforme os filtros</p></div>
+        <div class="map-shell">
+          <div class="chart-card map-card">
+            <div id="schoolMap" role="img" aria-label="Mapa interativo das escolas filtradas"></div>
+          </div>
+          <aside class="map-side">
+            <div class="map-summary">
+              <div class="map-side-title">Recorte no mapa</div>
+              <div class="map-metric"><span>Escolas com coordenada</span><strong id="mapMetricSchools">—</strong></div>
+              <div class="map-metric"><span>SAEB médio</span><strong id="mapMetricSaeb">—</strong></div>
+              <div class="map-metric"><span>Maior SAEB</span><strong id="mapMetricBest">—</strong></div>
+            </div>
+            <div class="map-legend">
+              <div class="map-side-title">Legenda SAEB / 500</div>
+              <div class="legend-row"><span class="legend-dot" style="background:#ef4444"></span>até 300 pontos</div>
+              <div class="legend-row"><span class="legend-dot" style="background:#f59e0b"></span>300–400 pontos</div>
+              <div class="legend-row"><span class="legend-dot" style="background:#22c55e"></span>400–500 pontos</div>
+              <div class="legend-row"><span class="legend-dot" style="background:#94a3b8"></span>sem nota SAEB</div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- INFRAESTRUTURA -->
+      <section class="page" id="infraestrutura">
+        <div class="ph"><h2 class="ph-title">Infraestrutura Escolar</h2><p class="ph-sub">Recursos físicos e tecnológicos</p></div>
+        <div class="infra-kpi" id="infraGrid"></div>
+        <div class="charts-3">
+          <div class="chart-card"><div class="chd"><span class="ct">Tecnologia</span></div><div class="cw"><canvas id="techChart"></canvas></div></div>
+          <div class="chart-card"><div class="chd"><span class="ct">Conectividade</span></div><div class="cw"><canvas id="connectChart"></canvas></div></div>
+          <div class="chart-card"><div class="chd"><span class="ct">Salas</span></div><div class="cw"><canvas id="salasChart"></canvas></div></div>
+          <div class="chart-card"><div class="chd"><span class="ct">Profissionais de Apoio</span></div><div class="cw"><canvas id="profChart"></canvas></div></div>
+        </div>
+        <div class="chart-card infra-compare-card" style="margin-top:13px">
+          <div class="chd"><span class="ct">Infraestrutura: SAEB alto vs baixo</span></div>
+          <div id="infraCompareGrid" class="infra-compare-grid"></div>
+        </div>
+      </section>
+
+      <!-- INVESTIMENTOS -->
+      <section class="page" id="investimentos">
+        <div class="ph"><h2 class="ph-title">Investimentos</h2><p class="ph-sub" id="investCount">Dados de investimentos e matrículas 2021-2025 cruzados com o recorte atual</p></div>
+        <div class="invest-grid" id="investKpis"></div>
+        <div class="charts-2">
+          <div class="chart-card"><div class="chd"><span class="ct">Investimento por Município</span></div><div class="cw-lg"><canvas id="investMunicipioChart"></canvas></div></div>
+          <div class="chart-card"><div class="chd"><span class="ct">Investimento × Desempenho</span></div><div class="cw-lg"><canvas id="investRelationChart"></canvas></div></div>
+        </div>
+        <div class="chart-card" style="margin-top:13px">
+          <div class="chd"><span class="ct">Leitura analítica</span></div>
+          <div class="invest-list" id="investInsights"></div>
+        </div>
+
+        <div class="foco-section">
+          <h3 style="font-family:var(--font-serif);font-size:1.1rem;margin:0 0 6px">Foco nas Análises</h3>
+          <p class="foco-desc">Nesta seção você pode filtrar e comparar os dados de investimento e matrículas de <strong>Sorocaba</strong>, <strong>Sobral</strong> e <strong>Votorantim</strong> entre 2021 e 2025. Matrículas (Censo Escolar INEP) disponíveis apenas para 2025.</p>
+          <div class="foco-filters" id="focoCityFilters">
+            <button class="foco-btn" data-city="Sorocaba">Sorocaba</button>
+            <button class="foco-btn" data-city="Sobral">Sobral</button>
+            <button class="foco-btn" data-city="Votorantim">Votorantim</button>
+            <button class="foco-btn foco-clear" id="focoClearCities">Limpar filtros</button>
+          </div>
+          <div class="foco-filters" id="focoYearFilters">
+            <button class="foco-btn" data-year="2021">2021</button>
+            <button class="foco-btn" data-year="2022">2022</button>
+            <button class="foco-btn" data-year="2023">2023</button>
+            <button class="foco-btn" data-year="2024">2024</button>
+            <button class="foco-btn" data-year="2025">2025</button>
+            <button class="foco-btn foco-clear" id="focoClearYears">Limpar filtros</button>
+          </div>
+          <div class="foco-grid" id="focoCards"></div>
+          <div class="chart-card">
+            <div class="chd"><span class="ct">Investimento por Ano</span></div>
+            <div class="cw-lg"><canvas id="focoChart"></canvas></div>
+          </div>
+          <div class="chart-card" style="margin-top:13px">
+            <div class="chd"><span class="ct">Leitura analítica</span></div>
+            <div class="invest-list" id="focoInsights"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- COMPARATIVO -->
+      <section class="page" id="comparativo">
+        <div class="ph"><h2 class="ph-title">Comparativo</h2><p class="ph-sub">Compare até 3 municípios lado a lado</p></div>
+        <div class="cmpctrl">
+          <div class="cg"><label class="cl">Município 1</label><select id="compareCity1" class="cs"></select></div>
+          <span class="cvs">VS</span>
+          <div class="cg"><label class="cl">Município 2</label><select id="compareCity2" class="cs"></select></div>
+          <span class="cvs" style="opacity:.4">VS</span>
+          <div class="cg"><label class="cl">Município 3 (opcional)</label><select id="compareCity3" class="cs"><option value="">— nenhum —</option></select></div>
+        </div>
+        <div id="compareEmpty" class="chart-card"><div class="empty"><div class="eico">⚖️</div><p>Selecione ao menos 2 municípios diferentes para iniciar</p></div></div>
+        <div id="compareBody" style="display:none">
+          <div id="versusGrid" class="vgrid"></div>
+          <div class="charts-2">
+            <div class="chart-card"><div class="chd"><span class="ct">Radar de Indicadores</span></div><div class="cw-lg"><canvas id="radarChart"></canvas></div></div>
+            <div class="chart-card"><div class="chd"><span class="ct">Distribuição por Rede</span></div><div id="compareDepTable"></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ESCOLAS -->
+      <section class="page" id="escolas">
+        <div class="phr">
+          <div><h2 class="ph-title">Escolas</h2><p class="ph-sub" id="resultCount">—</p></div>
+          <select id="sortSelect" class="fs">
+            <option value="ideb_desc">IDEB ↓</option>
+            <option value="ideb_asc">IDEB ↑</option>
+            <option value="saeb_desc">Maior nota SAEB</option>
+            <option value="saeb_asc">Menor nota SAEB</option>
+            <option value="nota_lp_desc">LP ↓</option>
+            <option value="nota_mt_desc">MT ↓</option>
+            <option value="fluxo_desc">Fluxo ↓</option>
+            <option value="nome_escola_asc">Nome A–Z</option>
+          </select>
+        </div>
+        <div class="table-card">
+          <div class="tscroll">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width:36px">#</th>
+                  <th class="srt" data-col="nome_escola">Escola</th>
+                  <th>Cidade/Estado</th>
+                  <th>Rede</th>
+                  <th class="thr srt" data-col="ideb">IDEB</th>
+                  <th class="thr srt" data-col="saeb">SAEB</th>
+                  <th class="thr srt" data-col="nota_lp">LP</th>
+                  <th class="thr srt" data-col="nota_mt">MT</th>
+                  <th class="thr srt" data-col="fluxo">Fluxo</th>
+                  <th class="thr">Aprend.</th>
+                </tr>
+              </thead>
+              <tbody id="tableBody"></tbody>
+            </table>
+          </div>
+          <div class="tfoot">
+            <span id="pgInfo">—</span>
+            <div class="pbtns">
+              <button id="prevPage" class="pbtn">‹ Anterior</button>
+              <button id="nextPage" class="pbtn">Próxima ›</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- METODOLOGIA -->
+      <section class="page" id="metodologia">
+        <div class="ph"><h2 class="ph-title">Metodologia e Fontes</h2><p class="ph-sub">Documentação do projeto</p></div>
+        <div class="mg">
+          <div class="cc chart-card">
+            <div class="chd"><span class="ct">Metodologia</span></div>
+            <div class="steps">
+              <div class="step"><div class="snum">1</div><div><h4>Coleta de Dados</h4><p>Dados do INEP (Censo Escolar 2023), incluindo IDEB, proficiências SAEB (LP e MT), taxas de fluxo e infraestrutura.</p></div></div>
+              <div class="step"><div class="snum">2</div><div><h4>Tratamento e Limpeza</h4><p>Microdados tratados com Python (Pandas): padronização, remoção de duplicatas e normalização de campos.</p></div></div>
+              <div class="step"><div class="snum">3</div><div><h4>Foco no EF I</h4><p>Ensino Fundamental I (1º–5º ano) por ser a fase mais crítica de alfabetização e de maior ROI em políticas públicas.</p></div></div>
+              <div class="step"><div class="snum">4</div><div><h4>Análise Cruzada</h4><p>Correlação de dados educacionais com indicadores socioeconômicos e de infraestrutura escolar.</p></div></div>
+              <div class="step"><div class="snum">5</div><div><h4>Visualização Open</h4><p>Gráficos gerados dinamicamente com Chart.js. Código aberto e reprodutível.</p></div></div>
+              <div class="step"><div class="snum">6</div><div><h4>Como interpretar</h4><p>IDEB vai de 0 a 10 e combina aprendizagem com fluxo escolar. SAEB é uma proficiência em pontos. Fluxo/aprovação é percentual. Valores nulos indicam ausência de informação na base, não necessariamente desempenho zero.</p></div></div>
+              <div class="step"><div class="snum">7</div><div><h4>Bases do projeto</h4><p>A base principal data/base_i.json sustenta escolas, IDEB, SAEB, rede, município, filtros, infraestrutura e comparativos. A base data/dados_educacao_fundamental_site_2021_2025.json sustenta investimentos SIOPE, matrículas INEP e valores por matrícula no Ensino Fundamental.</p></div></div>
+              <div class="step"><div class="snum">8</div><div><h4>Limitações</h4><p>Os cruzamentos evitam combinações sem chave confiável. Quando investimento por aluno ou total não existe para todos os municípios, a leitura mostra apenas os registros compatíveis com o recorte filtrado.</p></div></div>
+            </div>
+          </div>
+          <div class="cc chart-card">
+            <div class="chd"><span class="ct">Dicionário de Dados</span></div>
+            <div class="dg" id="dictGrid"></div>
+          </div>
+          <div class="cc chart-card" style="grid-column:span 2">
+            <div class="chd"><span class="ct">Fontes</span></div>
+            <div class="sl2">
+              <p><strong>INEP</strong> — Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira</p>
+              <p><strong>Censo Escolar 2023</strong> — Infraestrutura, dependência e matrícula</p>
+              <p><strong>IDEB 2023</strong> — Índice de Desenvolvimento da Educação Básica (N × P)</p>
+              <p><strong>SAEB</strong> — Sistema de Avaliação da Educação Básica</p>
+              <p><strong>IBGE</strong> — Estimativas populacionais e socioeconômicas</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /content -->
+
+    <footer class="site-footer">
+      <span>Observatório Educacional</span><span class="fsep">·</span>
+      <span>INEP 2023</span><span class="fsep">·</span>
+      <span>Ciência de Dados para Negócios</span>
+    </footer>
+  </div><!-- /main-col -->
+</div><!-- /shell -->
+
+<div id="toast" class="toast"></div>
+
+<button class="chat-fab" id="chatFab" type="button" aria-label="Abrir chatbot educacional" aria-expanded="false" aria-controls="chatPanel">
+  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 9h10M7 13h6m-8 7 3-3h9a4 4 0 0 0 4-4V8a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v5a4 4 0 0 0 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+<section class="chat-panel" id="chatPanel" aria-label="Chatbot educacional">
+  <div class="chat-head">
+    <div>
+      <div class="chat-kicker">Chatbot local</div>
+      <div class="chat-title">Observatório Educacional</div>
+    </div>
+    <button class="chat-close" id="chatClose" type="button" aria-label="Fechar chatbot">×</button>
+  </div>
+  <div class="chat-body" id="chatBody" aria-live="polite"></div>
+  <div class="suggestions" id="chatSuggestions">
+    <button type="button" data-q="Qual é a melhor cidade?">Melhor cidade</button>
+    <button type="button" data-q="Qual cidade investe mais por matrícula?">R$/matrícula</button>
+    <button type="button" data-q="Por que esses dados são importantes?">Por que os dados?</button>
+    <button type="button" data-q="Compare Sorocaba e Sobral">Comparar cidades</button>
+    <button type="button" data-q="A cidade com mais investimento é a melhor?">Investimento x desempenho</button>
+    <button type="button" data-q="O que observar na infraestrutura?">Infraestrutura</button>
+  </div>
+  <form class="chat-form" id="chatForm">
+    <input class="chat-input" id="chatInput" maxlength="180" placeholder="Pergunte sobre cidades, escolas ou investimentos..." autocomplete="off" aria-label="Mensagem para o chatbot">
+    <button class="chat-send" type="submit" aria-label="Enviar mensagem">→</button>
+  </form>
+</section>
+
+<script>
+'use strict';
+(function(){
+const $ = id => document.getElementById(id);
+const qsa = s => document.querySelectorAll(s);
+const deb = (fn,ms) => { let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a),ms); }; };
+const trunc = (s,n) => s&&s.length>n?s.slice(0,n)+'…':(s||'');
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+const PAGE_SIZE = 20;
+
+function pal() {
+  const d = document.body.classList.contains('theme-dark');
+  return d
+    ? ['rgba(20,184,166,.78)','rgba(96,165,250,.78)','rgba(245,158,11,.78)','rgba(167,139,250,.76)','rgba(34,197,94,.72)','rgba(244,114,182,.72)','rgba(56,189,248,.72)','rgba(251,113,133,.72)']
+    : ['rgba(15,159,143,.78)','rgba(37,99,235,.76)','rgba(217,119,6,.76)','rgba(124,58,237,.72)','rgba(22,163,74,.72)','rgba(219,39,119,.68)','rgba(2,132,199,.68)','rgba(220,38,38,.66)'];
+}
+
+function depClr(dep) {
+  const d = document.body.classList.contains('theme-dark');
+  const m = {
+    Municipal: d?{bg:'rgba(20,184,166,.58)',border:'#14b8a6',hex:'#14b8a6'}:{bg:'rgba(15,159,143,.52)',border:'#0f9f8f',hex:'#0f9f8f'},
+    Estadual:  d?{bg:'rgba(96,165,250,.56)',border:'#60a5fa',hex:'#60a5fa'}:{bg:'rgba(37,99,235,.48)',border:'#2563eb',hex:'#2563eb'},
+  };
+  return m[dep]||{bg:'rgba(128,128,128,.4)',border:'#888',hex:'#888'};
+}
+
+function cmpClrs() {
+  const d = document.body.classList.contains('theme-dark');
+  return d
+    ? [{bg:'rgba(20,184,166,.52)',border:'#14b8a6',hex:'#2dd4bf'},{bg:'rgba(96,165,250,.50)',border:'#60a5fa',hex:'#93c5fd'},{bg:'rgba(245,158,11,.48)',border:'#f59e0b',hex:'#fbbf24'}]
+    : [{bg:'rgba(15,159,143,.48)',border:'#0f9f8f',hex:'#0f766e'},{bg:'rgba(37,99,235,.46)',border:'#2563eb',hex:'#1d4ed8'},{bg:'rgba(217,119,6,.44)',border:'#d97706',hex:'#b45309'}];
+}
+
+const TEAM = [
+  {name:'Douglas Ferreira',role:'Coleta e Tratamento de Dados',bio:'Responsável pela coleta, organização e padronização das bases educacionais, garantindo consistência inicial para as análises do observatório.',initials:'DF',photo:'EduMetrics/fotos/douglas-ferreira.jpeg'},
+  {name:'Mateus Mariano',role:'Qualidade e Limpeza de Dados',bio:'Responsável pela revisão, limpeza e validação dos dados, apoiando a confiabilidade dos indicadores usados nos filtros, cards e gráficos.',initials:'MM',photo:'EduMetrics/fotos/Mateus-Mariano.jpeg'},
+  {name:'Gabriel Ferreira',role:'Desenvolvimento Front-end',bio:'Responsável pelo desenvolvimento do site, identidade visual, funcionalidades interativas, responsividade e integração dos dados no dashboard.',initials:'GF',photo:'EduMetrics/fotos/gabriel-ferreira.jpg'},
+  {name:'Peterson',role:'Arquitetura de Software, Validação de Dados e Suporte Técnico',bio:'Apoio na sustentação do sistema por meio da estruturação do ecossistema tecnológico, validação da exatidão das estatísticas pedagógicas e apoio contínuo às etapas de desenvolvimento e engenharia.',initials:'P',photo:'EduMetrics/fotos/peterson.jpeg'},
+];
+
+const DATA_DICT = [
+  {field:'inep_id',name:'Código INEP',desc:'Identificador único da escola.'},
+  {field:'nome_escola',name:'Nome',desc:'Nome oficial da escola.'},
+  {field:'no_municipio',name:'Município',desc:'Município sede.'},
+  {field:'dependencia',name:'Rede',desc:'Municipal/Estadual.'},
+  {field:'ideb',name:'IDEB',desc:'Índice N×P (0–10).'},
+  {field:'nota_lp',name:'SAEB LP',desc:'Proficiência em Português.'},
+  {field:'nota_mt',name:'SAEB MT',desc:'Proficiência em Matemática.'},
+  {field:'fluxo',name:'Fluxo',desc:'Taxa de aprovação (0–1).'},
+];
+
+const INFRA_ITEMS = [
+  {key:'IN_BANHEIRO',label:'Banheiro',icon:'🚻'},{key:'IN_BIBLIOTECA',label:'Biblioteca',icon:'📚'},
+  {key:'IN_LABORATORIO_INFORMATICA',label:'Lab. Informática',icon:'💻'},{key:'IN_QUADRA_ESPORTES',label:'Quadra',icon:'🏀'},
+  {key:'IN_INTERNET',label:'Internet',icon:'🌐'},{key:'IN_BANDA_LARGA',label:'Banda Larga',icon:'📶'},
+  {key:'IN_ACESSIBILIDADE_RAMPAS',label:'Rampas',icon:'♿'},{key:'IN_REFEITORIO',label:'Refeitório',icon:'🍽️'},
+];
+const VALID_DEPS=['Municipal','Estadual'];
+const STATE_CENTER={
+  AC:[-9.02,-70.81],AL:[-9.62,-36.82],AM:[-3.47,-65.10],AP:[1.41,-51.77],BA:[-12.58,-41.70],
+  CE:[-5.20,-39.53],DF:[-15.78,-47.93],ES:[-19.19,-40.34],GO:[-15.98,-49.86],MA:[-5.42,-45.44],
+  MG:[-18.10,-44.38],MS:[-20.51,-54.54],MT:[-12.64,-55.42],PA:[-3.79,-52.48],PB:[-7.28,-36.72],
+  PE:[-8.38,-37.86],PI:[-6.60,-42.28],PR:[-24.89,-51.55],RJ:[-22.25,-42.66],RN:[-5.81,-36.59],
+  RO:[-10.83,-63.34],RR:[1.99,-61.33],RS:[-30.17,-53.50],SC:[-27.45,-50.95],SE:[-10.57,-37.45],
+  SP:[-22.19,-48.79],TO:[-10.25,-48.25]
+};
+const CITY_CENTER={
+  'Sorocaba':[-23.50,-47.45],'Votorantim':[-23.54,-47.44],'São Caetano do Sul':[-23.62,-46.55],
+  'Recife':[-8.05,-34.90],'Olinda':[-8.01,-34.85],'Fortaleza':[-3.73,-38.52],'Sobral':[-3.69,-40.35],
+  'Brasília':[-15.78,-47.93],'Londrina':[-23.31,-51.16],'Palmas':[-10.18,-48.33],'Teresina':[-5.09,-42.80],
+  'Rio Branco':[-9.97,-67.81],'Cuiabá':[-15.60,-56.10],'Belo Horizonte':[-19.92,-43.94],
+  'João Pessoa':[-7.12,-34.86],'Campina Grande':[-7.23,-35.88],'São Luís':[-2.53,-44.30]
+};
+
+let allData=[], filtered=[], investmentData=[], investmentFiltered=[], investmentLoadError='', investmentUsingFallback=false, currentPage=1, sortKey='ideb', sortDir='desc', isDark=true, newInvestmentData=null;
+let longitudeRows=[], mapInstance=null, mapLayer=null, mapReady=false;
+const charts={};
+
+/* THEME */
+function applyTheme(dark) {
+  isDark=dark;
+  document.body.classList.toggle('theme-dark',dark);
+  document.body.classList.toggle('theme-light',!dark);
+  localStorage.setItem('edu-theme',dark?'dark':'light');
+  const ico=dark?'🌙':'☀️', lbl=dark?'Tema escuro':'Tema claro';
+  const ti=$('tIco'); if(ti) ti.textContent=ico;
+  const tl=$('tLbl'); if(tl) tl.textContent=lbl;
+  const tm=$('themeToggleMobile'); if(tm) tm.textContent=ico;
+  Chart.defaults.color=dark?'#c3cce0':'#475569';
+  Chart.defaults.borderColor=dark?'rgba(125,211,252,.10)':'rgba(15,72,112,.10)';
+  Chart.defaults.scale.ticks.backdropColor='transparent';
+  Chart.defaults.scale.ticks.showLabelBackdrop=false;
+  renderAllCharts();
+}
+function gc(){ return isDark?'rgba(125,211,252,.10)':'rgba(15,72,112,.10)'; }
+function ac(){ return isDark?'#14b8a6':'#0f9f8f'; }
+
+applyTheme(localStorage.getItem('edu-theme')!=='light');
+$('themeToggle')?.addEventListener('click',()=>applyTheme(!isDark));
+$('themeToggleMobile')?.addEventListener('click',()=>applyTheme(!isDark));
+
+/* LAYOUT: filtros na lateral, navegação na ilha dinâmica */
+const dynamicNavSlot=$('dynamicNavSlot');
+const sideFilterSlot=$('sideFilterSlot');
+const navScroll=document.querySelector('.nav-scroll');
+const topFilters=document.querySelector('.tb-right');
+if(dynamicNavSlot&&navScroll) dynamicNavSlot.appendChild(navScroll);
+if(sideFilterSlot&&topFilters) sideFilterSlot.appendChild(topFilters);
+
+/* SIDEBAR NAV */
+const sbc=$('sidebarCol'), ov=$('sbOv');
+$('mobBtn')?.addEventListener('click',()=>{ sbc?.classList.toggle('open'); ov?.classList.toggle('active'); });
+ov?.addEventListener('click',()=>{ sbc?.classList.remove('open'); ov?.classList.remove('active'); });
+$('sidebarToggle')?.addEventListener('click',()=>{ sbc?.classList.toggle('collapsed'); });
+
+function switchPage(id) {
+  qsa('.page').forEach(p=>p.classList.remove('active'));
+  qsa('.nav-item').forEach(n=>n.classList.remove('active'));
+  const pg=$(id); if(pg) pg.classList.add('active');
+  const nv=document.querySelector(`.nav-item[data-section="${id}"]`); if(nv) nv.classList.add('active');
+  const b=$('bc'); if(b) b.textContent={equipe:'Nossa Equipe',metodologia:'Metodologia',dashboard:'Dashboard',graficos:'Gráficos',mapa:'Mapa',infraestrutura:'Infraestrutura',investimentos:'Investimentos',comparativo:'Comparativo',escolas:'Escolas'}[id]||id;
+  sbc?.classList.remove('open'); ov?.classList.remove('active');
+  const cp=['graficos','infraestrutura','investimentos','comparativo','dashboard'];
+  if(cp.includes(id)) setTimeout(renderAllCharts,80);
+  if(id==='mapa'){ setTimeout(renderMap,80); setTimeout(panMapToTarget,280); }
+  if(id==='metodologia') setTimeout(renderDict,80);
+  if(id==='equipe'){ renderTeam(); if(allData.length) renderHeroChart(); }
+}
+qsa('.nav-item').forEach(item=>item.addEventListener('click',e=>{e.preventDefault();switchPage(item.dataset.section);}));
+
+/* TOAST */
+let toastT;
+function toast(msg,err=false){const t=$('toast');t.textContent=msg;t.className='toast show'+(err?' error':'');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),3000);}
+
+/* CHART UTILS */
+function dc(k){if(charts[k]){charts[k].destroy();delete charts[k];}}
+function da(){Object.keys(charts).forEach(dc);}
+function cx(id){const el=$(id);return el?el.getContext('2d'):null;}
+
+function plainText(v){
+  return String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+}
+function rowPick(row,keys){
+  for(const k of keys){
+    if(row[k]!=null&&row[k]!=='')return row[k];
+    const found=Object.keys(row).find(x=>plainText(x)===plainText(k));
+    if(found&&row[found]!=null&&row[found]!=='')return row[found];
+  }
+  return null;
+}
+function num(v){
+  if(v==null||v==='')return null;
+  if(typeof v==='number')return Number.isFinite(v)?v:null;
+  const cleaned=String(v).replace(/[^\d,.-]/g,'').replace(/\.(?=\d{3}(?:\D|$))/g,'').replace(',','.');
+  const n=Number(cleaned);
+  return Number.isFinite(n)?n:null;
+}
+function yesNo(v){
+  if(v==null||v==='')return null;
+  if(typeof v==='number')return v>0?1:0;
+  const t=plainText(v);
+  if(['1','sim','s','true','yes'].includes(t))return 1;
+  if(['0','nao','n','false','no'].includes(t))return 0;
+  return num(v)>0?1:0;
+}
+function cityKey(city,uf=''){return `${plainText(city)}|${String(uf||'').trim().toUpperCase()}`;}
+function normalizeSchool(d){
+  const lp=num(rowPick(d,['nota_lp','saeb_lp','prof_lp','profici�ncia_lp','proficiencia_lp']));
+  const mt=num(rowPick(d,['nota_mt','saeb_mt','prof_mt','profici�ncia_mt','proficiencia_mt']));
+  const saeb=lp!=null||mt!=null?+(((lp||0)+(mt||0))/((lp!=null?1:0)+(mt!=null?1:0))).toFixed(1):num(rowPick(d,['saeb','nota_saeb']));
+  return {
+    inep_id:rowPick(d,['inep_id','codigo_inep','co_entidade','cod_inep']),
+    nome_escola:rowPick(d,['nome_escola','no_entidade','escola','nome'])||'',
+    no_municipio:rowPick(d,['no_municipio','municipio','cidade'])||'',
+    no_estado:rowPick(d,['no_estado','estado'])||'',
+    uf_estado:String(rowPick(d,['uf_estado','uf','sg_uf'])||'').toUpperCase(),
+    dependencia:rowPick(d,['dependencia','rede','depend�ncia','Coluna1'])||'',
+    ideb:num(rowPick(d,['ideb','IDEB'])),
+    fluxo:num(rowPick(d,['fluxo','aprovacao','aprova��o'])),
+    aprendizado:num(rowPick(d,['aprendizado','aprendizagem'])),
+    nota_lp:lp, nota_mt:mt, saeb,
+    IN_BANHEIRO:yesNo(rowPick(d,['IN_BANHEIRO','banheiro'])),
+    IN_BIBLIOTECA:yesNo(rowPick(d,['IN_BIBLIOTECA','biblioteca'])),
+    IN_LABORATORIO_INFORMATICA:yesNo(rowPick(d,['IN_LABORATORIO_INFORMATICA','laboratorio_informatica','lab_informatica'])),
+    IN_QUADRA_ESPORTES:yesNo(rowPick(d,['IN_QUADRA_ESPORTES','quadra'])),
+    IN_INTERNET:yesNo(rowPick(d,['IN_INTERNET','internet'])),
+    IN_BANDA_LARGA:yesNo(rowPick(d,['IN_BANDA_LARGA','banda_larga'])),
+    IN_ACESSIBILIDADE_RAMPAS:yesNo(rowPick(d,['IN_ACESSIBILIDADE_RAMPAS','rampas','acessibilidade_rampas'])),
+    IN_REFEITORIO:yesNo(rowPick(d,['IN_REFEITORIO','refeitorio'])),
+    QT_DESKTOP_ALUNO:num(rowPick(d,['QT_DESKTOP_ALUNO','desktop_aluno'])),
+    QT_COMP_PORTATIL_ALUNO:num(rowPick(d,['QT_COMP_PORTATIL_ALUNO','portatil_aluno'])),
+    QT_TABLET_ALUNO:num(rowPick(d,['QT_TABLET_ALUNO','tablet_aluno'])),
+    QT_SALAS_UTILIZADAS:num(rowPick(d,['QT_SALAS_UTILIZADAS','salas_utilizadas'])),
+    QT_SALAS_UTILIZA_CLIMATIZADAS:num(rowPick(d,['QT_SALAS_UTILIZA_CLIMATIZADAS','salas_climatizadas'])),
+    QT_SALAS_UTILIZADAS_ACESSIVEIS:num(rowPick(d,['QT_SALAS_UTILIZADAS_ACESSIVEIS','salas_acessiveis'])),
+    QT_PROF_COORDENADOR:num(rowPick(d,['QT_PROF_COORDENADOR','prof_coordenador'])),
+    QT_PROF_PSICOLOGO:num(rowPick(d,['QT_PROF_PSICOLOGO','prof_psicologo'])),
+    QT_PROF_PEDAGOGIA:num(rowPick(d,['QT_PROF_PEDAGOGIA','prof_pedagogia'])),
+    QT_PROF_GESTAO:num(rowPick(d,['QT_PROF_GESTAO','prof_gestao'])),
+    QT_PROF_MONITORES:num(rowPick(d,['QT_PROF_MONITORES','prof_monitores'])),
+  };
+}
+function normalizeInvestment(d){
+  if(d.investimento_ensino_fundamental_siope||d.matriculas_inep){
+    const inv=d.investimento_ensino_fundamental_siope||{};
+    const mat=d.matriculas_inep?.matriculas_ensino_fundamental_regular||{};
+    const ind=d.indicadores_comparacao||{};
+    const total=num(inv.valor_despesa_paga);
+    const empenhada=num(inv.valor_despesa_empenhada);
+    const liquidada=num(inv.valor_despesa_liquidada);
+    const alunos=num(mat.total);
+    const perAluno=num(ind.investimento_pago_por_matricula_total)||(total!=null&&alunos?total/alunos:null);
+    return {
+      municipio:d.municipio||inv.registro_siope?.nome_municipio_siope||'',
+      uf:String(d.uf||inv.registro_siope?.sig_uf||'').toUpperCase(),
+      key:cityKey(d.municipio||inv.registro_siope?.nome_municipio_siope||'',d.uf||inv.registro_siope?.sig_uf||''),
+      ano:num(d.ano||inv.ano),
+      periodo:num(inv.periodo_siope),
+      total, empenhada, liquidada, totalPago:total,
+      alunos,
+      matriculasPublicas:num(mat.rede_publica?.total),
+      matriculasAnosIniciais:num(mat.anos_iniciais?.total),
+      matriculasAnosIniciaisPublicas:num(mat.anos_iniciais?.rede_publica_total),
+      perAluno,
+      perMatriculaPublica:num(ind.investimento_pago_por_matricula_rede_publica),
+      fonte:'SIOPE + INEP',
+      raw:d
+    };
+  }
+  const municipio=rowPick(d,['no_municipio','municipio','cidade','Município'])||'';
+  const uf=String(rowPick(d,['uf_estado','uf','sg_uf','UF'])||'').toUpperCase();
+  const totalAno=num(rowPick(d,['total_ano','investimento_total','valor_total','vl_total','total']));
+  const acumulado=num(rowPick(d,['acumulado_ate_periodo','valor_empenhado','valor_pago','liquidada_valor']));
+  const valorPeriodo=num(rowPick(d,['valor_periodo','valor','investimento']));
+  const total=totalAno??acumulado??valorPeriodo;
+  const alunos=num(rowPick(d,['alunos','matriculas','matrículas','qt_matriculas','matriculas_ef']));
+  const perAluno=num(rowPick(d,['investimento_por_aluno','valor_aluno','per_capita','valor_por_aluno']))||(total!=null&&alunos?total/alunos:null);
+  return {
+    municipio, uf, key:cityKey(municipio,uf),
+    inep_id:rowPick(d,['inep_id','codigo_inep','co_entidade']),
+    ibge:rowPick(d,['codigo_ibge','cod_ibge','ibge']),
+    rede:rowPick(d,['dependencia','rede','dependência'])||'',
+    ano:num(rowPick(d,['ano','exercicio','ano_referencia'])),
+    periodo:num(rowPick(d,['periodo_numero','bimestre','trimestre','mes'])),
+    total, totalAno, acumulado, valorPeriodo, alunos, perAluno,
+    raw:d
+  };
+}
+
+/* LOAD DATA */
+fetch('EduMetrics/data/base_i.json')
+  .then(r=>{if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.text();})
+  .then(text=>{
+    const raw=text.trim();
+    let parsed;
+    try{parsed=JSON.parse(raw.startsWith('[')?raw:'['+raw+']');}
+    catch{throw new Error('JSON inválido');}
+    allData=parsed.map(normalizeSchool).filter(s=>VALID_DEPS.includes(s.dependencia));
+    filtered=[...allData];
+    initFilters(); applyFilters();
+    loadLongitudes();
+    loadInvestments();
+    loadNewInvestments();
+    $('sdot').classList.add('live');
+    $('stxt').textContent=allData.length+' escolas';
+    $('navBadge').textContent=allData.length;
+    const hc=$('homeCount');if(hc)hc.textContent=allData.length+' escolas';
+    renderHeroChart();
+    toast('✓ '+allData.length+' escolas carregadas');
+  })
+  .catch(err=>{
+    console.error(err);
+    $('stxt').textContent='Erro';
+    $('sdot').style.background='var(--danger)';
+    toast('Erro: coloque base_i.json em data/base_i.json',true);
+  });
+
+function hashNum(v){
+  return String(v||'').split('').reduce((a,ch)=>((a*31)+ch.charCodeAt(0))>>>0,7);
+}
+function schoolLatLng(s){
+  if(s.latitude!=null&&s.longitude!=null)return [s.latitude,s.longitude];
+  if(s.longitude==null)return null;
+  const city=CITY_CENTER[s.no_municipio]||null;
+  const state=STATE_CENTER[s.uf_estado]||[-14.2,-51.9];
+  const base=city||state;
+  const jitter=((hashNum(s.inep_id)%100)-50)/2800;
+  return [base[0]+jitter, s.longitude];
+}
+function loadLongitudes(){
+  fetch('EduMetrics/data/longitudes.json')
+    .then(r=>r.ok?r.json():[])
+    .then(rows=>{
+      longitudeRows=Array.isArray(rows)?rows:[];
+      const byId=new Map(longitudeRows.map(r=>[String(r.inep_id),r]));
+      allData.forEach(s=>{
+        const loc=byId.get(String(s.inep_id));
+        if(!loc)return;
+        s.longitude=loc.longitude!=null?+loc.longitude:null;
+        s.latitude=loc.latitude!=null?+loc.latitude:null;
+        s.geo_status=loc.status||'';
+        s.geo_fonte=loc.fonte||'';
+        s.geo_match=loc.match_nome||'';
+      });
+      if($('mapa')?.classList.contains('active'))renderMap();
+    })
+    .catch(()=>toast('Mapa sem longitudes: verifique data/longitudes.json',true));
+}
+
+function loadInvestments(){
+  fetch('EduMetrics/data/dados_educacao_fundamental_site_2021_2025.json')
+    .then(r=>{if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.text();})
+    .then(text=>{
+      const raw=text.trim();
+      const parsed=JSON.parse(raw);
+      const rows=Array.isArray(parsed)
+        ? (parsed.length===1&&parsed[0]?.registros_normalizados?parsed[0].registros_normalizados:parsed)
+        : (Array.isArray(parsed.dados)
+          ? parsed.dados.flatMap(city=>(city.serie||[]).map(row=>({...row,municipio:city.municipio,uf:city.uf})))
+          : (Array.isArray(parsed.registros_normalizados)?parsed.registros_normalizados:[]));
+      const cityUf=new Map();
+      allData.forEach(s=>{if(s.no_municipio&&s.uf_estado&&!cityUf.has(plainText(s.no_municipio)))cityUf.set(plainText(s.no_municipio),s.uf_estado);});
+      investmentData=rows.map(normalizeInvestment).map(r=>{
+        const uf=r.uf||cityUf.get(plainText(r.municipio))||'';
+        return {...r,uf,key:cityKey(r.municipio,uf)};
+      }).filter(r=>r.municipio||r.inep_id||r.ibge);
+      investmentLoadError='';
+      renderInvestments();
+    })
+    .catch(err=>{
+      console.error(err);
+      investmentData=[];
+      investmentLoadError='Não foi possível carregar data/dados_educacao_fundamental_site_2021_2025.json. A seção segue disponível, mas sem indicadores de investimento.';
+      renderInvestments();
+    });
+}
+
+function brMoneyShort(v){
+  if(v==null)return '-';
+  const bi=v/1e9;
+  if(bi>=1)return 'R$ '+bi.toFixed(1)+' bi';
+  const mi=v/1e6;
+  if(mi>=1)return 'R$ '+mi.toFixed(0)+' M';
+  return v.toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0});
+}
+function loadNewInvestments(){
+  fetch('EduMetrics/data/investimentos_novo.json')
+    .then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
+    .then(data=>{newInvestmentData=data;renderFocoAnalises();})
+    .catch(err=>{console.error(err);newInvestmentData=null;});
+}
+/* HERO CHART */
+function renderHeroChart(){
+  dc('hero'); const c=cx('heroChart'); if(!c)return;
+  const map={};
+  allData.filter(s=>s.ideb!=null).forEach(s=>(map[s.no_municipio]=map[s.no_municipio]||[]).push(s.ideb));
+  const entries=Object.entries(map).map(([city,v])=>({city,avg:v.reduce((a,b)=>a+b,0)/v.length})).sort((a,b)=>b.avg-a.avg).slice(0,6);
+  const P=pal();
+  charts.hero=new Chart(c,{
+    type:'bar',
+    data:{labels:entries.map(e=>trunc(e.city,11)),datasets:[{data:entries.map(e=>+e.avg.toFixed(2)),backgroundColor:entries.map((_,i)=>P[i%P.length]),borderWidth:0,borderRadius:7}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{x:{grid:{display:false},ticks:{color:ac(),font:{size:9}}},y:{min:0,max:10,grid:{color:gc()},ticks:{font:{size:9}}}}}
+  });
+}
+
+/* FILTERS */
+function populateCityOptions(selectedState, preserveValue){
+  const allCities=[...new Set(allData.map(s=>s.no_municipio).filter(Boolean))].sort();
+  const cf=$('cityFilter'); if(!cf)return;
+  const currentVal=preserveValue?cf.value:'';
+  const stateCities=selectedState&&stateCityMap[selectedState]?[...stateCityMap[selectedState]].sort():null;
+  cf.innerHTML='';
+  const emptyOpt=document.createElement('option');emptyOpt.value='';emptyOpt.textContent='Todos municípios';cf.appendChild(emptyOpt);
+  const pool=stateCities||allCities;
+  pool.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;cf.appendChild(o);});
+  if(pool.includes(currentVal))cf.value=currentVal;
+}
+
+/* MAP PAN */
+function panMapToTarget(){
+  if(!$('mapa')?.classList.contains('active'))return;
+  if(!mapReady){initMap();if(!mapReady)return;}
+  setTimeout(()=>{
+    const state=$('stateFilter')?.value||'', city=$('cityFilter')?.value||'';
+    if(city&&CITY_CENTER[city]){mapInstance.setView(CITY_CENTER[city],10);}
+    else if(state&&STATE_CENTER[state]){mapInstance.setView(STATE_CENTER[state],7);}
+  },200);
+}
+
+/* STATE -> CITIES MAP */
+let stateCityMap={};
+
+function initFilters(){
+  const cities=[...new Set(allData.map(s=>s.no_municipio).filter(Boolean))].sort();
+  const states=[...new Set(allData.map(s=>s.uf_estado).filter(Boolean))].sort();
+  stateCityMap={};
+  allData.forEach(s=>{if(s.no_municipio&&s.uf_estado){if(!stateCityMap[s.uf_estado])stateCityMap[s.uf_estado]=new Set();stateCityMap[s.uf_estado].add(s.no_municipio);}});
+  const cf=$('cityFilter');
+  cities.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;cf.appendChild(o);});
+  const sf=$('stateFilter');
+  states.forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=s;sf?.appendChild(o);});
+  sf?.addEventListener('change',function(){
+    const state=this.value;
+    const cf=$('cityFilter');
+    const prevCity=cf?.value||'';
+    populateCityOptions(state,false);
+    if(!state||!stateCityMap[state]?.has(prevCity)){if(cf)cf.value='';}
+    else if(cf)cf.value=prevCity;
+    applyFilters();
+    panMapToTarget();
+  });
+  cf?.addEventListener('change',function(){applyFilters();panMapToTarget();});
+  ['compareCity1','compareCity2','compareCity3'].forEach((id,i)=>{
+    const sel=$(id);if(!sel)return;
+    if(i===2)sel.innerHTML='<option value="">— nenhum —</option>';else sel.innerHTML='';
+    cities.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;sel.appendChild(o);});
+  });
+  if($('compareCity1')&&cities.includes('Sorocaba'))   $('compareCity1').value='Sorocaba';
+  if($('compareCity2')&&cities.includes('Votorantim')) $('compareCity2').value='Votorantim';
+  ['compareCity1','compareCity2','compareCity3'].forEach(id=>$(id)?.addEventListener('change',renderCompare));
+}
+
+function passesFilters(s,{ignoreCity=false}={}){
+  const city=$('cityFilter')?.value||'', state=$('stateFilter')?.value||'', dep=$('depFilter')?.value||'';
+  const range=$('idebFilter')?.value||'', saebRange=$('saebFilter')?.value||'', q=($('searchInput')?.value||$('islandSearch')?.value||'').trim().toLowerCase();
+  if(!ignoreCity&&city&&s.no_municipio!==city)return false;
+  if(state&&s.uf_estado!==state)return false;
+  if(dep&&s.dependencia!==dep)return false;
+  if(q&&![s.nome_escola,s.no_municipio,s.dependencia].some(v=>plainText(v).includes(plainText(q))))return false;
+  if(range==='high'&&!(s.ideb>=7))return false;
+  if(range==='mid'&&!(s.ideb>=5&&s.ideb<7))return false;
+  if(range==='low'&&!(s.ideb!=null&&s.ideb<5))return false;
+  if(range==='nodata'&&s.ideb!=null)return false;
+  if(saebRange){
+    const [min,max]=saebRange.split('-').map(Number);
+    if(!(s.saeb!=null&&s.saeb>=min&&s.saeb<=max))return false;
+  }
+  return true;
+}
+
+function refreshInvestmentFilter(){
+  const schoolKeys=new Set(filtered.map(s=>cityKey(s.no_municipio,s.uf_estado)));
+  investmentFiltered=investmentData.filter(r=>schoolKeys.has(r.key));
+  investmentUsingFallback=investmentData.length>0&&investmentFiltered.length===0;
+  if(investmentUsingFallback)investmentFiltered=[...investmentData];
+}
+
+function applyFilters(){
+  filtered=allData.filter(s=>passesFilters(s));
+  refreshInvestmentFilter();
+  sortFiltered();currentPage=1;renderAll();
+}
+
+function sortFiltered(){
+  filtered.sort((a,b)=>{
+    let av=a[sortKey],bv=b[sortKey];
+    if(av==null&&bv==null)return 0;if(av==null)return 1;if(bv==null)return -1;
+    if(typeof av==='string'){av=av.toLowerCase();bv=String(bv).toLowerCase();}
+    return sortDir==='asc'?(av>bv?1:-1):(av<bv?1:-1);
+  });
+}
+
+function syncSearch(value,source){['searchInput','islandSearch'].forEach(id=>{const el=$(id);if(el&&id!==source)el.value=value;});applyFilters();}
+$('clearFilters')?.addEventListener('click',()=>{['cityFilter','stateFilter','depFilter','idebFilter','saebFilter'].forEach(id=>{const e=$(id);if(e)e.value='';});['searchInput','islandSearch'].forEach(id=>{const e=$(id);if(e)e.value='';});populateCityOptions('',false);applyFilters();});
+['cityFilter','stateFilter','depFilter','idebFilter','saebFilter'].forEach(id=>$(id)?.addEventListener('change',applyFilters));
+$('searchInput')?.addEventListener('input',deb(e=>syncSearch(e.target.value,'searchInput'),240));
+$('islandSearch')?.addEventListener('input',deb(e=>syncSearch(e.target.value,'islandSearch'),240));
+$('sortSelect')?.addEventListener('change',()=>{const p=$('sortSelect').value.split('_');sortDir=p.pop();sortKey=p.join('_');sortFiltered();renderTable();});
+qsa('th.srt').forEach(th=>th.addEventListener('click',()=>{const col=th.dataset.col;if(sortKey===col)sortDir=sortDir==='asc'?'desc':'asc';else{sortKey=col;sortDir='desc';}sortFiltered();renderTable();}));
+$('prevPage')?.addEventListener('click',()=>{if(currentPage>1){currentPage--;renderTable();}});
+$('nextPage')?.addEventListener('click',()=>{const t=Math.ceil(filtered.length/PAGE_SIZE);if(currentPage<t){currentPage++;renderTable();}});
+
+/* RENDER ALL */
+function renderAll(){da();refreshInvestmentFilter();renderKPIs();renderInsights();renderDist();renderDashCharts();renderTable();updateCounts();if($('graficos')?.classList.contains('active'))renderMainCharts();if($('mapa')?.classList.contains('active'))renderMap();if($('infraestrutura')?.classList.contains('active'))renderInfraCharts();if($('investimentos')?.classList.contains('active'))renderInvestments();if($('comparativo')?.classList.contains('active'))renderCompare();if($('equipe')?.classList.contains('active'))renderHeroChart();ensureChartNotes();}
+function renderAllCharts(){da();if($('dashboard')?.classList.contains('active'))renderDashCharts();if($('graficos')?.classList.contains('active'))renderMainCharts();if($('infraestrutura')?.classList.contains('active'))renderInfraCharts();if($('investimentos')?.classList.contains('active'))renderInvestments();if($('comparativo')?.classList.contains('active'))renderCompare();if($('equipe')?.classList.contains('active'))renderHeroChart();ensureChartNotes();}
+function updateCounts(){const n=filtered.length;const gc2=$('grafCount');if(gc2)gc2.textContent=n+' escolas na seleção';const rc=$('resultCount');if(rc)rc.textContent=n+' resultado'+(n!==1?'s':'');}
+function avg2(arr,key){const v=arr.filter(x=>x[key]!=null);return v.length?v.reduce((s,x)=>s+x[key],0)/v.length:0;}
+function ensureChartNotes(){
+  const notes={
+    miniCityChart:'IDEB: escala de 0 a 10. Barras maiores indicam melhor desempenho médio no recorte filtrado.',
+    miniDepChart:'IDEB: escala de 0 a 10 por rede escolar, calculado apenas com escolas que possuem indicador.',
+    idebBarChart:'IDEB: escala de 0 a 10. Ranking limitado ao Top 20 das escolas filtradas; cores separam os municípios.',
+    idebCityChart:'IDEB: escala de 0 a 10. Cada barra mostra a média do município dentro do recorte atual.',
+    saebCityChart:'SAEB: proficiência em pontos. Valores mais altos indicam maior desempenho em LP e Matemática.',
+    scatterChart:'Aprovação/fluxo: percentual de 0% a 100%; o eixo IDEB usa escala de 0 a 10.',
+    histChart:'Distribuição do IDEB em faixas de 1 ponto, sempre respeitando os filtros aplicados.',
+    techChart:'Infraestrutura: médias dos equipamentos declarados na base principal.',
+    connectChart:'Conectividade: percentual de escolas com internet, banda larga e laboratório de informática.',
+    salasChart:'Salas: média de salas totais, climatizadas e acessíveis no recorte.',
+    profChart:'Profissionais: média dos perfis de apoio informados na base.',
+    radarChart:'Comparativo normalizado para leitura visual; os valores detalhados aparecem nos cards.',
+    investMunicipioChart:'Investimento: despesa paga acumulada no Ensino Fundamental entre 2021 e 2025.',
+    investRelationChart:'Relação entre investimento pago por matrícula e IDEB médio das escolas correspondentes.'
+  };
+  Object.entries(notes).forEach(([canvasId,text])=>{
+    const canvas=$(canvasId), card=canvas?.closest('.chart-card');
+    if(!card||card.querySelector(`[data-note-for="${canvasId}"]`))return;
+    const p=document.createElement('p');
+    p.className='chart-note';
+    p.dataset.noteFor=canvasId;
+    p.textContent=text;
+    card.appendChild(p);
+  });
+}
+
+function renderInsights(){
+  const list=$('autoInsights'), risks=$('riskGrid'); if(!list||!risks)return;
+  list.textContent=''; risks.textContent='';
+  const withIdeb=filtered.filter(s=>s.ideb!=null), ideb=avg2(filtered,'ideb'), fluxo=avg2(filtered,'fluxo')*100;
+  const low=withIdeb.filter(s=>s.ideb<5).length;
+  const net=Object.entries(filtered.reduce((m,s)=>{m[s.dependencia]=(m[s.dependencia]||0)+1;return m;},{})).sort((a,b)=>b[1]-a[1])[0];
+  const best=[...withIdeb].sort((a,b)=>b.ideb-a.ideb)[0], worst=[...withIdeb].sort((a,b)=>a.ideb-b.ideb)[0];
+  const lab=infraPct('IN_LABORATORIO_INFORMATICA').pct;
+  [
+    ideb?`O IDEB médio da seleção é ${ideb.toFixed(2)} em uma escala de 0 a 10, com ${withIdeb.length} escolas informando o indicador.`:'A seleção atual não possui IDEB disponível para leitura comparativa.',
+    best?`${best.nome_escola} aparece como destaque positivo, com IDEB ${best.ideb.toFixed(1)} em ${best.no_municipio}.`:'Nenhuma escola com IDEB foi encontrada na seleção.',
+    worst?`${low} escolas estão abaixo de IDEB 5, ponto que merece atenção para apoio pedagógico e gestão de aprendizagem.`:'Não há escolas em faixa crítica nesta seleção.',
+    net?`A rede com maior presença é ${net[0]}, reunindo ${net[1]} escolas da seleção atual.`:'A distribuição por rede ainda não pôde ser calculada.',
+    `Laboratório de informática aparece em ${lab.toFixed(0)}% das escolas com dado informado, ajudando a ler a capacidade tecnológica da rede.`
+  ].forEach(text=>{const item=document.createElement('div');item.className='insight-item';item.textContent=text;list.appendChild(item);});
+  [
+    {v:low.toLocaleString('pt-BR'),l:'IDEB abaixo de 5'},
+    {v:fluxo?fluxo.toFixed(1)+'%':'-',l:'aprovação média'},
+    {v:infraPct('IN_ACESSIBILIDADE_RAMPAS').pct.toFixed(0)+'%',l:'com rampas'}
+  ].forEach(x=>{const el=document.createElement('div');el.className='risk-pill';el.innerHTML=`<div class="risk-value">${esc(x.v)}</div><div class="risk-label">${esc(x.l)}</div>`;risks.appendChild(el);});
+}
+
+/* KPIs */
+function renderKPIs(){
+  const grid=$('kpiGrid');if(!grid)return;
+  const wi=filtered.filter(s=>s.ideb!=null);
+  const ia=avg2(wi,'ideb'),sa=avg2(filtered,'saeb'),la=avg2(filtered,'nota_lp'),ma=avg2(filtered,'nota_mt'),fa=avg2(filtered,'fluxo');
+  const bi=wi.length?Math.max(...wi.map(s=>s.ideb)):null;
+  const kpis=[
+    {i:'↗',l:'IDEB Médio',v:ia?ia.toFixed(2):'—',s:wi.length+' com dados'},
+    {i:'S',l:'Nota SAEB',v:sa?sa.toFixed(1)+'/500':'—',s:'escala máxima próxima de 500'},
+    {i:'LP',l:'SAEB Português',v:la?la.toFixed(1):'—',s:'Proficiência média'},
+    {i:'%',l:'Taxa de Aprovação',v:fa?(fa*100).toFixed(1)+'%':'—',s:'Fluxo médio'},
+    {i:'#',l:'Total de Escolas',v:filtered.length.toLocaleString('pt-BR'),s:'na seleção'},
+    {i:'★',l:'Melhor IDEB',v:bi?bi.toFixed(1):'—',s:'Maior nota'},
+  ];
+  grid.innerHTML=kpis.map(k=>`<div class="stat-card"><div class="kpi-icon">${k.i}</div><div class="sl">${k.l}</div><div class="sv">${k.v}</div><div class="ss">${k.s}</div></div>`).join('');
+}
+
+/* DIST BARS */
+function renderDist(){
+  const bars=$('distBars');if(!bars)return;
+  const dc2=$('distCount');const n=filtered.length;if(dc2)dc2.textContent=n;
+  bars.innerHTML='';
+  VALID_DEPS.forEach(dep=>{
+    const count=filtered.filter(s=>s.dependencia===dep).length;
+    const pct=n?Math.round((count/n)*100):0;
+    const wi=filtered.filter(s=>s.dependencia===dep&&s.ideb!=null);
+    const ai=wi.length?(wi.reduce((s,x)=>s+x.ideb,0)/wi.length).toFixed(2):'—';
+    const div=document.createElement('div');div.className='ditem';
+    div.innerHTML=`<div class="drow"><span class="dname">${dep}</span><span class="dpct">${pct}%</span></div><div class="dtrk"><div class="dfill" style="width:${pct}%"></div></div><div class="dmeta">${count} escolas · IDEB médio: ${ai}</div>`;
+    bars.appendChild(div);
+  });
+}
+
+/* DASH CHARTS */
+function renderDashCharts(){renderMiniCity();renderMiniDep();}
+function renderMiniCity(){
+  dc('miniCity');
+  const map={};filtered.filter(s=>s.ideb!=null).forEach(s=>(map[s.no_municipio]=map[s.no_municipio]||[]).push(s.ideb));
+  const entries=Object.entries(map).map(([city,v])=>({city,avg:v.reduce((a,b)=>a+b,0)/v.length})).sort((a,b)=>b.avg-a.avg).slice(0,8);
+  if(!entries.length)return;const c=cx('miniCityChart');if(!c)return;const P=pal();
+  charts.miniCity=new Chart(c,{type:'bar',data:{labels:entries.map(e=>trunc(e.city,12)),datasets:[{data:entries.map(e=>+e.avg.toFixed(2)),backgroundColor:entries.map((_,i)=>P[i%P.length]),borderWidth:0,borderRadius:4}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{min:0,max:10,grid:{color:gc()},ticks:{font:{size:9}}},y:{grid:{display:false},ticks:{font:{size:9}}}}}});
+}
+function renderMiniDep(){
+  dc('miniDep');
+  const deps=VALID_DEPS;
+  const vals=deps.map(dep=>{const arr=filtered.filter(s=>s.dependencia===dep&&s.ideb!=null);return arr.length?+(arr.reduce((a,b)=>a+b.ideb,0)/arr.length).toFixed(2):0;});
+  const c=cx('miniDepChart');if(!c)return;
+  charts.miniDep=new Chart(c,{type:'doughnut',data:{labels:deps,datasets:[{data:vals,backgroundColor:deps.map(d=>depClr(d).bg),borderColor:deps.map(d=>depClr(d).border),borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}}}}});
+}
+
+/* MAP */
+function saebColor(v){
+  if(v==null)return '#94a3b8';
+  if(v>=400)return '#22c55e';
+  if(v>=300)return '#f59e0b';
+  return '#ef4444';
+}
+function initMap(){
+  if(mapReady||!$('schoolMap')||!window.L)return;
+  mapInstance=L.map('schoolMap',{scrollWheelZoom:true,preferCanvas:true}).setView([-14.2,-51.9],4);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'&copy; OpenStreetMap'}).addTo(mapInstance);
+  mapLayer=window.L.markerClusterGroup?L.markerClusterGroup({chunkedLoading:true,maxClusterRadius:42}):L.layerGroup();
+  mapInstance.addLayer(mapLayer);
+  mapReady=true;
+}
+function markerHtml(s){
+  const color=saebColor(s.saeb);
+  return `<div class="map-dot" style="background:${color}"></div>`;
+}
+function renderMap(){
+  if(!window.L){$('mapCount')&&( $('mapCount').textContent='Mapa indisponível: Leaflet não carregou' );return;}
+  initMap();
+  if(!mapReady)return;
+  mapLayer.clearLayers();
+  const schools=filtered.map(s=>({s,ll:schoolLatLng(s)})).filter(x=>x.ll);
+  const bounds=[];
+  schools.forEach(({s,ll})=>{
+    bounds.push(ll);
+    const popup=`<div class="map-popup-title">${esc(s.nome_escola)}</div>
+      <div class="map-popup-meta">
+        <strong>Nota SAEB:</strong> ${s.saeb!=null?s.saeb.toFixed(1):'sem dado'} / 500<br>
+        <strong>Cidade/Estado:</strong> ${esc(s.no_municipio)} / ${esc(s.uf_estado||s.no_estado)}<br>
+        <strong>Categoria:</strong> ${esc(s.dependencia)}<br>
+        <strong>IDEB:</strong> ${s.ideb!=null?s.ideb.toFixed(1):'sem dado'}<br>
+        <strong>LP:</strong> ${s.nota_lp!=null?s.nota_lp.toFixed(1):'—'} · <strong>MT:</strong> ${s.nota_mt!=null?s.nota_mt.toFixed(1):'—'}<br>
+        <strong>Internet:</strong> ${s.IN_INTERNET===1?'sim':'não informado'}<br>
+        <strong>Fonte geo:</strong> ${esc(s.geo_fonte||'data/longitudes.json')}
+      </div>`;
+    const marker=L.marker(ll,{icon:L.divIcon({className:'',html:markerHtml(s),iconSize:[18,18],iconAnchor:[9,9]})}).bindPopup(popup);
+    mapLayer.addLayer(marker);
+  });
+  if(bounds.length)mapInstance.fitBounds(bounds,{padding:[34,34],maxZoom:12});
+  else mapInstance.setView([-14.2,-51.9],4);
+  const avg=avg2(schools.map(x=>x.s),'saeb');
+  const best=[...schools.map(x=>x.s)].filter(s=>s.saeb!=null).sort((a,b)=>b.saeb-a.saeb)[0];
+  const mc=$('mapCount');if(mc)mc.textContent=`${schools.length} escolas no mapa · coordenadas de data/longitudes.json`;
+  const ms=$('mapMetricSchools');if(ms)ms.textContent=schools.length.toLocaleString('pt-BR');
+  const ma=$('mapMetricSaeb');if(ma)ma.textContent=avg?avg.toFixed(1):'—';
+  const mb=$('mapMetricBest');if(mb)mb.textContent=best?best.saeb.toFixed(1):'—';
+}
+
+/* MAIN CHARTS */
+function renderMainCharts(){renderIdebBar();renderIdebCity();renderSaebCity();renderScatter();renderHistogram();}
+function renderIdebBar(){
+  dc('idebBar');
+  const data=[...filtered].filter(s=>s.ideb!=null).sort((a,b)=>b.ideb-a.ideb).slice(0,20);
+  if(!data.length)return;const c=cx('idebBarChart');if(!c)return;
+  const a2=data.reduce((a,b)=>a+b.ideb,0)/data.length;
+  const cities=[...new Set(data.map(s=>s.no_municipio))], P=pal();
+  const datasets=cities.map((city,i)=>({label:city,data:data.map(s=>s.no_municipio===city?s.ideb:null),backgroundColor:P[i%P.length],borderColor:P[i%P.length],borderWidth:1,borderRadius:3}));
+  datasets.push({label:`Média (${a2.toFixed(2)})`,data:Array(data.length).fill(+a2.toFixed(2)),type:'line',borderColor:ac(),borderWidth:1.5,borderDash:[5,4],pointRadius:0,fill:false});
+  charts.idebBar=new Chart(c,{type:'bar',data:{labels:data.map(s=>trunc(s.nome_escola,22)),datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{boxWidth:12}}},scales:{y:{min:0,max:10,grid:{color:gc()}},x:{grid:{display:false},ticks:{maxRotation:45,font:{size:8}}}}}});
+}
+function renderIdebCity(){
+  dc('idebCity');
+  const map={};filtered.filter(s=>s.ideb!=null).forEach(s=>(map[s.no_municipio]=map[s.no_municipio]||[]).push(s.ideb));
+  const entries=Object.entries(map).map(([city,v])=>({city,avg:v.reduce((a,b)=>a+b,0)/v.length})).sort((a,b)=>b.avg-a.avg).slice(0,15);
+  if(!entries.length)return;const c=cx('idebCityChart');if(!c)return;const P=pal();
+  charts.idebCity=new Chart(c,{type:'bar',data:{labels:entries.map(e=>`${e.city} - IDEB ${e.avg.toFixed(1).replace('.',',')}`),datasets:[{label:'IDEB Médio',data:entries.map(e=>+e.avg.toFixed(2)),backgroundColor:entries.map((_,i)=>P[i%P.length]),borderRadius:4}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{min:0,max:10,grid:{color:gc()}},y:{grid:{display:false},ticks:{font:{size:9}}}}}});
+}
+function renderSaebCity(){
+  dc('saebCity');
+  const map={};filtered.filter(s=>s.nota_lp!=null).forEach(s=>{const e=map[s.no_municipio]=map[s.no_municipio]||{lp:[],mt:[]};e.lp.push(s.nota_lp);e.mt.push(s.nota_mt||0);});
+  const entries=Object.entries(map).map(([city,v])=>({city,lp:v.lp.reduce((a,b)=>a+b,0)/v.lp.length,mt:v.mt.reduce((a,b)=>a+b,0)/v.mt.length})).sort((a,b)=>b.lp-a.lp).slice(0,10);
+  if(!entries.length)return;const c=cx('saebCityChart');if(!c)return;const P=pal();
+  charts.saebCity=new Chart(c,{type:'bar',data:{labels:entries.map(e=>e.city),datasets:[{label:'LP',data:entries.map(e=>+e.lp.toFixed(1)),backgroundColor:P[0],borderRadius:4},{label:'Matemática',data:entries.map(e=>+e.mt.toFixed(1)),backgroundColor:P[2],borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:12}}},scales:{x:{grid:{display:false},ticks:{maxRotation:35,font:{size:9}}},y:{grid:{color:gc()}}}}});
+}
+function renderScatter(){
+  dc('scatter');
+  const deps=VALID_DEPS.filter(d=>filtered.some(s=>s.dependencia===d));
+  const datasets=deps.map(dep=>({label:dep,data:filtered.filter(s=>s.dependencia===dep&&s.ideb!=null&&s.fluxo!=null).map(s=>({x:s.ideb,y:+(s.fluxo*100).toFixed(1)})),backgroundColor:depClr(dep).bg,borderColor:depClr(dep).border,borderWidth:1,pointRadius:3,pointHoverRadius:6}));
+  const c=cx('scatterChart');if(!c)return;
+  charts.scatter=new Chart(c,{type:'scatter',data:{datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:12}}},scales:{x:{title:{display:true,text:'IDEB'},grid:{color:gc()}},y:{title:{display:true,text:'Aprovação (%)'},grid:{color:gc()},ticks:{callback:v=>v+'%'}}}}});
+}
+function renderHistogram(){
+  dc('hist');
+  const vals=filtered.filter(s=>s.ideb!=null).map(s=>s.ideb);if(!vals.length)return;
+  const bins=[0,1,2,3,4,5,6,7,8,9,10];
+  const counts=bins.slice(0,-1).map((b,i)=>vals.filter(v=>v>=b&&v<bins[i+1]).length);
+  const labels=bins.slice(0,-1).map((b,i)=>`${b}–${bins[i+1]}`);
+  const c=cx('histChart');if(!c)return;const P=pal();
+  charts.hist=new Chart(c,{type:'bar',data:{labels,datasets:[{label:'Escolas',data:counts,backgroundColor:P[0],borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{grid:{color:gc()}}}}});
+}
+
+/* INFRA */
+function renderInfraCharts(){renderInfraGrid();renderTechChart();renderConnectChart();renderSalasChart();renderProfChart();renderInfraCompare();}
+function infraPct(key){const v=filtered.filter(s=>s[key]!=null);if(!v.length)return{pct:0,count:0,total:filtered.length};const c=v.filter(s=>s[key]===1).length;return{pct:(c/v.length)*100,count:c,total:v.length};}
+function renderInfraGrid(){
+  const grid=$('infraGrid');if(!grid)return;grid.innerHTML='';
+  INFRA_ITEMS.forEach(({key,label,icon})=>{const{pct,count,total}=infraPct(key);const div=document.createElement('div');div.className='chart-card icard';div.innerHTML=`<div class="infra-icon">${esc(icon)}</div><div class="ipct">${pct.toFixed(0)}%</div><div class="ilbl">${esc(label)}</div><div class="itrk"><div class="ifill" style="width:${pct}%"></div></div><div class="icnt">${count}/${total}</div>`;grid.appendChild(div);});
+}
+function renderTechChart(){
+  dc('tech');const keys=['QT_DESKTOP_ALUNO','QT_COMP_PORTATIL_ALUNO','QT_TABLET_ALUNO'];const labels=['Desktop','Portátil','Tablet'];
+  const avgs=keys.map(k=>{const v=filtered.filter(s=>s[k]!=null);return v.length?+(v.reduce((a,b)=>a+b[k],0)/v.length).toFixed(1):0;});
+  const c=cx('techChart');if(!c)return;const P=pal();
+  charts.tech=new Chart(c,{type:'bar',data:{labels,datasets:[{data:avgs,backgroundColor:[P[0],P[2],P[4]],borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{grid:{color:gc()}}}}});
+}
+function renderConnectChart(){
+  dc('connect');const keys=['IN_INTERNET','IN_BANDA_LARGA','IN_LABORATORIO_INFORMATICA'];const labels=['Internet','Banda Larga','Lab. Info.'];const pcts=keys.map(k=>infraPct(k).pct);
+  const c=cx('connectChart');if(!c)return;
+  charts.connect=new Chart(c,{type:'radar',data:{labels,datasets:[{data:pcts,backgroundColor:isDark?'rgba(20,184,166,.18)':'rgba(12,28,80,.07)',borderColor:isDark?'#2dd4bf':'#123b66',pointBackgroundColor:isDark?'#f8fafc':'#123b66',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{r:{min:0,max:100,grid:{color:gc()},angleLines:{color:gc()},pointLabels:{color:isDark?'#f7f7f7':'#07182d'},ticks:{backdropColor:'transparent',showLabelBackdrop:false,color:isDark?'#9ca3af':'#475569'}}}}});
+}
+function renderSalasChart(){
+  dc('salas');const ag=key=>{const v=filtered.filter(s=>s[key]!=null);return v.length?+(v.reduce((a,b)=>a+b[key],0)/v.length).toFixed(1):0;};
+  const c=cx('salasChart');if(!c)return;const P=pal();
+  charts.salas=new Chart(c,{type:'bar',data:{labels:['Total','Climatizadas','Acessíveis'],datasets:[{data:[ag('QT_SALAS_UTILIZADAS'),ag('QT_SALAS_UTILIZA_CLIMATIZADAS'),ag('QT_SALAS_UTILIZADAS_ACESSIVEIS')],backgroundColor:[P[0],P[2],P[4]],borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{grid:{color:gc()}}}}});
+}
+function renderProfChart(){
+  dc('prof');const keys=['QT_PROF_COORDENADOR','QT_PROF_PSICOLOGO','QT_PROF_PEDAGOGIA','QT_PROF_GESTAO','QT_PROF_MONITORES'];const labels=['Coordenador','Psicólogo','Pedagogo','Gestão','Monitores'];
+  const avgs=keys.map(k=>{const v=filtered.filter(s=>s[k]!=null);return v.length?+(v.reduce((a,b)=>a+b[k],0)/v.length).toFixed(2):0;});
+  const c=cx('profChart');if(!c)return;const P=pal();
+  charts.prof=new Chart(c,{type:'polarArea',data:{labels,datasets:[{data:avgs,backgroundColor:P.slice(0,5).map(x=>x.replace(/[\d.]+\)$/,'.38)'))}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}}},scales:{r:{grid:{color:gc()},ticks:{backdropColor:'transparent',showLabelBackdrop:false,color:isDark?'#9ca3af':'#475569'}}}}});
+}
+function pctFor(arr,key){const v=arr.filter(s=>s[key]!=null);return v.length?(v.filter(s=>s[key]===1).length/v.length)*100:0;}
+function renderInfraCompare(){
+  const grid=$('infraCompareGrid');if(!grid)return;grid.innerHTML='';
+  const ranked=filtered.filter(s=>s.saeb!=null).sort((a,b)=>a.saeb-b.saeb);
+  if(ranked.length<4){grid.innerHTML='<div class="invest-item">Dados SAEB insuficientes para comparar infraestrutura alta e baixa neste recorte.</div>';return;}
+  const q=Math.max(1,Math.ceil(ranked.length*.25));
+  const low=ranked.slice(0,q), high=ranked.slice(-q);
+  INFRA_ITEMS.forEach(({key,label,icon})=>{
+    const hp=pctFor(high,key), lp=pctFor(low,key);
+    const item=document.createElement('div');
+    item.className='infra-compare-item';
+    item.innerHTML=`<div class="infra-compare-head"><span>${esc(icon)} ${esc(label)}</span><span>${(hp-lp).toFixed(0)} p.p.</span></div>
+      <div class="infra-bars">
+        <div class="infra-bar-row"><span>SAEB alto</span><div class="infra-track"><div class="infra-fill" style="width:${hp}%"></div></div><strong>${hp.toFixed(0)}%</strong></div>
+        <div class="infra-bar-row"><span>SAEB baixo</span><div class="infra-track"><div class="infra-fill" style="width:${lp}%;opacity:.55"></div></div><strong>${lp.toFixed(0)}%</strong></div>
+      </div>`;
+    grid.appendChild(item);
+  });
+}
+
+/* TABLE */
+function renderTable(){
+  const tb=$('tableBody');if(!tb)return;tb.innerHTML='';
+  const total=Math.max(1,Math.ceil(filtered.length/PAGE_SIZE));
+  const start=(currentPage-1)*PAGE_SIZE,page=filtered.slice(start,start+PAGE_SIZE);
+  const info=$('pgInfo');if(info)info.textContent=`Pág. ${currentPage}/${total} · ${filtered.length} registros`;
+  const prev=$('prevPage'),next=$('nextPage');
+  if(prev)prev.disabled=currentPage<=1;if(next)next.disabled=currentPage>=total;
+  if(!page.length){tb.innerHTML=`<tr><td colspan="10"><div class="empty"><div class="eico">🔍</div><p>Nenhuma escola encontrada.</p></div></td></tr>`;return;}
+  const frag=document.createDocumentFragment();
+  page.forEach((s,i)=>{
+    const ic=s.ideb==null?'':s.ideb>=7?'ihi':s.ideb>=5?'imd':'ilo';
+    const perf=s.ideb==null?{c:'',t:'Sem dado'}:s.ideb>=7?{c:'high',t:'Destaque'}:s.ideb>=5?{c:'mid',t:'Estável'}:{c:'low',t:'Atenção'};
+    const idebPct=s.ideb!=null?Math.max(0,Math.min(100,s.ideb*10)):0;
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td><span class="rnk">${start+i+1}</span></td><td><span class="sn" title="${esc(s.nome_escola)}">${trunc(s.nome_escola,38)}</span><span class="perf-badge ${perf.c}">${perf.t}</span></td><td>${esc(s.no_municipio)}${s.uf_estado?`/${esc(s.uf_estado)}`:''}</td><td><span class="dpill dp-${esc(s.dependencia)}">${esc(s.dependencia)}</span></td><td class="r"><span class="iv ${ic}">${s.ideb!=null?s.ideb.toFixed(1):'—'}</span><div class="ideb-meter ${ic}"><span style="width:${idebPct}%"></span></div></td><td class="r"><span class="saeb-score">${s.saeb!=null?s.saeb.toFixed(1):'—'}<small>/500</small></span><span class="saeb-scale">escala máxima próxima de 500</span></td><td class="r">${s.nota_lp!=null?s.nota_lp.toFixed(1):'—'}</td><td class="r">${s.nota_mt!=null?s.nota_mt.toFixed(1):'—'}</td><td class="r">${s.fluxo!=null?(s.fluxo*100).toFixed(1)+'%':'—'}</td><td class="r">${s.aprendizado!=null?s.aprendizado.toFixed(2):'—'}</td>`;
+    frag.appendChild(tr);
+  });
+  tb.appendChild(frag);
+}
+
+/* INVESTIMENTOS */
+function brMoney(v){
+  return v==null?'-':v.toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0});
+}
+function investmentsByCity(){
+  const map={};
+  investmentFiltered.forEach(r=>{
+    const k=r.key||cityKey(r.municipio,r.uf);
+    const e=map[k]=map[k]||{municipio:r.municipio,uf:r.uf,total:0,alunos:0,perValues:[],records:0,years:{}};
+    if(r.total!=null){
+      const y=r.ano||'sem_ano';
+      e.years[y]=Math.max(e.years[y]||0,r.total);
+    }
+    if(r.alunos!=null)e.alunos+=r.alunos;
+    if(r.perAluno!=null)e.perValues.push(r.perAluno);
+    e.records++;
+  });
+  const cityEntries=Object.values(map);
+  return Object.values(map).map(e=>{
+    const yearsUsed=Object.keys(e.years).sort();
+    const total=yearsUsed.reduce((a,y)=>a+(e.years[y]||0),0);
+    return {...e,total,yearsUsed,commonYears:[],perAluno:e.alunos&&total?total/e.alunos:(e.perValues.length?e.perValues.reduce((a,b)=>a+b,0)/e.perValues.length:null)};
+  });
+}
+function schoolAggByCity(){
+  const map={};
+  filtered.forEach(s=>{
+    const k=cityKey(s.no_municipio,s.uf_estado);
+    const e=map[k]=map[k]||{ideb:[],saeb:[],infra:[],n:0};
+    e.n++;
+    if(s.ideb!=null)e.ideb.push(s.ideb);
+    if(s.saeb!=null)e.saeb.push(s.saeb);
+    const infra=INFRA_ITEMS.map(x=>s[x.key]).filter(v=>v!=null);
+    if(infra.length)e.infra.push(infra.filter(v=>v===1).length/infra.length*100);
+  });
+  return map;
+}
+function renderInvestments(){
+  refreshInvestmentFilter();
+  dc('investMunicipio');dc('investRelation');
+  const kpis=$('investKpis'), list=$('investInsights'), count=$('investCount');
+  if(!kpis||!list)return;
+  kpis.innerHTML='';list.innerHTML='';
+  if(investmentLoadError){
+    kpis.innerHTML=`<div class="invest-kpi"><small>Status</small><strong>Sem base</strong></div>`;
+    list.innerHTML=`<div class="invest-item">${esc(investmentLoadError)}</div>`;
+    return;
+  }
+  const byCity=investmentsByCity();
+  const total=byCity.reduce((a,b)=>a+(b.total||0),0);
+  const perVals=byCity.map(x=>x.perAluno).filter(v=>v!=null);
+  const perAvg=perVals.length?perVals.reduce((a,b)=>a+b,0)/perVals.length:null;
+  const yearsInUse=[...new Set(byCity.flatMap(x=>x.yearsUsed||[]))].sort();
+  const comparableNote=yearsInUse.length?` Período: ${yearsInUse.join(', ')}.`:'';
+  if(count)count.textContent=investmentUsingFallback
+    ? `${investmentFiltered.length} registros na base de investimentos; o filtro atual não possui município compatível`
+    : `${investmentFiltered.length} registros de investimento vinculados ao recorte.${comparableNote}`;
+  [
+    ['Investimento total',brMoney(total)],
+    ['Municípios vinculados',byCity.length.toLocaleString('pt-BR')],
+    ['R$/matrícula',brMoney(perAvg)],
+    ['Registros usados',investmentFiltered.length.toLocaleString('pt-BR')]
+  ].forEach(([label,value])=>{const el=document.createElement('div');el.className='invest-kpi';el.innerHTML=`<small>${esc(label)}</small><strong>${esc(value)}</strong>`;kpis.appendChild(el);});
+  const top=[...byCity].filter(x=>x.total||x.perAluno).sort((a,b)=>(b.total||0)-(a.total||0)).slice(0,12);
+  const c1=cx('investMunicipioChart');if(c1&&top.length){
+    const P=pal();
+    charts.investMunicipio=new Chart(c1,{type:'bar',data:{labels:top.map(x=>trunc(`${x.municipio}/${x.uf}`,16)),datasets:[{label:'Despesa paga',data:top.map(x=>+(x.total||0).toFixed(0)),backgroundColor:top.map((_,i)=>P[i%P.length]),borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{maxRotation:35,font:{size:9}}},y:{grid:{color:gc()},ticks:{callback:v=>brMoney(v)}}}}});
+  }
+  const schoolMap=schoolAggByCity();
+  const scatter=byCity.map(x=>{
+    const s=schoolMap[cityKey(x.municipio,x.uf)];
+    if(!s||!s.ideb.length)return null;
+    const y=s.ideb.reduce((a,b)=>a+b,0)/s.ideb.length;
+    const xval=x.perAluno||x.total;
+    return xval?{x:+xval.toFixed(2),y:+y.toFixed(2),label:`${x.municipio}/${x.uf}`} : null;
+  }).filter(Boolean);
+  const c2=cx('investRelationChart');if(c2&&scatter.length){
+    charts.investRelation=new Chart(c2,{type:'scatter',data:{datasets:[{label:'Município',data:scatter,backgroundColor:ac(),borderColor:ac(),pointRadius:4,pointHoverRadius:7}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${ctx.raw.label}: ${brMoney(ctx.raw.x)} por matrícula | IDEB ${ctx.raw.y}`}}},scales:{x:{title:{display:true,text:'Despesa paga por matrícula'},grid:{color:gc()},ticks:{callback:v=>brMoney(v)}},y:{min:0,max:10,title:{display:true,text:'IDEB médio'},grid:{color:gc()}}}}});
+  }
+  const best=top[0], relation=scatter.length?scatter.sort((a,b)=>b.y-a.y)[0]:null;
+  [
+    investmentUsingFallback?'O filtro atual não encontrou município com investimento compatível. Por isso, a seção mostra a base completa de investimentos disponível para não deixar a análise vazia.':null,
+    best?`<strong>${esc(best.municipio)}/${esc(best.uf)}</strong> concentra o maior valor agregado nos anos usados (${esc((best.yearsUsed||[]).join(', ')||'sem ano')}): ${esc(brMoney(best.total))}.`:'Nenhum município do recorte possui valor de investimento total disponível.',
+    yearsInUse.length?`Os valores usam despesa paga do SIOPE e matrículas do INEP no período <strong>${esc(yearsInUse.join(', '))}</strong>.`:null,
+    perAvg?`A leitura proporcional usa matrículas do Ensino Fundamental Regular do INEP, não alunos distintos. Média atual: <strong>${esc(brMoney(perAvg))} por matrícula</strong>.`:'A base não trouxe matrículas suficientes para estimar investimento proporcional neste recorte.',
+    relation?`No cruzamento investimento-desempenho, <strong>${esc(relation.label)}</strong> aparece com IDEB médio ${relation.y.toFixed(2)} entre os municípios vinculados.`:'Ainda não há correspondência suficiente entre investimento e IDEB no recorte atual.'
+  ].filter(Boolean).forEach(html=>{const el=document.createElement('div');el.className='invest-item';el.innerHTML=html;list.appendChild(el);});
+  ensureChartNotes();
+  if(window.__focoRefresh&&newInvestmentData)window.__focoRefresh();
+}
+
+function renderFocoAnalises(){
+  if(!newInvestmentData||!newInvestmentData.dados)return;
+  const dados=newInvestmentData.dados;
+  const cardsDiv=$('focoCards');
+  const insightsDiv=$('focoInsights');
+  const chartCanvas=$('focoChart');
+  if(!cardsDiv||!insightsDiv||!chartCanvas)return;
+
+  function getActive(){
+    const cities=[...document.querySelectorAll('#focoCityFilters .foco-btn')].filter(b=>b.classList.contains('active')).map(b=>b.dataset.city);
+    const years=[...document.querySelectorAll('#focoYearFilters .foco-btn')].filter(b=>b.classList.contains('active')).map(b=>parseInt(b.dataset.year));
+    return{cities,years};
+  }
+  function filteredData(){
+    const{cities,years}=getActive();
+    const rows=[];
+    dados.forEach(cidade=>{
+      if(cities.length&&!cities.includes(cidade.municipio))return;
+      cidade.serie.forEach(ano=>{
+        if(years.length&&!years.includes(ano.ano))return;
+        rows.push({municipio:cidade.municipio,uf:cidade.uf,...ano});
+      });
+    });
+    return rows;
+  }
+
+  function updateCards(){
+    const rows=filteredData();
+    const totalInv=rows.reduce((a,r)=>a+(r.investimento||0),0);
+    const has2025=rows.some(r=>r.ano===2025);
+    const alunos2025=rows.filter(r=>r.ano===2025).reduce((a,r)=>a+(r.matriculas||0),0);
+    const invAluno2025=rows.filter(r=>r.ano===2025&&r.investimento_por_aluno!=null);
+    const avgInvAluno=invAluno2025.length?invAluno2025.reduce((a,r)=>a+r.investimento_por_aluno,0)/invAluno2025.length:null;
+    cardsDiv.innerHTML='';
+    const mk=(label,value,note)=>{const el=document.createElement('div');el.className='foco-card';el.innerHTML=`<small>${label}</small><strong>${value}</strong>${note?`<span class="foco-note">${note}</span>`:''}`;cardsDiv.appendChild(el);};
+    mk('Alunos (2025)',has2025?alunos2025.toLocaleString('pt-BR'):'\u2014',has2025?'Total das cidades selecionadas':'Selecione 2025');
+    mk('Investimento Total',totalInv?brMoney(totalInv):'\u2014','Per\u00edodo selecionado');
+    mk('Invest./Aluno (2025)',avgInvAluno!=null?brMoney(avgInvAluno):'\u2014',!has2025?'Selecione 2025':avgInvAluno!=null?'M\u00e9dia das cidades selecionadas':'');
+  }
+
+  function updateChart(){
+    const{cities}=getActive();
+    const rows=filteredData();
+    const yearsSorted=[...new Set(rows.map(r=>r.ano))].sort();
+    const citiesSorted=cities.length?cities:['Sorocaba','Sobral','Votorantim'];
+    const COLORS=['#14b8a6','#f59e0b','#ef4444'];
+    const datasets=citiesSorted.map((city,i)=>{
+      const data=yearsSorted.map(y=>{
+        const r=rows.find(rr=>rr.municipio===city&&rr.ano===y);
+        return r&&r.investimento!=null?r.investimento:null;
+      });
+      return{label:city,data,backgroundColor:COLORS[i%COLORS.length],borderRadius:4};
+    });
+    if(charts.foco){charts.foco.destroy();delete charts.foco;}
+    const dataLabelPlugin={id:'dl',afterDraw(chart){
+      const ctx=chart.ctx;
+      chart.data.datasets.forEach((ds,di)=>{
+        const meta=chart.getDatasetMeta(di);
+        meta.data.forEach((bar,idx)=>{
+          const val=ds.data[idx];
+          if(val==null)return;
+          ctx.fillStyle=isDark?'#f8fafc':'#101828';
+          ctx.font='8px DM Mono, monospace';
+          ctx.textAlign='center';
+          ctx.fillText(brMoneyShort(val),bar.x,bar.y-5);
+        });
+      });
+    }};
+    charts.foco=new Chart(chartCanvas,{
+      type:'bar',
+      data:{labels:yearsSorted.map(String),datasets},
+      options:{
+        responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{labels:{color:ac(),font:{size:10}}},tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+brMoney(ctx.raw)}}},
+        scales:{
+          x:{stacked:false,grid:{display:false},ticks:{color:ac(),font:{size:9}}},
+          y:{beginAtZero:true,grid:{color:gc()},ticks:{callback:v=>brMoneyShort(v),font:{size:9}}}
+        }
+      },
+      plugins:[dataLabelPlugin]
+    });
+  }
+
+  function updateInsights(){
+    const rows=filteredData();
+    const{cities}=getActive();
+    const cityLabel=cities.length?cities.join(', '):'Todas as cidades';
+    const totalInv=rows.reduce((a,r)=>a+(r.investimento||0),0);
+    const totalAlunos=rows.filter(r=>r.ano===2025).reduce((a,r)=>a+(r.matriculas||0),0);
+    const anos=[...new Set(rows.map(r=>r.ano))].sort();
+    const items=[];
+    if(anos.length)items.push(`Per\u00edodo analisado: <strong>${anos.join(', ')}</strong>.`);
+    items.push(`Munic\u00edpios: <strong>${esc(cityLabel)}</strong>.`);
+    items.push(`Investimento total no per\u00edodo: <strong>${brMoney(totalInv)}</strong>.`);
+    if(totalAlunos)items.push(`Total de matr\u00edculas (2025): <strong>${totalAlunos.toLocaleString('pt-BR')}</strong>.`);
+    if(anos.length>1){
+      const variacoes=[];
+      for(let i=1;i<anos.length;i++){
+        const anoAnt=rows.filter(r=>r.ano===anos[i-1]);
+        const anoAtual=rows.filter(r=>r.ano===anos[i]);
+        const totalAnt=anoAnt.reduce((a,r)=>a+(r.investimento||0),0);
+        const totalAtual=anoAtual.reduce((a,r)=>a+(r.investimento||0),0);
+        if(totalAnt&&totalAtual){
+          const v=((totalAtual-totalAnt)/totalAnt*100);
+          variacoes.push(`${anos[i-1]}-${anos[i]}: <strong>${v>0?'+':''}${v.toFixed(1)}%</strong>`);
+        }
+      }
+      if(variacoes.length)items.push(`Varia\u00e7\u00e3o anual do investimento: ${variacoes.join('; ')}.`);
+    }
+    items.push('Matr\u00edculas e R$/aluno dispon\u00edveis apenas para <strong>2025</strong> (Censo Escolar INEP).');
+    insightsDiv.innerHTML=items.map(t=>`<div class="invest-item">${t}</div>`).join('');
+  }
+
+  function refresh(){updateCards();updateChart();updateInsights();}
+  window.__focoRefresh=refresh;
+
+  if(!window.__focoInited){
+    document.querySelectorAll('#focoCityFilters .foco-btn:not(.foco-clear), #focoYearFilters .foco-btn:not(.foco-clear)').forEach(btn=>{
+      btn.addEventListener('click',function(){this.classList.toggle('active');refresh();});
+    });
+    document.querySelectorAll('.foco-clear').forEach(btn=>{
+      btn.addEventListener('click',function(){
+        const parent=this.parentElement;
+        parent.querySelectorAll('.foco-btn:not(.foco-clear)').forEach(b=>b.classList.remove('active'));
+        refresh();
+      });
+    });
+    window.__focoInited=true;
+  }
+  refresh();
+}
+
+/* COMPARATIVO */
+function aggCity(city){
+  const schools=allData.filter(s=>s.no_municipio===city&&passesFilters(s,{ignoreCity:true}));if(!schools.length)return null;
+  const wi=schools.filter(s=>s.ideb!=null),wl=schools.filter(s=>s.nota_lp!=null),wf=schools.filter(s=>s.fluxo!=null);
+  const ag3=(arr,k)=>arr.length?arr.reduce((s,x)=>s+(x[k]||0),0)/arr.length:0;
+  const depDist={};schools.forEach(s=>{if(VALID_DEPS.includes(s.dependencia))depDist[s.dependencia]=(depDist[s.dependencia]||0)+1;});
+  const keys=new Set(schools.map(s=>cityKey(s.no_municipio,s.uf_estado)));
+  const inv=investmentData.filter(r=>keys.has(r.key));
+  const invTotal=inv.reduce((a,b)=>a+(b.total||0),0);
+  const invPer=inv.map(r=>r.perAluno).filter(v=>v!=null);
+  const investAluno=invPer.length?invPer.reduce((a,b)=>a+b,0)/invPer.length:0;
+  const infraVals=schools.map(s=>INFRA_ITEMS.map(x=>s[x.key]).filter(v=>v!=null)).filter(v=>v.length).map(v=>v.filter(x=>x===1).length/v.length*100);
+  const infra=infraVals.length?infraVals.reduce((a,b)=>a+b,0)/infraVals.length:0;
+  return{city,n:schools.length,ideb:+ag3(wi,'ideb').toFixed(2),nota_lp:+ag3(wl,'nota_lp').toFixed(1),nota_mt:+ag3(wl,'nota_mt').toFixed(1),fluxo:+(ag3(wf,'fluxo')*100).toFixed(1),aprendizado:+ag3(wi,'aprendizado').toFixed(2),infra:+infra.toFixed(1),investimento:invTotal,investAluno:+investAluno.toFixed(0),depDist};
+}
+const VMET=[
+  {key:'ideb',label:'IDEB Médio',icon:'📊',fmt:v=>v.toFixed(2),max:10},
+  {key:'nota_lp',label:'SAEB LP',icon:'📖',fmt:v=>v.toFixed(1),max:350},
+  {key:'nota_mt',label:'SAEB MT',icon:'🧮',fmt:v=>v.toFixed(1),max:350},
+  {key:'fluxo',label:'Aprovação',icon:'✅',fmt:v=>v.toFixed(1)+'%',max:100},
+  {key:'infra',label:'Infraestrutura',icon:'🏫',fmt:v=>v.toFixed(1)+'%',max:100},
+  {key:'investAluno',label:'Invest. por matrícula',icon:'💰',fmt:v=>v?brMoney(v):'-',max:null},
+  {key:'aprendizado',label:'Aprendizado',icon:'🎓',fmt:v=>v.toFixed(2),max:10}
+];
+
+function renderCompare(){
+  const c1=$('compareCity1')?.value,c2=$('compareCity2')?.value,c3=$('compareCity3')?.value;
+  const sel=[...new Set([c1,c2,c3].filter(Boolean))];
+  const empty=$('compareEmpty'),body=$('compareBody');
+  if(sel.length<2){empty.style.display='';body.style.display='none';return;}
+  const CC=cmpClrs();
+  const groups=sel.map((city,i)=>({...aggCity(city),color:CC[i]})).filter(g=>g&&g.n>0);
+  if(groups.length<2){empty.style.display='';body.style.display='none';return;}
+  empty.style.display='none';body.style.display='block';
+  renderVCards(groups);renderRadar(groups);renderDepTbl(groups);
+}
+function renderVCards(groups){
+  const grid=$('versusGrid');if(!grid)return;grid.innerHTML='';
+  VMET.forEach(metric=>{
+    const values=groups.map(g=>g[metric.key]),maxVal=Math.max(...values),isEq=values.every(v=>v===values[0]);
+    const card=document.createElement('div');card.className='chart-card';card.style.padding='12px 13px';
+    card.innerHTML=`<div class="vslbl"><span class="vsico">${esc(metric.icon)}</span><span>${esc(metric.label)}</span></div>${groups.map(g=>{const val=g[metric.key],pct=metric.max?(val/metric.max)*100:(maxVal?(val/maxVal)*100:0),leader=!isEq&&val===maxVal;return`<div class="vsrow"><span class="vscity" style="color:${g.color.hex}">${esc(g.city)}${leader?' ★':''}</span><div class="vbtrk"><div class="vbfil" style="width:${pct}%;background:${g.color.bg}"></div></div><span class="vsval">${metric.fmt(val)}</span></div>`;}).join('')}`;
+    grid.appendChild(card);
+  });
+}
+function renderRadar(groups){
+  dc('radar');const NORM={ideb:{mn:0,mx:10},nota_lp:{mn:180,mx:340},nota_mt:{mn:180,mx:340},fluxo:{mn:70,mx:100},infra:{mn:0,mx:100},aprendizado:{mn:0,mx:10}};
+  const norm=(v,k)=>{const{mn,mx}=NORM[k];return Math.min(100,Math.max(0,((v-mn)/(mx-mn))*100));};
+  const c=cx('radarChart');if(!c)return;
+  charts.radar=new Chart(c,{type:'radar',data:{labels:['IDEB','SAEB LP','SAEB MT','Aprovação','Infraestrutura','Aprendizado'],datasets:groups.map(g=>({label:g.city,data:['ideb','nota_lp','nota_mt','fluxo','infra','aprendizado'].map(k=>norm(g[k],k)),backgroundColor:isDark?'rgba(255,255,255,.06)':'rgba(12,28,80,.06)',borderColor:g.color.border,borderWidth:2,pointRadius:4}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:12}}},scales:{r:{grid:{color:gc()},angleLines:{color:gc()},pointLabels:{color:isDark?'#f7f7f7':'#07182d'},ticks:{display:false,backdropColor:'transparent',showLabelBackdrop:false}}}}});
+}
+function renderDepTbl(groups){
+  const el=$('compareDepTable');if(!el)return;
+  const deps=VALID_DEPS;
+  el.innerHTML=`<table style="font-size:.74rem;width:100%;border-collapse:collapse"><thead><tr><th style="padding:7px 11px;text-align:left;background:var(--surface2);font-size:.59rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--dim);border-bottom:1px solid var(--border)">Rede</th>${groups.map(g=>`<th style="padding:7px 11px;text-align:right;background:var(--surface2);font-size:.59rem;font-weight:700;color:${g.color.hex};border-bottom:1px solid var(--border)">${esc(g.city)}</th>`).join('')}</tr></thead><tbody>${deps.map(dep=>`<tr><td style="padding:7px 11px;border-bottom:1px solid var(--border)"><span class="dpill dp-${dep}">${dep}</span></td>${groups.map(g=>`<td style="padding:7px 11px;text-align:right;border-bottom:1px solid var(--border);font-family:var(--font-mono)">${g.depDist[dep]||0}</td>`).join('')}</tr>`).join('')}<tr><td style="padding:7px 11px;font-weight:700">Total</td>${groups.map(g=>`<td style="padding:7px 11px;text-align:right;font-weight:700;font-family:var(--font-mono)">${g.n}</td>`).join('')}</tr></tbody></table>`;
+}
+
+/* TEAM & DICT */
+function renderTeam(){
+  const grid=$('teamGrid');if(!grid||grid.children.length)return;
+  TEAM.forEach(m=>{const card=document.createElement('div');card.className='team-card';const media=m.photo?`<img src="${esc(m.photo)}" alt="Foto de ${esc(m.name)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><span style="display:none">${esc(m.initials)}</span>`:`<span style="display:flex">${esc(m.initials)}</span>`;card.innerHTML=`<div class="t-avatar">${media}</div><div class="t-name">${esc(m.name)}</div><div class="t-role">${esc(m.role)}</div><div class="t-bio">${esc(m.bio)}</div>`;grid.appendChild(card);});
+}
+function renderDict(){
+  const grid=$('dictGrid');if(!grid||grid.children.length)return;
+  DATA_DICT.forEach(e=>{const div=document.createElement('div');div.className='di';div.innerHTML=`<span class="df">${esc(e.field)}</span><div class="dn">${esc(e.name)}</div><div class="dd">${esc(e.desc)}</div>`;grid.appendChild(div);});
+}
+
+/* CHATBOT LOCAL */
+function setChat(open){
+  const panel=$('chatPanel'), fab=$('chatFab'); if(!panel||!fab)return;
+  panel.classList.toggle('open',open); fab.setAttribute('aria-expanded',String(open));
+  if(open&&(!$('chatBody')?.children.length)){
+    addMsg('bot','Olá! Posso responder sobre municípios, rankings, infraestrutura, IDEB/SAEB e investimentos por matrícula usando o recorte atual do dashboard.');
+  }
+  if(open)setTimeout(()=>$('chatInput')?.focus(),80);
+}
+function addMsg(role,text){
+  const body=$('chatBody'); if(!body)return;
+  const msg=document.createElement('div'); msg.className='msg '+role; msg.textContent=text;
+  body.appendChild(msg); body.scrollTop=body.scrollHeight;
+}
+function cityInvestment(city){
+  const key=plainText(city);
+  const rows=investmentData.filter(r=>plainText(r.municipio)===key);
+  if(!rows.length)return null;
+  const total=rows.reduce((a,r)=>a+(r.total||0),0);
+  const mats=rows.reduce((a,r)=>a+(r.alunos||0),0);
+  return {city:rows[0].municipio,uf:rows[0].uf,total,per:mats?total/mats:null,records:rows.length};
+}
+function editDistance(a,b){
+  const dp=Array.from({length:a.length+1},(_,i)=>[i]);
+  for(let j=1;j<=b.length;j++)dp[0][j]=j;
+  for(let i=1;i<=a.length;i++)for(let j=1;j<=b.length;j++){
+    dp[i][j]=Math.min(dp[i-1][j]+1,dp[i][j-1]+1,dp[i-1][j-1]+(a[i-1]===b[j-1]?0:1));
+  }
+  return dp[a.length][b.length];
+}
+function cityIntent(text,cities){
+  const cityWords=['cidade','municipio','município','escola','escolas','ideb','saeb','invest','matricula','gasto','despesa','internet','biblioteca','infra','ranking','melhor','maior','menor','compare','comparar','porque','por que','dados','importante','importancia','ajuda','condicoes','condição'];
+  const greetings=['oi','ola','olá','bom dia','boa tarde','boa noite'];
+  const exact=cities.find(c=>text===plainText(c)||text.includes(plainText(c))||plainText(c).includes(text)&&text.length>=5);
+  const looksLikeCity=/^[a-z\s.'-]{3,45}$/.test(text)&&text.split(/\s+/).length<=4&&!cityWords.some(w=>text.includes(plainText(w)))&&!greetings.includes(text);
+  if(exact)return {askedCity:exact,looksLikeCity,suggestion:null};
+  if(!looksLikeCity)return {askedCity:null,looksLikeCity:false,suggestion:null};
+  const ranked=cities.map(c=>{
+    const name=plainText(c);
+    return {city:c,dist:editDistance(text,name),contains:name.includes(text)||text.includes(name)};
+  }).sort((a,b)=>(a.contains===b.contains?a.dist-b.dist:a.contains?-1:1));
+  const best=ranked[0];
+  const limit=Math.max(2,Math.floor(Math.min(text.length,plainText(best?.city||'').length)*.28));
+  return {askedCity:null,looksLikeCity,suggestion:best&&(best.contains||best.dist<=limit)?best.city:null};
+}
+const CHATBOT_CONDITIONS=[
+  {
+    id:'saudacao',
+    label:'Saudação',
+    when:ctx=>['oi','ola','olá','bom dia','boa tarde','boa noite'].includes(ctx.text),
+    answer:()=>'Olá! Pode digitar uma cidade, pedir ranking, comparar municípios ou perguntar sobre IDEB, SAEB, infraestrutura e investimento por matrícula.'
+  },
+  {
+    id:'conceitos',
+    label:'IDEB e SAEB',
+    when:ctx=>ctx.text.includes('ideb')&&ctx.text.includes('saeb'),
+    answer:()=>'IDEB é um índice de 0 a 10 que combina aprendizagem e fluxo escolar. SAEB é proficiência em pontos, usada aqui para leitura de Língua Portuguesa e Matemática.'
+  },
+  {
+    id:'por-que-dados',
+    label:'Por que esses dados importam',
+    when:ctx=>ctx.text.includes('por que')&&ctx.text.includes('dados')||ctx.text.includes('porque')&&ctx.text.includes('dados')||ctx.text.includes('importancia')||ctx.text.includes('importante'),
+    answer:()=>'Esses dados ajudam a ler qualidade educacional por vários ângulos: IDEB resume fluxo e aprendizagem, SAEB mostra proficiência em Língua Portuguesa e Matemática, infraestrutura indica condições de oferta, e investimento por matrícula ajuda a comparar esforço financeiro com mais justiça do que apenas valor total.'
+  },
+  {
+    id:'melhor-cidade',
+    label:'Melhor cidade no recorte',
+    when:ctx=>ctx.text.includes('melhor cidade')||ctx.text.includes('melhor municipio')||ctx.text.includes('maior ideb')&&ctx.text.includes('cidade'),
+    answer:ctx=>{
+      const grouped=Object.values(ctx.scope.reduce((m,s)=>{const k=cityKey(s.no_municipio,s.sg_uf);const e=m[k]=m[k]||{city:s.no_municipio,uf:s.sg_uf,rows:[]};e.rows.push(s);return m;},{}))
+        .map(g=>({...g,ideb:avg2(g.rows,'ideb'),saeb:avg2(g.rows,'saeb'),count:g.rows.length}))
+        .filter(g=>g.ideb).sort((a,b)=>b.ideb-a.ideb);
+      if(!grouped.length)return 'Não há IDEB suficiente no recorte atual para apontar a melhor cidade.';
+      const best=grouped[0];
+      return `Pelo critério de IDEB médio no recorte atual, a melhor cidade é ${best.city}/${best.uf}: IDEB médio ${best.ideb.toFixed(2)}, SAEB médio ${best.saeb?best.saeb.toFixed(1):'-'} e ${best.count} escolas na base.`;
+    }
+  },
+  {
+    id:'investimento-desempenho',
+    label:'Relação entre investimento e desempenho',
+    when:ctx=>ctx.text.includes('investimento')&&ctx.text.includes('melhor')||ctx.text.includes('invest')&&ctx.text.includes('desempenho')||ctx.text.includes('dinheiro')&&ctx.text.includes('resultado'),
+    answer:()=>'Maior investimento absoluto não significa automaticamente melhor desempenho. Para comparar com mais justiça, o painel usa valor por matrícula e cruza esse dado com IDEB, SAEB e infraestrutura. Mesmo assim, a leitura deve considerar tamanho da rede, período analisado e disponibilidade dos dados.'
+  },
+  {
+    id:'investimento',
+    label:'Investimento por matrícula',
+    when:ctx=>ctx.text.includes('invest')||ctx.text.includes('matricula')||ctx.text.includes('gasto')||ctx.text.includes('despesa'),
+    answer:ctx=>{
+      if(ctx.askedCity){
+        const inv=cityInvestment(ctx.askedCity);
+        if(!inv)return `${ctx.askedCity} não tem investimento vinculado na base atual.`;
+        return `${inv.city}/${inv.uf}\nDespesa paga 2021-2025: ${brMoney(inv.total)}\nValor proporcional: ${inv.per?brMoney(inv.per)+' por matrícula':'sem matrículas disponíveis'}\nRegistros: ${inv.records}`;
+      }
+      const ranking=Object.values(investmentData.reduce((m,r)=>{const k=cityKey(r.municipio,r.uf);const e=m[k]=m[k]||{city:r.municipio,uf:r.uf,total:0,mats:0};e.total+=r.total||0;e.mats+=r.alunos||0;return m;},{}))
+        .map(x=>({...x,per:x.mats?x.total/x.mats:null})).filter(x=>x.per!=null).sort((a,b)=>b.per-a.per).slice(0,5);
+      return ranking.length?'Maior investimento por matrícula:\n'+ranking.map((x,i)=>`${i+1}. ${x.city}/${x.uf}: ${brMoney(x.per)}`).join('\n'):'Não encontrei investimento por matrícula no recorte atual.';
+    }
+  },
+  {
+    id:'internet',
+    label:'Internet nas escolas',
+    when:ctx=>ctx.text.includes('internet')||ctx.text.includes('conectividade'),
+    answer:()=>{
+      const pct=infraPct('IN_INTERNET');
+      return `No recorte atual, ${pct.count} de ${pct.total} escolas têm internet informada (${pct.pct.toFixed(1)}%).`;
+    }
+  },
+  {
+    id:'biblioteca',
+    label:'Biblioteca nas escolas',
+    when:ctx=>ctx.text.includes('biblioteca')||ctx.text.includes('livro'),
+    answer:()=>{
+      const pct=infraPct('IN_BIBLIOTECA');
+      return `No recorte atual, ${pct.count} de ${pct.total} escolas têm biblioteca informada (${pct.pct.toFixed(1)}%).`;
+    }
+  },
+  {
+    id:'infraestrutura-geral',
+    label:'Como ler infraestrutura',
+    when:ctx=>ctx.text.includes('infraestrutura')||ctx.text.includes('infra'),
+    answer:()=>'Na infraestrutura, observe recursos que afetam condições de ensino e permanência: internet, biblioteca, laboratório de informática, rampas, refeitório, quadra e salas. O comparativo alto versus baixo SAEB ajuda a ver se escolas com melhor desempenho também concentram melhores condições estruturais.'
+  },
+  {
+    id:'comparacao',
+    label:'Comparação entre municípios',
+    when:ctx=>ctx.text.includes('compare')||ctx.text.includes('comparar')||ctx.text.includes('comparacao')||ctx.text.includes('versus'),
+    answer:ctx=>{
+      const found=ctx.cities.filter(c=>ctx.text.includes(plainText(c))).slice(0,3);
+      if(found.length<2)return 'Digite duas cidades para comparar, por exemplo: "Compare Sorocaba e Sobral".';
+      return found.map(c=>{
+        const schools=allData.filter(s=>s.no_municipio===c);
+        const ideb=avg2(schools,'ideb');
+        const saeb=avg2(schools,'saeb');
+        const inv=cityInvestment(c);
+        return `${c}: ${schools.length} escolas, IDEB médio ${ideb?ideb.toFixed(2):'-'}, SAEB médio ${saeb?saeb.toFixed(1):'-'}, ${inv?.per?brMoney(inv.per)+' por matrícula':'sem R$/matrícula'}`;
+      }).join('\n');
+    }
+  },
+  {
+    id:'municipio',
+    label:'Resumo por município',
+    when:ctx=>!!ctx.askedCity,
+    answer:ctx=>{
+      const schools=allData.filter(s=>s.no_municipio===ctx.askedCity);
+      const best=[...schools].filter(s=>s.ideb!=null).sort((a,b)=>b.ideb-a.ideb)[0];
+      const ideb=avg2(schools,'ideb');
+      const saeb=avg2(schools,'saeb');
+      const inv=cityInvestment(ctx.askedCity);
+      return `${ctx.askedCity}: ${schools.length} escolas na base.\nIDEB médio: ${ideb?ideb.toFixed(2):'-'}\nSAEB médio: ${saeb?saeb.toFixed(1):'-'}\nDestaque IDEB: ${best?best.nome_escola+' ('+best.ideb.toFixed(1)+')':'sem dado'}\nInvestimento: ${inv?.per?brMoney(inv.per)+' por matrícula':'sem dado proporcional'}`;
+    }
+  },
+  {
+    id:'municipio-nao-encontrado',
+    label:'Município sem informação',
+    when:ctx=>ctx.looksLikeCity&&!ctx.askedCity,
+    answer:ctx=>ctx.citySuggestion?`Não encontrei informações para "${ctx.raw}". Você quis dizer ${ctx.citySuggestion}? Se sim, digite "${ctx.citySuggestion}" para puxar os dados.`:`Não há informações para "${ctx.raw}" na base atual. Confira se o nome do município está correto ou tente outra cidade.`
+  },
+  {
+    id:'ranking',
+    label:'Ranking IDEB',
+    when:ctx=>ctx.text.includes('maior')||ctx.text.includes('melhor')||ctx.text.includes('ranking')||ctx.text.includes('top'),
+    answer:ctx=>{
+      const best=[...ctx.scope].filter(s=>s.ideb!=null).sort((a,b)=>b.ideb-a.ideb).slice(0,5);
+      return best.length?'Top IDEB no recorte:\n'+best.map((s,i)=>`${i+1}. ${s.nome_escola} - ${s.no_municipio}: ${s.ideb.toFixed(1)}`).join('\n'):'Não há IDEB disponível no recorte atual.';
+    }
+  },
+  {
+    id:'ajuda',
+    label:'Lista de condições',
+    when:ctx=>ctx.text.includes('ajuda')||ctx.text.includes('condicoes')||ctx.text.includes('condicao')||ctx.text.includes('o que voce responde'),
+    answer:()=>`Condições do chatbot:\n${CHATBOT_CONDITIONS.map((c,i)=>`${i+1}. ${c.label}`).join('\n')}`
+  }
+];
+function chatbotAnswer(raw){
+  const text=plainText(raw);
+  if(!allData.length)return 'Ainda estou carregando a base principal. Tente novamente em instantes.';
+  const scope=filtered.length?filtered:allData;
+  const cities=[...new Set(allData.map(s=>s.no_municipio).filter(Boolean))];
+  const cityState=cityIntent(text,cities);
+  const ctx={raw:raw.trim(),text,scope,cities,...cityState};
+  const condition=CHATBOT_CONDITIONS.find(c=>c.when(ctx));
+  if(condition)return condition.answer(ctx);
+  return 'Posso responder sobre uma cidade, ranking IDEB, internet/biblioteca, comparação entre municípios ou investimento por matrícula. Exemplo: "Sorocaba" ou "Qual cidade investe mais por matrícula?"';
+}
+$('chatFab')?.addEventListener('click',()=>setChat(!$('chatPanel')?.classList.contains('open')));
+$('chatClose')?.addEventListener('click',()=>setChat(false));
+$('chatSuggestions')?.addEventListener('click',e=>{const btn=e.target.closest('button[data-q]');if(!btn)return;setChat(true);addMsg('user',btn.dataset.q);addMsg('bot',chatbotAnswer(btn.dataset.q));});
+$('chatForm')?.addEventListener('submit',e=>{e.preventDefault();const input=$('chatInput');const text=(input?.value||'').trim().slice(0,180);if(!text)return;input.value='';addMsg('user',text);addMsg('bot',chatbotAnswer(text));});
+
+
+Chart.defaults.font.family="'DM Sans',system-ui,sans-serif";
+Chart.defaults.font.size=11;
+renderTeam();
+})();
+</script>
+</body>
+</html>

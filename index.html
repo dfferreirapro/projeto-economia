@@ -899,10 +899,7 @@ body::-webkit-scrollbar-thumb,.side-filter-slot::-webkit-scrollbar-thumb,.tscrol
           <span>Dashboard</span>
           <span class="nav-badge" id="navBadge">—</span>
         </a>
-        <a class="nav-item" data-section="graficos" href="#graficos">
-          <svg viewBox="0 0 16 16" fill="none"><path d="M1 12L5 7 8 9 11 4 15 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span>Gráficos</span>
-        </a>
+        
         <a class="nav-item" data-section="mapa" href="#mapa">
           <svg viewBox="0 0 16 16" fill="none"><path d="M2 5.2 6 3l4 2 4-2.2v8L10 13l-4-2-4 2.2v-8Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M6 3v8m4-6v8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
           <span>Mapa</span>
@@ -1013,7 +1010,7 @@ body::-webkit-scrollbar-thumb,.side-filter-slot::-webkit-scrollbar-thumb,.tscrol
 
       <!-- DASHBOARD -->
       <section class="page" id="dashboard">
-        <div class="ph"><h2 class="ph-title">Dashboard</h2><p class="ph-sub">Visão geral dos indicadores</p></div>
+        <div class="ph"><h2 class="ph-title">Dashboard</h2><p class="ph-sub" id="dashCount">Visão geral dos indicadores</p></div>
         <div class="stats-grid" id="kpiGrid"></div>
         <div class="insight-panel" aria-live="polite">
           <div class="insight-card">
@@ -1025,7 +1022,7 @@ body::-webkit-scrollbar-thumb,.side-filter-slot::-webkit-scrollbar-thumb,.tscrol
             <div class="risk-grid" id="riskGrid"></div>
           </div>
         </div>
-        <div class="charts-row">
+        <div class="charts-2">
           <div class="chart-card">
             <div class="chd"><span class="ct">Distribuição por Rede</span><span class="cbadge" id="distCount">0</span></div>
             <div id="distBars" class="dbars"></div>
@@ -1034,16 +1031,7 @@ body::-webkit-scrollbar-thumb,.side-filter-slot::-webkit-scrollbar-thumb,.tscrol
             <div class="chd"><span class="ct">IDEB por Município</span></div>
             <div class="cw"><canvas id="miniCityChart"></canvas></div>
           </div>
-          <div class="chart-card">
-            <div class="chd"><span class="ct">IDEB por Dependência</span></div>
-            <div class="cw"><canvas id="miniDepChart"></canvas></div>
-          </div>
         </div>
-      </section>
-
-      <!-- GRÁFICOS -->
-      <section class="page" id="graficos">
-        <div class="ph"><h2 class="ph-title">Gráficos e Análises</h2><p class="ph-sub" id="grafCount">—</p></div>
         <div class="charts-2" style="margin-bottom:13px">
           <div class="chart-card span2">
             <div class="chd"><span class="ct">Top 20 Escolas — IDEB</span></div>
@@ -1051,12 +1039,25 @@ body::-webkit-scrollbar-thumb,.side-filter-slot::-webkit-scrollbar-thumb,.tscrol
           </div>
         </div>
         <div class="charts-2">
-          <div class="chart-card"><div class="chd"><span class="ct">IDEB Médio por Município</span></div><div class="cw-lg"><canvas id="idebCityChart"></canvas></div></div>
-          <div class="chart-card"><div class="chd"><span class="ct">SAEB — LP vs Matemática</span></div><div class="cw-lg"><canvas id="saebCityChart"></canvas></div></div>
-          <div class="chart-card"><div class="chd"><span class="ct">IDEB × Aprovação</span></div><div class="cw"><canvas id="scatterChart"></canvas></div></div>
-          <div class="chart-card"><div class="chd"><span class="ct">Distribuição IDEB</span></div><div class="cw"><canvas id="histChart"></canvas></div></div>
+          <div class="chart-card">
+            <div class="chd"><span class="ct">SAEB — LP vs Matemática</span></div>
+            <div class="cw-lg"><canvas id="saebCityChart"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <div class="chd"><span class="ct">IDEB × Aprovação</span></div>
+            <div class="cw"><canvas id="scatterChart"></canvas></div>
+            <div id="scatterInsights" class="invest-list" style="margin-top:12px"></div>
+          </div>
+        </div>
+        <div class="charts-2">
+          <div class="chart-card span2">
+            <div class="chd"><span class="ct">Distribuição IDEB</span></div>
+            <div class="cw"><canvas id="histChart"></canvas></div>
+          </div>
         </div>
       </section>
+
+      
 
       <!-- MAPA -->
       <section class="page" id="mapa">
@@ -1073,10 +1074,11 @@ body::-webkit-scrollbar-thumb,.side-filter-slot::-webkit-scrollbar-thumb,.tscrol
               <div class="map-metric"><span>Maior SAEB</span><strong id="mapMetricBest">—</strong></div>
             </div>
             <div class="map-legend">
-              <div class="map-side-title">Legenda SAEB / 500</div>
-              <div class="legend-row"><span class="legend-dot" style="background:#ef4444"></span>até 300 pontos</div>
-              <div class="legend-row"><span class="legend-dot" style="background:#f59e0b"></span>300–400 pontos</div>
-              <div class="legend-row"><span class="legend-dot" style="background:#22c55e"></span>400–500 pontos</div>
+              <div class="map-side-title">Legenda SAEB (proficiência)</div>
+              <div class="legend-row"><span class="legend-dot" style="background:#ef4444"></span>&lt; 200 (abaixo do básico)</div>
+              <div class="legend-row"><span class="legend-dot" style="background:#f59e0b"></span>200–249 (básico)</div>
+              <div class="legend-row"><span class="legend-dot" style="background:#22c55e"></span>250–299 (proficiente)</div>
+              <div class="legend-row"><span class="legend-dot" style="background:#3b82f6"></span>≥ 300 (avançado)</div>
               <div class="legend-row"><span class="legend-dot" style="background:#94a3b8"></span>sem nota SAEB</div>
             </div>
           </aside>
@@ -1296,6 +1298,14 @@ function pal() {
     : ['rgba(15,159,143,.78)','rgba(37,99,235,.76)','rgba(217,119,6,.76)','rgba(124,58,237,.72)','rgba(22,163,74,.72)','rgba(219,39,119,.68)','rgba(2,132,199,.68)','rgba(220,38,38,.66)'];
 }
 
+const _cityIdx={}; let _nextIdx=0;
+function palCity(city){
+  if(city==='Sorocaba')return isDark?'rgba(20,184,166,.85)':'rgba(15,159,143,.85)';
+  if(city==='Votorantim')return isDark?'rgba(96,165,250,.85)':'rgba(37,99,235,.85)';
+  if(!(city in _cityIdx)) _cityIdx[city]=_nextIdx++;
+  const P=pal();
+  return P[_cityIdx[city]%P.length];
+}
 function depClr(dep) {
   const d = document.body.classList.contains('theme-dark');
   const m = {
@@ -1398,9 +1408,9 @@ function switchPage(id) {
   qsa('.nav-item').forEach(n=>n.classList.remove('active'));
   const pg=$(id); if(pg) pg.classList.add('active');
   const nv=document.querySelector(`.nav-item[data-section="${id}"]`); if(nv) nv.classList.add('active');
-  const b=$('bc'); if(b) b.textContent={equipe:'Nossa Equipe',metodologia:'Metodologia',dashboard:'Dashboard',graficos:'Gráficos',mapa:'Mapa',infraestrutura:'Infraestrutura',investimentos:'Investimentos',comparativo:'Comparativo',escolas:'Escolas'}[id]||id;
+  const b=$('bc'); if(b) b.textContent={equipe:'Nossa Equipe',metodologia:'Metodologia',dashboard:'Dashboard',mapa:'Mapa',infraestrutura:'Infraestrutura',investimentos:'Investimentos',comparativo:'Comparativo',escolas:'Escolas'}[id]||id;
   sbc?.classList.remove('open'); ov?.classList.remove('active');
-  const cp=['graficos','infraestrutura','investimentos','comparativo','dashboard'];
+  const cp=['infraestrutura','investimentos','comparativo','dashboard'];
   if(cp.includes(id)) setTimeout(renderAllCharts,80);
   if(id==='mapa'){ setTimeout(renderMap,80); setTimeout(panMapToTarget,280); }
   if(id==='metodologia') setTimeout(renderDict,80);
@@ -1635,10 +1645,9 @@ function renderHeroChart(){
   const map={};
   allData.filter(s=>s.ideb!=null).forEach(s=>(map[s.no_municipio]=map[s.no_municipio]||[]).push(s.ideb));
   const entries=Object.entries(map).map(([city,v])=>({city,avg:v.reduce((a,b)=>a+b,0)/v.length})).sort((a,b)=>b.avg-a.avg).slice(0,6);
-  const P=pal();
   charts.hero=new Chart(c,{
     type:'bar',
-    data:{labels:entries.map(e=>trunc(e.city,11)),datasets:[{data:entries.map(e=>+e.avg.toFixed(2)),backgroundColor:entries.map((_,i)=>P[i%P.length]),borderWidth:0,borderRadius:7}]},
+    data:{labels:entries.map(e=>trunc(e.city,11)),datasets:[{data:entries.map(e=>+e.avg.toFixed(2)),backgroundColor:entries.map(e=>palCity(e.city)),borderWidth:0,borderRadius:7}]},
     options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
       scales:{x:{grid:{display:false},ticks:{color:ac(),font:{size:9}}},y:{min:0,max:10,grid:{color:gc()},ticks:{font:{size:9}}}}}
   });
@@ -1752,18 +1761,16 @@ $('prevPage')?.addEventListener('click',()=>{if(currentPage>1){currentPage--;ren
 $('nextPage')?.addEventListener('click',()=>{const t=Math.ceil(filtered.length/PAGE_SIZE);if(currentPage<t){currentPage++;renderTable();}});
 
 /* RENDER ALL */
-function renderAll(){da();refreshInvestmentFilter();renderKPIs();renderInsights();renderDist();renderDashCharts();renderTable();updateCounts();if($('graficos')?.classList.contains('active'))renderMainCharts();if($('mapa')?.classList.contains('active'))renderMap();if($('infraestrutura')?.classList.contains('active'))renderInfraCharts();if($('investimentos')?.classList.contains('active'))renderInvestments();if($('comparativo')?.classList.contains('active'))renderCompare();if($('equipe')?.classList.contains('active'))renderHeroChart();ensureChartNotes();}
-function renderAllCharts(){da();if($('dashboard')?.classList.contains('active'))renderDashCharts();if($('graficos')?.classList.contains('active'))renderMainCharts();if($('infraestrutura')?.classList.contains('active'))renderInfraCharts();if($('investimentos')?.classList.contains('active'))renderInvestments();if($('comparativo')?.classList.contains('active'))renderCompare();if($('equipe')?.classList.contains('active'))renderHeroChart();ensureChartNotes();}
-function updateCounts(){const n=filtered.length;const gc2=$('grafCount');if(gc2)gc2.textContent=n+' escolas na seleção';const rc=$('resultCount');if(rc)rc.textContent=n+' resultado'+(n!==1?'s':'');}
+function renderAll(){da();refreshInvestmentFilter();renderKPIs();renderInsights();renderDist();renderDashCharts();renderTable();updateCounts();if($('dashboard')?.classList.contains('active'))renderMainCharts();if($('mapa')?.classList.contains('active'))renderMap();if($('infraestrutura')?.classList.contains('active'))renderInfraCharts();if($('investimentos')?.classList.contains('active'))renderInvestments();if($('comparativo')?.classList.contains('active'))renderCompare();if($('equipe')?.classList.contains('active'))renderHeroChart();ensureChartNotes();}
+function renderAllCharts(){da();if($('dashboard')?.classList.contains('active')){renderDashCharts();renderMainCharts();}if($('infraestrutura')?.classList.contains('active'))renderInfraCharts();if($('investimentos')?.classList.contains('active'))renderInvestments();if($('comparativo')?.classList.contains('active'))renderCompare();if($('equipe')?.classList.contains('active'))renderHeroChart();ensureChartNotes();}
+function updateCounts(){const n=filtered.length;const dc2=$('dashCount');if(dc2)dc2.textContent=n+' escolas na seleção · Visão geral dos indicadores';const rc=$('resultCount');if(rc)rc.textContent=n+' resultado'+(n!==1?'s':'');}
 function avg2(arr,key){const v=arr.filter(x=>x[key]!=null);return v.length?v.reduce((s,x)=>s+x[key],0)/v.length:0;}
 function ensureChartNotes(){
   const notes={
-    miniCityChart:'IDEB: escala de 0 a 10. Barras maiores indicam melhor desempenho médio no recorte filtrado.',
-    miniDepChart:'IDEB: escala de 0 a 10 por rede escolar, calculado apenas com escolas que possuem indicador.',
+    miniCityChart:'IDEB: escala de 0 a 10. Top 12 municípios do recorte; Sorocaba (verde) e Votorantim (azul) destacados.',
     idebBarChart:'IDEB: escala de 0 a 10. Ranking limitado ao Top 20 das escolas filtradas; cores separam os municípios.',
-    idebCityChart:'IDEB: escala de 0 a 10. Cada barra mostra a média do município dentro do recorte atual.',
     saebCityChart:'SAEB: proficiência em pontos. Valores mais altos indicam maior desempenho em LP e Matemática.',
-    scatterChart:'Aprovação/fluxo: percentual de 0% a 100%; o eixo IDEB usa escala de 0 a 10.',
+    scatterChart:'Grupos: destaque (IDEB ≥ 7, verde), intermediário (4–7, amarelo), atenção (< 4 ou fluxo < 80%, vermelho). Abaixo, lista das escolas em atenção.',
     histChart:'Distribuição do IDEB em faixas de 1 ponto, sempre respeitando os filtros aplicados.',
     techChart:'Infraestrutura: médias dos equipamentos declarados na base principal.',
     connectChart:'Conectividade: percentual de escolas com internet, banda larga e laboratório de informática.',
@@ -1811,14 +1818,21 @@ function renderKPIs(){
   const grid=$('kpiGrid');if(!grid)return;
   const wi=filtered.filter(s=>s.ideb!=null);
   const ia=avg2(wi,'ideb'),sa=avg2(filtered,'saeb'),la=avg2(filtered,'nota_lp'),ma=avg2(filtered,'nota_mt'),fa=avg2(filtered,'fluxo');
-  const bi=wi.length?Math.max(...wi.map(s=>s.ideb)):null;
+  const bestSchool=wi.length?wi.reduce((a,b)=>a.ideb>b.ideb?a:b):null;
+  const worstSchool=wi.length?wi.reduce((a,b)=>a.ideb<b.ideb?a:b):null;
+  const high=wi.filter(s=>s.ideb>=7);
+  const highCount=high.length;
+  const highPct=wi.length?((highCount/wi.length)*100).toFixed(1):0;
   const kpis=[
-    {i:'↗',l:'IDEB Médio',v:ia?ia.toFixed(2):'—',s:wi.length+' com dados'},
-    {i:'S',l:'Nota SAEB',v:sa?sa.toFixed(1)+'/500':'—',s:'escala máxima próxima de 500'},
-    {i:'LP',l:'SAEB Português',v:la?la.toFixed(1):'—',s:'Proficiência média'},
-    {i:'%',l:'Taxa de Aprovação',v:fa?(fa*100).toFixed(1)+'%':'—',s:'Fluxo médio'},
+    {i:'↗',l:'IDEB Médio',v:ia?ia.toFixed(2):'—',s:'Média de '+wi.length+' escolas · '+filtered.length+' na seleção'},
+    {i:'S',l:'Nota SAEB',v:sa?sa.toFixed(1):'—',s:'escala máxima 500'},
+    {i:'LP',l:'SAEB Português',v:la?la.toFixed(1):'—',s:'Proficiência em Língua Portuguesa'},
+    {i:'MT',l:'SAEB Matemática',v:ma?ma.toFixed(1):'—',s:'Proficiência em Matemática'},
+    {i:'%',l:'Taxa de Aprovação',v:fa?(fa*100).toFixed(1)+'%':'—',s:'Aprovação média'},
+    {i:'🏆',l:'IDEB Destaque',v:highCount.toLocaleString('pt-BR'),s:highPct+'% das escolas · IDEB ≥ 7'},
     {i:'#',l:'Total de Escolas',v:filtered.length.toLocaleString('pt-BR'),s:'na seleção'},
-    {i:'★',l:'Melhor IDEB',v:bi?bi.toFixed(1):'—',s:'Maior nota'},
+    {i:'★',l:'Melhor IDEB',v:bestSchool?bestSchool.ideb.toFixed(1):'—',s:bestSchool?trunc(bestSchool.nome_escola,18)+' · '+bestSchool.no_municipio:'—'},
+    {i:'▽',l:'Pior IDEB',v:worstSchool?worstSchool.ideb.toFixed(1):'—',s:worstSchool?trunc(worstSchool.nome_escola,18)+' · '+worstSchool.no_municipio:'—'},
   ];
   grid.innerHTML=kpis.map(k=>`<div class="stat-card"><div class="kpi-icon">${k.i}</div><div class="sl">${k.l}</div><div class="sv">${k.v}</div><div class="ss">${k.s}</div></div>`).join('');
 }
@@ -1840,13 +1854,14 @@ function renderDist(){
 }
 
 /* DASH CHARTS */
-function renderDashCharts(){renderMiniCity();renderMiniDep();}
+function renderDashCharts(){renderMiniCity();}
 function renderMiniCity(){
   dc('miniCity');
   const map={};filtered.filter(s=>s.ideb!=null).forEach(s=>(map[s.no_municipio]=map[s.no_municipio]||[]).push(s.ideb));
-  const entries=Object.entries(map).map(([city,v])=>({city,avg:v.reduce((a,b)=>a+b,0)/v.length})).sort((a,b)=>b.avg-a.avg).slice(0,8);
-  if(!entries.length)return;const c=cx('miniCityChart');if(!c)return;const P=pal();
-  charts.miniCity=new Chart(c,{type:'bar',data:{labels:entries.map(e=>trunc(e.city,12)),datasets:[{data:entries.map(e=>+e.avg.toFixed(2)),backgroundColor:entries.map((_,i)=>P[i%P.length]),borderWidth:0,borderRadius:4}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{min:0,max:10,grid:{color:gc()},ticks:{font:{size:9}}},y:{grid:{display:false},ticks:{font:{size:9}}}}}});
+  const entries=Object.entries(map).map(([city,v])=>({city,avg:v.reduce((a,b)=>a+b,0)/v.length})).sort((a,b)=>b.avg-a.avg).slice(0,12);
+  if(!entries.length)return;const c=cx('miniCityChart');if(!c)return;
+  const bgColors=entries.map(e=>palCity(e.city));
+  charts.miniCity=new Chart(c,{type:'bar',data:{labels:entries.map(e=>trunc(e.city,12)),datasets:[{data:entries.map(e=>+e.avg.toFixed(2)),backgroundColor:bgColors,borderWidth:0,borderRadius:4}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{min:0,max:10,grid:{color:gc()},ticks:{font:{size:9}}},y:{grid:{display:false},ticks:{font:{size:9}}}}}});
 }
 function renderMiniDep(){
   dc('miniDep');
@@ -1859,8 +1874,9 @@ function renderMiniDep(){
 /* MAP */
 function saebColor(v){
   if(v==null)return '#94a3b8';
-  if(v>=400)return '#22c55e';
-  if(v>=300)return '#f59e0b';
+  if(v>=300)return '#3b82f6';
+  if(v>=250)return '#22c55e';
+  if(v>=200)return '#f59e0b';
   return '#ef4444';
 }
 function initMap(){
@@ -1908,15 +1924,14 @@ function renderMap(){
 }
 
 /* MAIN CHARTS */
-function renderMainCharts(){renderIdebBar();renderIdebCity();renderSaebCity();renderScatter();renderHistogram();}
+function renderMainCharts(){renderIdebBar();renderSaebCity();renderScatter();renderHistogram();}
 function renderIdebBar(){
   dc('idebBar');
   const data=[...filtered].filter(s=>s.ideb!=null).sort((a,b)=>b.ideb-a.ideb).slice(0,20);
   if(!data.length)return;const c=cx('idebBarChart');if(!c)return;
-  const a2=data.reduce((a,b)=>a+b.ideb,0)/data.length;
-  const cities=[...new Set(data.map(s=>s.no_municipio))], P=pal();
-  const datasets=cities.map((city,i)=>({label:city,data:data.map(s=>s.no_municipio===city?s.ideb:null),backgroundColor:P[i%P.length],borderColor:P[i%P.length],borderWidth:1,borderRadius:3}));
-  datasets.push({label:`Média (${a2.toFixed(2)})`,data:Array(data.length).fill(+a2.toFixed(2)),type:'line',borderColor:ac(),borderWidth:1.5,borderDash:[5,4],pointRadius:0,fill:false});
+  const cities=[...new Set(data.map(s=>s.no_municipio))];
+  const datasets=cities.map(city=>({label:city,data:data.map(s=>s.no_municipio===city?s.ideb:null),backgroundColor:palCity(city),borderColor:palCity(city),borderWidth:1,borderRadius:3}));
+  datasets.push({label:'Referência IDEB 7 (destaque)',data:Array(data.length).fill(7),type:'line',borderColor:ac(),borderWidth:1.5,borderDash:[5,4],pointRadius:0,fill:false});
   charts.idebBar=new Chart(c,{type:'bar',data:{labels:data.map(s=>trunc(s.nome_escola,22)),datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{boxWidth:12}}},scales:{y:{min:0,max:10,grid:{color:gc()}},x:{grid:{display:false},ticks:{maxRotation:45,font:{size:8}}}}}});
 }
 function renderIdebCity(){
@@ -1931,14 +1946,47 @@ function renderSaebCity(){
   const map={};filtered.filter(s=>s.nota_lp!=null).forEach(s=>{const e=map[s.no_municipio]=map[s.no_municipio]||{lp:[],mt:[]};e.lp.push(s.nota_lp);e.mt.push(s.nota_mt||0);});
   const entries=Object.entries(map).map(([city,v])=>({city,lp:v.lp.reduce((a,b)=>a+b,0)/v.lp.length,mt:v.mt.reduce((a,b)=>a+b,0)/v.mt.length})).sort((a,b)=>b.lp-a.lp).slice(0,10);
   if(!entries.length)return;const c=cx('saebCityChart');if(!c)return;const P=pal();
-  charts.saebCity=new Chart(c,{type:'bar',data:{labels:entries.map(e=>e.city),datasets:[{label:'LP',data:entries.map(e=>+e.lp.toFixed(1)),backgroundColor:P[0],borderRadius:4},{label:'Matemática',data:entries.map(e=>+e.mt.toFixed(1)),backgroundColor:P[2],borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:12}}},scales:{x:{grid:{display:false},ticks:{maxRotation:35,font:{size:9}}},y:{grid:{color:gc()}}}}});
+  const saebLabels={id:'saebLabels',afterDraw(chart){
+    const ctx=chart.ctx;
+    chart.data.datasets.forEach((ds,di)=>{
+      const meta=chart.getDatasetMeta(di);
+      meta.data.forEach((bar,idx)=>{
+        const val=ds.data[idx];
+        if(val==null)return;
+        ctx.fillStyle=isDark?'#f8fafc':'#101828';
+        ctx.font='bold 9px DM Sans, sans-serif';
+        ctx.textAlign='center';
+        ctx.fillText(val.toFixed(1),bar.x,bar.y-6);
+      });
+    });
+  }};
+  charts.saebCity=new Chart(c,{type:'bar',data:{labels:entries.map(e=>e.city),datasets:[{label:'LP',data:entries.map(e=>+e.lp.toFixed(1)),backgroundColor:P[0],borderRadius:4},{label:'Matemática',data:entries.map(e=>+e.mt.toFixed(1)),backgroundColor:P[2],borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:12}}},scales:{x:{grid:{display:false},ticks:{maxRotation:35,font:{size:9}}},y:{grid:{color:gc()}}}},plugins:[saebLabels]});
 }
 function renderScatter(){
   dc('scatter');
-  const deps=VALID_DEPS.filter(d=>filtered.some(s=>s.dependencia===d));
-  const datasets=deps.map(dep=>({label:dep,data:filtered.filter(s=>s.dependencia===dep&&s.ideb!=null&&s.fluxo!=null).map(s=>({x:s.ideb,y:+(s.fluxo*100).toFixed(1)})),backgroundColor:depClr(dep).bg,borderColor:depClr(dep).border,borderWidth:1,pointRadius:3,pointHoverRadius:6}));
+  const all=filtered.filter(s=>s.ideb!=null&&s.fluxo!=null);
+  const atencao=all.filter(s=>s.ideb<4||s.fluxo<0.8);
+  const medio=all.filter(s=>s.ideb>=4&&s.ideb<7);
+  const destaque=all.filter(s=>s.ideb>=7);
+  const mapPt=(arr,clr,bdr)=>({data:arr.map(s=>({x:s.ideb,y:+(s.fluxo*100).toFixed(1)})),backgroundColor:clr,borderColor:bdr,borderWidth:1,pointRadius:4,pointHoverRadius:7});
+  const datasets=[
+    {label:'Destaque (IDEB ≥ 7)',...mapPt(destaque,'rgba(34,197,94,.55)','#22c55e')},
+    {label:'Intermediário (4–7)',...mapPt(medio,'rgba(245,158,11,.55)','#f59e0b')},
+    {label:'Atenção (< 4 ou fluxo < 80%)',...mapPt(atencao,'rgba(239,68,68,.55)','#ef4444')},
+  ];
   const c=cx('scatterChart');if(!c)return;
-  charts.scatter=new Chart(c,{type:'scatter',data:{datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:12}}},scales:{x:{title:{display:true,text:'IDEB'},grid:{color:gc()}},y:{title:{display:true,text:'Aprovação (%)'},grid:{color:gc()},ticks:{callback:v=>v+'%'}}}}});
+  charts.scatter=new Chart(c,{type:'scatter',data:{datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:9}}}},scales:{x:{title:{display:true,text:'IDEB'},grid:{color:gc()}},y:{title:{display:true,text:'Aprovação (%)'},grid:{color:gc()},ticks:{callback:v=>v+'%'}}}}});
+  const list=$('scatterInsights');if(!list)return;
+  list.innerHTML='';
+  if(!atencao.length){list.innerHTML='<div class="invest-item">Nenhuma escola em atenção no recorte atual.</div>';return;}
+  list.innerHTML='<div class="insight-title" style="margin-bottom:8px">⚠ Escolas em atenção</div>';
+  const sorted=[...atencao].sort((a,b)=>a.ideb-b.ideb);
+  sorted.slice(0,12).forEach(s=>{
+    const el=document.createElement('div');el.className='invest-item';
+    el.textContent=`${s.nome_escola} · ${s.no_municipio} · IDEB ${s.ideb.toFixed(1)} · ${(s.fluxo*100).toFixed(0)}% aprovação`;
+    list.appendChild(el);
+  });
+  if(sorted.length>12){const el=document.createElement('div');el.className='invest-item';el.style.fontWeight='700';el.style.borderStyle='dashed';el.textContent=`+ mais ${sorted.length-12} escolas`;list.appendChild(el);}
 }
 function renderHistogram(){
   dc('hist');
